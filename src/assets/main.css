@@ -1,0 +1,664 @@
+@import url("./fonts/stylesheet.css");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent !important;
+  transition: all 0.3s ease;
+}
+
+
+body {
+  font-family: Manrope;
+  font-weight: 400;
+  font-style: normal;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+img {
+  image-rendering: crisp-edges;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+}
+
+span,
+label {
+  display: inline-block;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+input,
+textarea {
+  outline: none;
+  border: 0;
+  background: transparent;
+}
+
+button,
+select {
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  outline: 0;
+}
+
+address {
+  font-style: normal;
+}
+
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+  min-height: 100svh;
+}
+
+ul,
+ol,
+dl {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  margin: 0;
+}
+
+.breadcrumbs {
+  margin-bottom: 20px;
+  color: rgb(107, 107, 107);
+  font-size: 30px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.btn {
+  display: flex;
+  min-width: 3.5rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.375rem;
+  border: 2px solid rgba(255, 255, 255, 0.00);
+  background: #05F;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.00) inset;
+  color: #FFF;
+  text-align: center;
+  font-family: Manrope;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.5rem;
+  /* 150% */
+  padding: 1rem 1.5rem;
+  width: 26.0625rem;
+  cursor: pointer;
+}
+
+
+.map-svg circle,
+.map-svg text {
+  transform-origin: center;
+  opacity: 0;
+  transition: all 0.2s ease !important;
+}
+
+.map-svg circle.active,
+.map-svg text.active {
+  opacity: 1;
+}
+
+.home_map .svg-pan-zoom_viewport {
+  transition: all 0.1s;
+}
+
+.st0 {
+  fill: #FFFFFF;
+}
+
+.st1 {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  fill: #164194;
+}
+
+.st2 {
+  fill: #164194;
+}
+
+.st3 {
+  fill: #E8E6F4;
+}
+
+.st4 {
+  fill: #FADCEB;
+}
+
+.st5 {
+  fill: #FFFBDC;
+}
+
+.st6 {
+  fill: #FFFBDC;
+  stroke: #E41B17;
+  stroke-miterlimit: 10;
+}
+
+.st7 {
+  fill: #ECF3DA;
+}
+
+.st8 {
+  fill: #D9E5EC;
+}
+
+.st9 {
+  fill: #FDE3D7;
+}
+
+.st10 {
+  fill: #E1EFE3;
+}
+
+.st11 {
+  fill: #D3DDF2;
+}
+
+.st12 {
+  display: none;
+}
+
+.st13 {
+  display: inline;
+  fill: #D4DCE1;
+}
+
+.st14 {
+  fill: none;
+  stroke: #63B9E9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.st15 {
+  fill: #EAF6FE;
+  stroke: #63B9E9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.st16 {
+  fill: none;
+  stroke: #F39200;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.st17 {
+  fill: none;
+  stroke: #F39200;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.st18 {
+  fill: none;
+  stroke: #F39B9B;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.st19 {
+  display: none;
+  enable-background: new;
+}
+
+.st20 {
+  display: inline;
+}
+
+.st21 {
+  font-family: 'MyriadPro-Regular';
+}
+
+.st22 {
+  font-size: 12px;
+}
+
+.st23 {
+  fill: #12100B;
+}
+
+.st24 {
+  font-family: 'Arial';
+}
+
+.st25 {
+  font-size: 14px;
+}
+
+.st26 {
+  font-family: 'Arial-BoldMT';
+}
+
+.st27 {
+  fill: none;
+  stroke: #000000;
+  stroke-width: 5.0266;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.map-container svg {
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper {
+  width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@media(max-width: 1920.98px) {
+  html {
+    font-size: .8208vw
+  }
+}
+@media(max-height: 1024.98px) {
+  html {
+    font-size: .7365625vw
+  }
+}
+@media(max-width: 1024.98px) {
+  html {
+    font-size: .9765625vw
+  }
+}
+
+@media(max-width: 769px) {
+  html {
+    font-size: 10px
+  }
+}
+.conclusion_item,
+.conclusion_item p {
+  color: #445371;
+  font-family: Manrope;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.03rem;
+}
+
+.__item--head {
+  color: #445371;
+  font-family: Manrope;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.03rem;
+}
+
+.left h3 {
+  color: #0E1117;
+  font-family: Manrope;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.04rem;
+}
+.balls{
+  color: #445371;
+  font-family: Manrope;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.04rem;
+}
+
+
+/* glass */
+/* Glass Container Styles */
+.glass-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.glass-container-circle {
+  aspect-ratio: 1 / 1; /* Force perfect square ratio */
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.glass-container-pill {
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+/* Glass Button Styles */
+.glass-button {
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  pointer-events: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; /* Ensure padding doesn't affect size calculations */
+}
+
+.glass-button-circle {
+  aspect-ratio: 1 / 1; /* Force perfect square ratio */
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.glass-button-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+  font-weight: normal;
+  color: white;
+  font-family: system-ui, -apple-system, sans-serif;
+  white-space: nowrap;
+}
+
+/* Demo Layout Styles */
+.demo-layout {
+  position: fixed;
+  top: 60px;
+  left: max(20px, calc((100vw - 800px) / 2 + 20px));
+  width: 400px;
+  height: 440px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  pointer-events: none;
+}
+
+.demo-layout > * {
+  pointer-events: auto;
+}
+
+.demo-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Mobile Controls Toggle Button */
+.mobile-controls-toggle {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10002;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #007aff;
+  font-family: system-ui, -apple-system, sans-serif;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-controls-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-controls-toggle:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-controls-toggle .toggle-icon {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.mobile-controls-toggle.active .toggle-icon {
+  transform: rotate(45deg);
+}
+
+.mobile-controls-toggle .toggle-text {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Show toggle button only on mobile and adjust controls */
+@media (max-width: 768px) {
+  .mobile-controls-toggle {
+    display: flex !important;
+  }
+
+  /* Hide controls by default on mobile */
+  .glass-controls {
+    display: none;
+    top: 60px;
+    right: 10px;
+    bottom: 60px;
+    left: 10px;
+    width: auto;
+  }
+
+  /* Show controls when toggled */
+  .glass-controls.mobile-visible {
+    display: block;
+  }
+
+  /* Adjust controls content width on mobile */
+  .glass-controls .glass-container {
+    width: 100%;
+  }
+
+  .controls-content {
+    width: 100%;
+  }
+}
+
+/* Glass Controls Panel Styles */
+.glass-controls {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
+  width: 300px;
+  z-index: 10000;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+.glass-controls .glass-container {
+  width: 300px;
+  height: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.glass-controls h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  text-align: center;
+}
+
+.control-group {
+  margin-bottom: 16px;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: #444;
+}
+
+.control-group input[type='range'] {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.control-group input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #007aff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.control-group input[type='range']::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #007aff;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.control-value {
+  display: inline-block;
+  float: right;
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.control-group input[type='checkbox'] {
+  margin-right: 8px;
+  transform: scale(1.2);
+}
+
+/* Custom scrollbar styling for glass controls */
+.glass-controls ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.glass-controls ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.glass-controls ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.glass-controls ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Controls Content Layout */
+.controls-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  z-index: 1;
+  pointer-events: auto;
+  width: 300px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+/* Control Group Button Styling */
+.control-group-button {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.randomize-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: #222;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.randomize-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
