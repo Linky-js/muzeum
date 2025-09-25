@@ -32,24 +32,26 @@ const props = defineProps({
     <div v-if="typeBtn === 'toPage'" class="effect"></div>
     <div class="tint"></div>
     <div v-if="typeBtn === 'toPage'" class="shine"></div>
-    <span class="glass-btn__inner" :class="{'flex-center': !icon}">
+    <span class="glass-btn__inner" :class="{ 'flex-center': !icon }">
       <span class="glass-btn__text">
         <span class="glass-btn__supname" v-if="supname">{{ supname }}</span>
         <span class="glass-btn__name">{{ name }}</span>
       </span>
-      <component 
+      <component
         class="glass-btn__page-icon"
         v-if="icon && typeBtn === 'toPage' && !iconWrapperColor"
         :is="icon"
-        />
-        <span
+      />
+      <span
         v-if="iconWrapperColor"
         class="glass-btn__icon"
         :class="iconWrapperColor"
-        >
-        <component 
-        class="glass-btn__info-icon"
-        v-if="icon && typeBtn === 'toInfo'" :is="icon" />
+      >
+        <component
+          class="glass-btn__info-icon"
+          v-if="icon && typeBtn === 'toInfo'"
+          :is="icon"
+        />
       </span>
     </span>
   </RouterLink>
@@ -68,6 +70,10 @@ const props = defineProps({
   padding: 1.5rem 4rem;
   height: 11.375rem;
   border-radius: 3rem;
+}
+.glass-btn.toInfo:hover .tint::after,
+.glass-btn.toPage:hover .tint::after {
+  opacity: 1;
 }
 .glass-btn.toInfo {
   padding: 1.5rem;
@@ -99,7 +105,7 @@ const props = defineProps({
   mask-composite: exclude;
 }
 .glass-btn.toInfo.pink::before {
-  background: linear-gradient(25deg, #2d3f6e 15%, #db23b394 62%, #2D3F6E 100%);
+  background: linear-gradient(25deg, #2d3f6e 15%, #db23b394 62%, #2d3f6e 100%);
 }
 
 .glass-btn.toInfo .effect,
@@ -144,10 +150,10 @@ const props = defineProps({
   color: #ffffff;
 }
 
-.glass-btn__page-icon{
+.glass-btn__page-icon {
   width: 11.3125rem;
 }
-.glass-btn__info-icon{
+.glass-btn__info-icon {
   height: 2.5rem;
 }
 
@@ -193,6 +199,27 @@ const props = defineProps({
     rgba(217, 217, 217, 0.1) 3.83%,
     rgba(115, 115, 115, 0.1) 99.95%
   );
+  transition: all 0.3s ease-in-out;
+}
+.tint::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.glass-btn.toPage .tint::after {
+  background: rgba(255, 255, 255, 0.2);
+}
+.glass-btn.toInfo .tint::after {
+  background: linear-gradient(
+    79.65deg,
+    rgba(73, 132, 186, 0.35) 7.72%,
+    rgba(73, 132, 186, 0.35) 81.57%
+  );
+}
+.glass-btn.toInfo.pink .tint::after {
+  background: linear-gradient(79.65deg, rgb(219 35 179 / 11%) 7.72%, rgb(219 35 179 / 20%) 81.57%);
 }
 .shine {
   position: absolute;

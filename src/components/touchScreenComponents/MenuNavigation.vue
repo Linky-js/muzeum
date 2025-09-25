@@ -142,7 +142,6 @@ const isOpenMenu = ref(false);
 const menuRef = ref(null);
 const buttonRef = ref(null);
 const svgRef = ref(null);
-const menuBlockRef = ref(null);
 
 const animateSVG = (isOpening) => {
   const paths = svgRef.value?.querySelectorAll("path");
@@ -211,35 +210,11 @@ const animateSVG = (isOpening) => {
   }
 };
 
-// Анимация меню
-const animateMenu = (isOpening) => {
-  if (!menuBlockRef.value) return;
 
-  const timeline = gsap.timeline();
-
-  if (isOpening) {
-    gsap.set(menuBlockRef.value, { display: "block" });
-    timeline.fromTo(
-      menuBlockRef.value,
-      { x: -300, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }
-    );
-  } else {
-    timeline
-      .to(menuBlockRef.value, {
-        x: -300,
-        opacity: 0,
-        duration: 0.4,
-        ease: "power3.in",
-      })
-      .set(menuBlockRef.value, { display: "none" });
-  }
-};
 
 const toggleMenu = () => {
   isOpenMenu.value = !isOpenMenu.value;
   animateSVG(isOpenMenu.value);
-  animateMenu(isOpenMenu.value);
 };
 // Функция для проверки клика вне области
 const handleClickOutside = (event) => {
