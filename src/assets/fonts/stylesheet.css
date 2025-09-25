@@ -41,6 +41,16 @@
     font-weight: 500;
     font-style: normal;
 }
+@font-face {
+    font-family: 'TT Hoves';
+    src: url('TTCommons-Medium.eot');
+    src: local('TT Commons Medium'), local('TTCommons-Medium'),
+        url('TTCommons-Medium.eot?#iefix') format('embedded-opentype'),
+        url('TTCommons-Medium.woff') format('woff'),
+        url('TTCommons-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
 
 @font-face {
     font-family: 'TT Commons';

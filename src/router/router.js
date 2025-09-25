@@ -67,7 +67,12 @@ const routes = [
   {
     name: 'maptwo',
     path: '/maptwo',
-    component: () => import('@/pages/mapTwo.vue'),
+    component: () => import('@/pages/mapTwo/mapTwo.vue'),
+  },
+  {
+    name: 'touchmaptwo',
+    path: '/touchmaptwo',
+    component: () => import('@/pages/mapTwo/touchmaptwo.vue'),
   }
 ];
 

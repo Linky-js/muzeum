@@ -7,7 +7,6 @@
 
 <style scoped>
 .wrapper{
-  background: radial-gradient(circle, rgb(65, 65, 65) 0%, rgb(0, 0, 0) 100%);
-  height: 100vh;
+  background-color: rgb(0, 0, 0);
 }
 </style>

@@ -3,6 +3,7 @@ import { useRouter } from "vue-router";
 import { useBroadcastBus } from "@/composables/useBroadcastBus.js";
 import { initMasterSync } from "@/composables/syncRouterSimple.js";
 import HeartCardio from "@/components/icons/HeartCardio.vue";
+import LiquidGlassData from "@/components/ui/LiquidGlassData.vue";
 const video = '/bg.mp4'
 
 const router = useRouter();
@@ -118,25 +119,20 @@ function goToKms() {
         </div>
       </RouterLink>
 
-      <RouterLink to="/map" class="liquidGlass-Small">
+      <RouterLink to="touchmaptwo" class="liquidGlass-Small">
         <div class="liquidGlass-tint"></div>
 
         <div class="liq__small--text">
 
           <div class="label">
-            Видео
+            Ссылка
           </div>
-          <div class="liq__small--title">карта</div>
-        </div>
-        <div class="iconVideo">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <path
-              d="M28.3322 15.3337L37.021 9.25151C37.398 8.98758 37.9177 9.07928 38.1815 9.45633C38.2795 9.59639 38.3322 9.76323 38.3322 9.93421V30.0665C38.3322 30.5267 37.959 30.8998 37.4989 30.8998C37.3279 30.8998 37.161 30.8472 37.021 30.7492L28.3322 24.667V31.667C28.3322 32.5875 27.586 33.3337 26.6655 33.3337H3.33219C2.41173 33.3337 1.66553 32.5875 1.66553 31.667V8.33366C1.66553 7.41319 2.41173 6.66699 3.33219 6.66699H26.6655C27.586 6.66699 28.3322 7.41319 28.3322 8.33366V15.3337Z"
-              fill="white" />
-          </svg>
+          <div class="liq__small--title">Курируемые регионы</div>
         </div>
 
       </RouterLink>
+      <RouterLink to="/maptwo" class="testBtn"></RouterLink>
+      <LiquidGlassData>Видео</LiquidGlassData>
     </div>
     <svg style="display: block;">
       <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox">
@@ -431,5 +427,71 @@ video {
   object-fit: cover;
   object-position: left bottom;
   z-index: 0;
+}
+.testBtn {
+  /* Frame 25 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 24px 64px;
+gap: 157px;
+
+width: 922px;
+height: 182px;
+
+background: linear-gradient(85.26deg, rgba(217, 217, 217, 0.1) 3.83%, rgba(115, 115, 115, 0.1) 99.95%);
+/* Glass */
+border-radius: 48px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Data Science */
+
+margin: 0 auto;
+width: 232px;
+height: 44px;
+
+font-family: 'TT Hoves';
+font-style: normal;
+font-weight: 500;
+font-size: 40px;
+line-height: 110%;
+/* identical to box height, or 44px */
+letter-spacing: -0.02em;
+
+/* White */
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* chrome_fXG8NDZdWN 1 */
+
+margin: 0 auto;
+width: 165px;
+height: 110px;
+
+background: url(chrome_WZpagJPfyt.png);
+mix-blend-mode: screen;
+border-radius: 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
 }
 </style>
