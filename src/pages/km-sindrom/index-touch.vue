@@ -22,7 +22,7 @@ function goToCalculate() {
 
 <template>
   <div class="home">
-    <div class="breadcrumbs">Главная / КМ Синдром</div>
+    <div class="breadcrumbs1">Главная / КМ Синдром</div>
     <div class="home__btns">
       <div class="btn">
         <svg

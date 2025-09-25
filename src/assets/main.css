@@ -1,4 +1,5 @@
 @import url("./fonts/stylesheet.css");
+@import url("./fonts/stylesheet-TTHoves.css");
 
 * {
   padding: 0;
@@ -101,7 +102,7 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.breadcrumbs {
+.breadcrumbs1 {
   margin-bottom: 20px;
   color: rgb(107, 107, 107);
   font-size: 30px;
@@ -298,7 +299,12 @@ input[type="number"]::-webkit-outer-spin-button {
   position: relative;
 }
 
-@media(max-width: 1920.98px) {
+
+  html {
+    font-size: .4vw
+  }
+
+/* @media(max-width: 1920.98px) {
   html {
     font-size: .8208vw
   }
@@ -318,7 +324,7 @@ input[type="number"]::-webkit-outer-spin-button {
   html {
     font-size: 10px
   }
-}
+} */
 .conclusion_item,
 .conclusion_item p {
   color: #445371;
