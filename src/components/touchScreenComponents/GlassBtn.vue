@@ -1,9 +1,10 @@
 <script setup>
 import { RouterLink } from "vue-router";
+
 const props = defineProps({
   link: {
     type: String,
-    default: "/",
+    required: false,
   },
   // toPage || toInfo
   typeBtn: {
@@ -28,7 +29,13 @@ const props = defineProps({
 </script>
 
 <template>
-  <RouterLink :to="link" class="glass-btn" :class="[typeBtn, iconWrapperColor]">
+  <!-- если есть link — рендерим RouterLink -->
+  <RouterLink
+    v-if="link"
+    :to="{ name: link }"
+    class="glass-btn"
+    :class="[typeBtn, iconWrapperColor]"
+  >
     <div v-if="typeBtn === 'toPage'" class="effect"></div>
     <div class="tint"></div>
     <div v-if="typeBtn === 'toPage'" class="shine"></div>
@@ -55,7 +62,41 @@ const props = defineProps({
       </span>
     </span>
   </RouterLink>
+
+  <!-- если link не задан — рендерим просто кнопку/див -->
+  <div
+    v-else
+    class="glass-btn"
+    :class="[typeBtn, iconWrapperColor]"
+  >
+    <div v-if="typeBtn === 'toPage'" class="effect"></div>
+    <div class="tint"></div>
+    <div v-if="typeBtn === 'toPage'" class="shine"></div>
+    <span class="glass-btn__inner" :class="{ 'flex-center': !icon }">
+      <span class="glass-btn__text">
+        <span class="glass-btn__supname" v-if="supname">{{ supname }}</span>
+        <span class="glass-btn__name">{{ name }}</span>
+      </span>
+      <component
+        class="glass-btn__page-icon"
+        v-if="icon && typeBtn === 'toPage' && !iconWrapperColor"
+        :is="icon"
+      />
+      <span
+        v-if="iconWrapperColor"
+        class="glass-btn__icon"
+        :class="iconWrapperColor"
+      >
+        <component
+          class="glass-btn__info-icon"
+          v-if="icon && typeBtn === 'toInfo'"
+          :is="icon"
+        />
+      </span>
+    </span>
+  </div>
 </template>
+
 
 <style scoped>
 .glass-btn {
@@ -179,35 +220,7 @@ const props = defineProps({
   backdrop-filter: blur(9.24456px);
 }
 
-.effect {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  backdrop-filter: blur(3px);
-  filter: url(#glass-distortion);
-  overflow: hidden;
-  isolation: isolate;
-}
-.tint {
-  z-index: 1;
-  position: absolute;
-  inset: 0;
-  border-radius: 1rem;
-  backdrop-filter: blur(10px);
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
-  transition: all 0.3s ease-in-out;
-}
-.tint::after{
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
+
 .glass-btn.toPage .tint::after {
   background: rgba(255, 255, 255, 0.2);
 }

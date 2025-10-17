@@ -180,22 +180,22 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 27.43rem;
+  width: 60.43rem;
   flex-shrink: 0;
 }
 
 .left h3 {
   color: #0E1117;
-  font-family: Manrope;
-  font-size: 2rem;
+  font-family: "TT Hoves";
+  font-size: 6rem;
   font-weight: 700;
   letter-spacing: -0.04rem;
 }
 
 .left h4 {
   color: #445371;
-  font-family: Manrope;
-  font-size: 2rem;
+  font-family: "TT Hoves";
+  font-size: 4rem;
   font-style: normal;
   font-weight: 600;
   line-height: 120%;
@@ -205,8 +205,8 @@ onBeforeUnmount(() => {
 
 .aside_description {
   color: #445371;
-  font-family: Manrope;
-  font-size: 1rem;
+  font-family: "TT Hoves";
+  font-size: 2.5rem;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
@@ -215,8 +215,8 @@ onBeforeUnmount(() => {
 
 .life_info {
   color: #000;
-  font-family: Manrope;
-  font-size: 1rem;
+  font-family: "TT Hoves";
+  font-size: 3rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -224,14 +224,14 @@ onBeforeUnmount(() => {
 }
 
 .left .etap {
-  font-size: 1.25rem;
+  font-size: 3.25rem;
   font-weight: 500;
 }
 
 .step1 {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   text-align: center;
   align-items: center;
 }
@@ -245,7 +245,7 @@ onBeforeUnmount(() => {
 
 .description {
   color: #000;
-  font-size: 1.5rem;
+  font-size: 3.5rem;
   font-weight: 700;
   opacity: 0.5;
   max-width: 39.9875rem;
@@ -300,7 +300,7 @@ onBeforeUnmount(() => {
 
 .label {
   color: #445371;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1.5rem;
   font-style: normal;
   font-weight: 400;
@@ -314,7 +314,7 @@ onBeforeUnmount(() => {
 
 .label small {
   color: #445371;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -352,7 +352,7 @@ onBeforeUnmount(() => {
   text-align: center;
   font-variant-numeric: lining-nums tabular-nums stacked-fractions;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
@@ -382,7 +382,7 @@ onBeforeUnmount(() => {
   color: var(--input-primary-label-color-default, #445371);
   font-variant-numeric: lining-nums tabular-nums stacked-fractions;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -417,7 +417,7 @@ onBeforeUnmount(() => {
 .region {
   padding: 0.5rem;
   color: var(--dropdownmenu-primary-itemvalue-color-default, #0E1117);
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 0.875rem;
   font-style: normal;
   font-weight: 400;
@@ -443,7 +443,7 @@ onBeforeUnmount(() => {
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.00) inset;
   color: #FFF;
   text-align: center;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
@@ -459,7 +459,7 @@ onBeforeUnmount(() => {
 .nickels {
   display: flex;
   flex-direction: column;
-  gap: 1.29rem;
+  gap: 2.29rem;
   margin: 0 auto;
   width: 100%;
 }
@@ -467,26 +467,26 @@ onBeforeUnmount(() => {
 .nickel {
   display: flex;
   align-items: flex-end;
-  gap: 1.08rem;
+  gap: 3.08rem;
 }
 
 .rows {
   display: flex;
   flex-direction: column;
-  gap: 0.26rem;
-  row-gap: 0.52rem;
+  gap: 0.56rem;
+  row-gap: 1rem;
 }
 
 .row {
   display: flex;
   flex-direction: row;
-  gap: 0.26rem;
+  gap: 0.56rem;
 
 }
 
 .week {
-  width: 1.0345rem;
-  height: 1.0345rem;
+  width: 2.0345rem;
+  height: 2.0345rem;
   flex-shrink: 0;
   border: 0.471px solid #000;
   background: #FFF;
@@ -509,7 +509,7 @@ onBeforeUnmount(() => {
 
 .years {
   color: #000;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1.774rem;
   font-style: normal;
   font-weight: 400;
@@ -525,7 +525,7 @@ onBeforeUnmount(() => {
 
 .descriptionStat {
   color: #000;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 0.75rem;
   font-style: normal;
   font-weight: 400;

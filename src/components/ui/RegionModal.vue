@@ -1,208 +1,212 @@
 <script setup>
-import { ref, watch, onMounted, nextTick } from "vue";
-import gsap from "gsap";
-import SplitText from "gsap/SplitText";
-
-gsap.registerPlugin(SplitText);
+import { onMounted, defineProps, computed } from "vue";
+// import gsap from "gsap";
+// import SplitText from "gsap/SplitText";
 
 const props = defineProps({
   show: { type: Boolean, default: false },
   region: {
     type: Object,
-    default: () => ({ id: "", name: "", fact: "", fun: "", keywords: "" }),
+    required: true
   },
   title: { type: String, default: "" },
 });
+onMounted(() => {
+  console.log('reg', props.region);
 
-const modal = ref(null);
-const textBlock = ref(null);
-const textBlock2 = ref(null);
-
-let splitInstance = null;
-let splitInstance2 = null;
-
-
-const animateIn = async () => {
-  if (!modal.value) return;
-
-  // Сначала скрываем текст (чтобы не мигал)
-  if (textBlock.value) {
-    gsap.set(textBlock.value, { opacity: 0 });
-  }
-
-  // Схлопнутое окно
-  gsap.set(modal.value, { scaleY: 0, scaleX: 0.3, opacity: 0 });
-
-  // Поднимаем по высоте
-  gsap.to(modal.value, {
-    scaleY: 1,
-    opacity: 1,
-    duration: 0.5,
-    ease: "power3.out",
-  });
-
-  // Потом растягиваем по ширине
-  gsap.to(modal.value, {
-    scaleX: 1,
-    duration: 0.5,
-    delay: 0.5,
-    ease: "power3.out",
-    onComplete: () => {
-      if (textBlock.value) {
-        animateText();
-      }
-      if (textBlock2.value) {
-        animateText2();
-      }
-    },
-  });
-};
-
-const animateText = () => {
-  if (!textBlock.value) return;
-
-  // Уничтожаем старый SplitText (иначе при повторных открытиях будут дубли)
-  if (splitInstance) {
-    splitInstance.revert();
-  }
-
-  // Разбиваем текст на предложения, слова и буквы
-  splitInstance = new SplitText(textBlock.value, { type: "lines,words,chars" });
-  console.log("splitInstance", splitInstance);
-  
-
-  // Прячем всё
-  gsap.set(splitInstance.chars, { opacity: 0, y: 20 });
-  // Многоуровневая анимация
-  gsap.timeline()
-  .set(textBlock.value, { opacity: 1 })
-  .to(splitInstance.chars, {
-    opacity: 1,
-    y: 0,
-    duration: 0.2,
-    stagger: 0.01, // пауза между буквами
-    ease: "power2.out",
-  });
-
-};
-const animateText2 = () => {
-  if (!textBlock2.value) return;
-
-  // Уничтожаем старый SplitText (иначе при повторных открытиях будут дубли)
-  if (splitInstance2) {
-    splitInstance2.revert();
-  }
-
-  // Разбиваем текст на предложения, слова и буквы
-  splitInstance2 = new SplitText(textBlock2.value, { type: "lines,words,chars" });
-  console.log("splitInstance", splitInstance2);
-  
-
-  // Прячем всё
-  gsap.set(splitInstance2.chars, { opacity: 0, y: 20 });
-  // Многоуровневая анимация
-  gsap.timeline()
-  .set(textBlock2.value, { opacity: 1 })
-  .to(splitInstance2.chars, {
-    opacity: 1,
-    y: 0,
-    duration: 0.2,
-    stagger: 0.01, // пауза между буквами
-    ease: "power2.out",
-  });
-
-};
-
-const animateOut = () => {
-  if (!modal.value) return;
-
-  gsap.to(modal.value, {
-    scaleY: 0,
-    scaleX: 0.3,
-    opacity: 0,
-    duration: 0.4,
-    ease: "power3.in",
-  });
-};
-
-watch(
-  () => props.show,
-  async (val) => {
-    await nextTick(); // ждём, пока DOM появится
-    if (val) {
-      animateIn();
-    } else {
-      animateOut();
+})
+function getImagePath(name) {
+  const base = `/touch2/regions/${name}`;
+  try {
+    console.log(new URL(`${base}.jpg`, import.meta.url).href);
+    
+    return new URL(`${base}.jpg`, import.meta.url).href;
+  } catch {
+    try {
+      return new URL(`${base}.png`, import.meta.url).href;
+    } catch {
+      return "/touch2/regions/default.jpg"; // fallback
     }
   }
-);
+}
 
-watch(
-  () => props.region,
-  async () => {
-    await nextTick();
-    animateText();
-    animateText2();
-  },
-  { deep: true }
-);
-
-onMounted(() => {
-  if (props.show) {
-    animateIn();
-  }
+const imageSrc = computed(() => {
+  if (!props.region?.name) return "/touch2/regions/default.jpg";
+  return getImagePath(props.region.name);
 });
 </script>
 
+
 <template>
-  <div v-if="show" class="modal-overlay">
-    <div ref="modal" class="modal-content">
-        <h1>Факт от Алмазова</h1>
-      <h2>{{ region?.region?.name }}</h2>
-      <div ref="textBlock" class="modal-text">
-        {{ region?.region?.fact || "Интересный факт пока отсутствует" }}
+  <div  class="modal-overlay" :class="props.show ? 'show' : ''">
+    <div class="interesting-fact">
+      <div class="avatar animBtn">
+        <img v-if="region?.name"
+        class=""
+          :src="'/touch2/regions/IntFact_' + region.regioncode + '.png'"
+          :alt="region.name" />
+      </div>
+      <div class="fact">
+        <div class="title animBtn">
+          Интересный факт
+        </div>
+        <div class="description animBtn">
+          {{ region.fact }}
+        </div>
       </div>
     </div>
-    <div v-if="region?.region?.fun" ref="modal" class="modal-content">
-        <h1>Занимательный факт</h1>
-      <div ref="textBlock2" class="modal-text">
-        {{ region?.region?.fun || "Интересный факт пока отсутствует" }}
+    <div class="frame animBtn"></div>
+    <div class="region__block">
+      <div class="region__title animBtn">{{ region.name }}</div>
+      <div class="fact">
+        <div class="title animBtn">
+          Региональные решения
+        </div>
+        <div class="description animBtn">
+          {{ region.fun }}
+        </div>
       </div>
+    </div>
+    <div class="monument animBtn">
+      <img :src="'/touch2/regions/regicon_' + region.regioncode + '.png'" alt="">
     </div>
   </div>
 </template>
 
 <style scoped>
+h1 {
+  font-size: 6rem;
+}
+
 .modal-text {
   margin-top: 1rem;
-  font-size: 1.2rem;
+  font-size: 3rem;
   line-height: 1.5;
   transition: none;
-  opacity: 0;
 }
+
 .modal-overlay {
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: flex-end;
-  flex-direction: column;
-  justify-content: center;
-  padding-right: 30px;
   z-index: 2000;
-  gap: 30px;
+  gap: 159px;
+  padding-top: 180px;
 }
 
-.modal-content {
-  border-radius: 15px;
-    border: 1px solid #ffffff73;
-    background: linear-gradient(85deg, rgba(53, 52, 52, 0.5) 3.83%, rgba(53, 52, 52, 0.50) 99.95%);
-  padding: 2rem;
-  border-radius: 20px;
-  max-width: 600px;
-  width: 90%;
-  transform-origin: center top;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+.avatar {
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #fff;
+
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 
+.title {
+  font-family: 'TT Hoves';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 64px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+
+}
+
+.fact .description {
+  max-width: 1000px;
+
+  font-family: 'TT Hoves';
+  font-style: italic;
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 55px;
+
+  color: #FFFFFF;
+}
+
+.interesting-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 130px;
+  padding-left: 553px;
+  padding-top: 93px;
+  flex-shrink: 0;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.frame {
+  /* Rectangle 94 */
+
+  box-sizing: border-box;
+  width: 1200px;
+  height: 1800px;
+  border: 3px dashed #999999;
+  border-radius: 100px;
+  flex-shrink: 0;
+
+}
+
+.region__block {
+  display: flex;
+  flex-direction: column;
+  gap: 220px;
+  padding-top: 143px;
+  flex-shrink: 0;
+}
+
+.region__block .region__title {
+
+width: 1713px;
+height: 260px;
+
+font-family: 'TT Hoves';
+font-style: normal;
+font-weight: 500;
+font-size: 130px;
+line-height: 100%;
+display: flex;
+align-items: flex-end;
+letter-spacing: 0.02em;
+color: #FFFFFF;
+
+
+}
+
+.region__block .description {
+  max-width: 1600px;
+  font-family: 'TT Hoves';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 60px;
+  color: #FFFFFF;
+}
+
+.monument {
+
+  width: 620px;
+  height: 840px;
+  margin-top: 300px;
+}
+.show .animBtn{
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.5s ease-in-out;
+}
 </style>

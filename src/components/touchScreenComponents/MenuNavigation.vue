@@ -1,143 +1,30 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, defineProps } from "vue";
 import MenuRecursive from "@/components/touchScreenComponents/MenuRecursive.vue";
 import { gsap } from "gsap";
 const items = ref([
-  {
-    id: 0,
-    name: "Метаболический синдром",
-    link: "/touch-screen-3",
-    submenu: [
-      {
-        id: 0,
-        name: "Ожирение",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 1,
-        name: "Дислипидемия",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 2,
-        name: "Сердечная недостаточность",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 3,
-        name: "Сахарный диабет II типа",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 4,
-        name: "Хроническая болезнь почек",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 5,
-        name: "Артериальная гипертензия",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 6,
-        name: "Диета DASH",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 7,
-        name: "Фармакотерапия",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 8,
-        name: "Калькулятор рисков",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 9,
-        name: "Метаболический центр",
-        link: "/",
-        submenu: [],
-      },
-    ],
-  },
-  {
-    id: 1,
-    name: "Data Science",
-    link: "/touch-screen-2",
-    submenu: [
-      {
-        id: 0,
-        name: "Области применения ИИ",
-        link: "/touch-screen-4",
-        submenu: [
-          {
-            id: 0,
-            name: "Образование и кадры",
-            link: "/",
-          },
-          {
-            id: 1,
-            name: "AI management",
-            link: "/",
-          },
-          {
-            id: 2,
-            name: "Personification",
-            link: "/",
-          },
-          {
-            id: 3,
-            name: "AI - telehealth",
-            link: "/",
-          },
-          {
-            id: 4,
-            name: "Диагностика",
-            link: "/",
-          },
-          {
-            id: 5,
-            name: "AI - epidemiology",
-            link: "/",
-          },
-          {
-            id: 0,
-            name: "AI Pharma",
-            link: "/",
-          },
-        ],
-      },
-      {
-        id: 1,
-        name: "Что для вас ИИ?",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 2,
-        name: "Регистровые исследования",
-        link: "/",
-        submenu: [],
-      },
-      {
-        id: 3,
-        name: "Искусственный интеллект",
-        link: "/",
-        submenu: [],
-      },
-    ],
-  },
+
 ]);
+const props = defineProps({
+  links: {
+    type: Array,
+    required: false,
+    default: [
+      {
+        id: 0,
+        name: "Метаболический синдром",
+        link: "/touch1/screen-3",
+
+      },
+      {
+        id: 1,
+        name: "Data Science",
+        link: "/touch-screen-2",
+
+      },
+    ]
+  }
+})
 const isOpenMenu = ref(false);
 const menuRef = ref(null);
 const buttonRef = ref(null);
@@ -242,21 +129,10 @@ onUnmounted(() => {
 
 <template>
   <div class="menu">
-    <button
-      class="menu-btn"
-      @click="toggleMenu"
-      :class="{ active: isOpenMenu }"
-      ref="buttonRef"
-    >
+    <button class="menu-btn" @click="toggleMenu" :class="{ active: isOpenMenu }" ref="buttonRef">
       <div class="tint" v-if="!isOpenMenu"></div>
       <span class="menu-btn__inner">
-        <svg
-          ref="svgRef"
-          width="48"
-          height="48"
-          viewBox="0 0 48 48"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg ref="svgRef" width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 8H42V12H6V8Z" fill="white" />
           <path d="M6 22H42V26H6V22Z" fill="white" />
           <path d="M6 36H42V40H6V36Z" fill="white" />
@@ -271,7 +147,7 @@ onUnmounted(() => {
       <div class="menu-block__top">
         <span class="menu-block__top-text">Меню</span>
       </div>
-      <MenuRecursive :items="items" :level="0" />
+      <MenuRecursive :items="props.links" :level="0" />
     </div>
   </div>
 </template>
@@ -292,12 +168,14 @@ onUnmounted(() => {
   transform: translateY(-9rem) translateX(-50%);
   padding: 3rem;
 }
+
 .menu-block__top {
   position: relative;
   z-index: 3;
   padding-bottom: 2.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
+
 .menu-block__top-text {
   font-family: "TT Hoves";
   font-weight: 500;
@@ -307,6 +185,7 @@ onUnmounted(() => {
   color: #ffffff;
   opacity: 0.3;
 }
+
 .menu-block__list {
   position: relative;
   z-index: 3;
@@ -314,11 +193,13 @@ onUnmounted(() => {
   display: grid;
   gap: 2.5rem;
 }
+
 .menu-block__link {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .menu-block__text {
   font-family: "TT Hoves";
   font-weight: 500;
@@ -327,6 +208,7 @@ onUnmounted(() => {
   letter-spacing: -0.02em;
   color: #ffffff;
 }
+
 .menu-block__icon {
   width: 1.25rem;
   transform: scale(-1, 1);
@@ -340,7 +222,8 @@ onUnmounted(() => {
   left: -3rem;
   bottom: -3rem;
 }
-.menu-block__item:hover > .submenu {
+
+.menu-block__item:hover>.submenu {
   transform: scaleY(1);
 }
 
@@ -358,6 +241,7 @@ onUnmounted(() => {
   box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
   backdrop-filter: blur(10px);
 }
+
 .menu-btn.active {
   background: #ffffff;
   box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
@@ -391,6 +275,7 @@ onUnmounted(() => {
   height: 3rem;
   min-height: 3rem;
 }
+
 .menu-btn.active svg path {
   fill: black;
 }
@@ -426,6 +311,7 @@ onUnmounted(() => {
   color: #ffffff;
   margin-top: 0.5rem;
 }
+
 .menu-btn__icon {
   width: 7.25rem;
   min-width: 7.25rem;
@@ -436,6 +322,7 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
 }
+
 .effect {
   position: absolute;
   z-index: 0;
@@ -446,18 +333,18 @@ onUnmounted(() => {
   isolation: isolate;
   border-radius: 3rem;
 }
+
 .tint {
   z-index: 1;
   position: absolute;
   inset: 0;
   border-radius: 3rem;
   backdrop-filter: blur(10px);
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
 }
+
 .shine {
   position: absolute;
   inset: 0;

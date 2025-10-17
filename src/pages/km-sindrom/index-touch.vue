@@ -109,7 +109,7 @@ function goToCalculate() {
   border: 1px solid rgb(107, 107, 107);
   background: rgb(107, 107, 107);
   cursor: pointer;
-  font-size: 40px;
+  font-size: 3rem;
   width: calc(50% - 25px);
 }
 .btn_green {

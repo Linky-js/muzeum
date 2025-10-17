@@ -71,7 +71,7 @@ onUnmounted(() => {
 }
 .left h3 {
   color: #0E1117;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.04rem;

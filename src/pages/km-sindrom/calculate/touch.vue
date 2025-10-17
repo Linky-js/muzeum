@@ -440,7 +440,7 @@ onUnmounted(() => {
 
 .left h3 {
   color: #0E1117;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.04rem;
@@ -448,7 +448,7 @@ onUnmounted(() => {
 
 .left h4 {
   color: #445371;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 2rem;
   font-style: normal;
   font-weight: 600;
@@ -459,7 +459,7 @@ onUnmounted(() => {
 
 .aside_description {
   color: #445371;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
@@ -469,7 +469,7 @@ onUnmounted(() => {
 
 .life_info {
   color: #000;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -492,17 +492,17 @@ onUnmounted(() => {
 
 .step1 h1 {
   color: #0E1117;
-  font-size: 5.5425rem;
+  font-size: 8.5425rem;
   font-weight: 700;
   letter-spacing: -0.11088rem;
 }
 
 .description {
   color: #000;
-  font-size: 1.5rem;
+  font-size: 3.5rem;
   font-weight: 700;
   opacity: 0.5;
-  max-width: 39.9875rem;
+  max-width: 50.9875rem;
 }
 
 .qr-code {
@@ -527,7 +527,7 @@ onUnmounted(() => {
 .step {
   height: 100%;
   width: 100%;
-  max-width: 58.0625rem;
+  max-width: 130.0625rem;
   border-radius: 1.875rem;
   background: rgba(0, 0, 0, 0.03);
   padding: 3rem;
@@ -554,8 +554,8 @@ onUnmounted(() => {
 
 .label {
   color: #445371;
-  font-family: Manrope;
-  font-size: 1.5rem;
+  font-family: "TT Hoves";
+  font-size: 3.5rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -568,7 +568,7 @@ onUnmounted(() => {
 
 .label small {
   color: #445371;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -585,7 +585,7 @@ onUnmounted(() => {
 
 .answersColumn {
   flex-direction: column;
-  width: 15.1875rem;
+  width: 32.1875rem;
 }
 
 .answersColumn .answer {
@@ -594,8 +594,8 @@ onUnmounted(() => {
 
 .answer {
   display: flex;
-  height: var(--button-xl-height, 3.5rem);
-  padding: 0 var(--button-xl-padding-right, 1.25rem) 0 var(--button-xl-padding-left, 1.25rem);
+  
+  padding: 2rem 3.25rem 2rem 3.25rem;
   justify-content: center;
   align-items: center;
   gap: var(--button-xl-spacing, 0.25rem);
@@ -606,11 +606,11 @@ onUnmounted(() => {
   text-align: center;
   font-variant-numeric: lining-nums tabular-nums stacked-fractions;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: Manrope;
-  font-size: 1rem;
+  font-family: "TT Hoves";
+  font-size: 3rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 1.5rem;
+  line-height: 3rem;
   color: #445371;
 }
 
@@ -636,18 +636,18 @@ onUnmounted(() => {
   color: var(--input-primary-label-color-default, #445371);
   font-variant-numeric: lining-nums tabular-nums stacked-fractions;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: Manrope;
-  font-size: 1rem;
+  font-family: "TT Hoves";
+  font-size: 2.5rem;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5rem;
-  padding: 0.75rem;
-  width: 17.5rem;
+  padding: 1.75rem;
+  width: 100%;
 }
 
 .input_wrap {
   position: relative;
-  width: 17.5rem;
+  width: 37.5rem;
 }
 
 .custom_list {
@@ -659,25 +659,26 @@ onUnmounted(() => {
   border: 0.001px solid var(--dropdownmenu-primary-border-color, rgba(255, 255, 255, 0.00));
   background: var(--dropdownmenu-primary-bg-color, #FFF);
   box-shadow: 0 0 32px 0 rgba(68, 83, 113, 0.10), 0 32px 32px 0 rgba(68, 83, 113, 0.05);
-  width: 17.5rem;
-  height: 13rem;
+  width: 37.5rem;
+  height: 30rem;
   overflow-y: scroll;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1.5rem;
 }
 
 .region {
   padding: 0.5rem;
   color: var(--dropdownmenu-primary-itemvalue-color-default, #0E1117);
-  font-family: Manrope;
-  font-size: 0.875rem;
+  font-family: "TT Hoves";
+  font-size: 2.5rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.25rem;
+  line-height: 2.5rem;
   /* 142.857% */
   cursor: pointer;
+
 }
 
 .region.active {
@@ -728,7 +729,7 @@ onUnmounted(() => {
 
 .years {
   color: #000;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;

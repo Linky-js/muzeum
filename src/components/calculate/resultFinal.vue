@@ -78,14 +78,14 @@ video {
 .final__head {
   color: #FFF;
   color: #FFF;
-  font-family: Manrope;
-  font-size: 2rem;
+  font-family: "TT Hoves";
+  font-size: 4rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   letter-spacing: -0.04rem;
   position: relative;
-  width: 35.125rem;
+  width: 55.125rem;
 }
 
 .final__body {
@@ -105,14 +105,14 @@ video {
 .final__item {
   color: #FFF;
   color: #FFF;
-  font-family: Manrope;
-  font-size: 1.42rem;
+  font-family: "TT Hoves";
+  font-size: 2.82rem;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
   letter-spacing: -0.03rem;
-  width: 29.25rem;
-  height: 12.61rem;
+  width: 40.25rem;
+  height: 24.61rem;
   border-radius: 1rem;
   background: rgba(0, 0, 0, 0.30);
   backdrop-filter: blur(17px);

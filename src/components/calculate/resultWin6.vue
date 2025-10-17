@@ -223,7 +223,7 @@ const percent = computed(() => {
 .diabet__head {
   color: #445371;
   text-align: center;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 3.875rem;
   font-style: normal;
   font-weight: 600;
@@ -237,7 +237,7 @@ const percent = computed(() => {
 
 .table__head span {
   color: #000;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 0.72044rem;
   font-style: normal;
   font-weight: 600;
@@ -247,7 +247,7 @@ const percent = computed(() => {
 
 .table__body span {
   color: #000;
-  font-family: Manrope;
+  font-family: "TT Hoves";
   font-size: 0.92044rem;
   font-style: normal;
   font-weight: 400;
