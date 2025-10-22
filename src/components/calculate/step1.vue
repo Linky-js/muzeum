@@ -234,7 +234,7 @@ const regionsHints = computed(() => {
   gap: 64px;
   padding: 32px 0 64px;
   width: 100%;
-  margin-bottom: 695px;
+  margin-bottom: 750px;
 }
 .question {
   display: flex;

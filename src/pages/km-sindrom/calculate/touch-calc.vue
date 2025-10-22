@@ -83,6 +83,7 @@ const goNextStep = (st) => {
     } else {
       step.value = st;
       changeTitles(step.value)
+      console.log(person.value);
     }
   } else {
     step.value = st;
@@ -90,6 +91,7 @@ const goNextStep = (st) => {
   }
 };
 const checkStep = () => {
+  console.log(person.value.diabet);
   if (person.value.diabet == "Нет") {
     step.value = 5;
     changeTitles(step.value)
@@ -191,9 +193,7 @@ onMounted(() => {
       <result-final v-if="step === 7" :person="person" />
     </div>
   </div>
-  <div class="footer relative" v-if="step !== 4">
-    <MenuNavigation class="footer__btn" />
-  </div>
+    <MenuNavigation v-if="step !== 4" class="footer__btn" />
   <svg style="display: none">
     <filter
       id="glass-distortion"
@@ -276,6 +276,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
 }
 
 .content__title {
@@ -296,8 +297,7 @@ onMounted(() => {
   text-align: center;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: #ffffff;
-  opacity: 0.5;
+  color: #808389;
 }
 
 .to-back {
@@ -328,6 +328,7 @@ onMounted(() => {
   align-items: center;
   max-width: 86.625rem;
   width: 100%;
+  height: 100%;
 }
 
 .full-width{
@@ -344,12 +345,12 @@ onMounted(() => {
   margin-top: 375px;
 }
 
-.footer {
-  margin-top: auto;
-}
 
 .footer__btn {
-  margin-left: auto;
+  margin-top: auto;
+  position: fixed;
+  bottom: 10rem;
+  right: 31.875rem;
 }
 
 .effect {
