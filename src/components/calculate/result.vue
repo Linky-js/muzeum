@@ -1,146 +1,185 @@
 <script setup>
-import { ref, defineProps, onMounted, computed, defineEmits, onBeforeUnmount } from "vue";
-import gsap from 'gsap'
+import {
+  ref,
+  defineProps,
+  onMounted,
+  computed,
+  defineEmits,
+  onBeforeUnmount,
+} from "vue";
+import gsap from "gsap";
 const props = defineProps({
-  person: Object
-})
+  person: Object,
+});
 
-const emit = defineEmits(['next'])
-const stats = ref({})
-const container = ref(null)
-let animationFrame
-const speed = 0.3
+const emit = defineEmits(["next"]);
+const stats = ref({});
+const container = ref(null);
+let animationFrame;
+const speed = 0.3;
 // Загружаем статистику
 const getStat = async () => {
   try {
-    const res = await fetch("/data.json")
-    if (!res.ok) throw new Error("Ошибка HTTP " + res.status)
-    const data = await res.json()
-    stats.value = data
+    const res = await fetch("/data.json");
+    if (!res.ok) throw new Error("Ошибка HTTP " + res.status);
+    const data = await res.json();
+    stats.value = data;
   } catch (err) {
-    console.error("Ошибка загрузк:", err) 
+    console.error("Ошибка загрузк:", err);
   }
-}
+};
 
 // Текущий возраст в неделях
-const currentWeeks = computed(() => props.person.age * 52)
+const currentWeeks = computed(() => props.person.age * 12);
 
 // Прогноз по региону и полу
 const expectedWeeks = computed(() => {
-  if (!stats.value || !props.person.gender) return 0
-  let regionStats = '';
-  if (!props.person.region.name || ['Луганская народная республика', 'Донецкая народная республика', 'Не выбирать'].includes(props.person.region.name)) {
-    regionStats = stats.value['default']
+  if (!stats.value || !props.person.gender) return 0;
+  let regionStats = "";
+  if (
+    !props.person.region.name ||
+    [
+      "Луганская народная республика",
+      "Донецкая народная республика",
+      "Не выбирать",
+    ].includes(props.person.region.name)
+  ) {
+    regionStats = stats.value["default"];
   } else {
-    regionStats = stats.value[props.person.region.name]
+    regionStats = stats.value[props.person.region.name];
   }
 
-  if (!regionStats || regionStats == '') return 0
-  const avgYears = regionStats[props.person.gender] || 70 // fallback
-  return Math.round(avgYears * 52)
-})
+  if (!regionStats || regionStats == "") return 0;
+  const avgYears = regionStats[props.person.gender] || 70; // fallback
+  return Math.round(avgYears * 12);
+});
 
 // Количество блоков nickel (по 5 лет)
 const nickelCount = computed(() => {
-  const currentYears = props.person.age
-  const expectedYears = Math.round(expectedWeeks.value / 52)
+  const currentYears = props.person.age;
+  const expectedYears = Math.round(expectedWeeks.value / 12);
 
   // Берём максимум из возраста и прогноза
-  const maxYears = Math.max(currentYears, expectedYears)
+  const maxYears = Math.max(currentYears, expectedYears);
 
   // Округляем в большую сторону до кратного 5
-  return Math.ceil(maxYears / 5)
-})
+  const roundFive = Math.ceil(maxYears / 5);
+  return roundFive;
+});
 
 // Функция для класса квадратика
 const getWeekClass = (weekIndex) => {
-  if (weekIndex < currentWeeks.value) return "active"
-  if (weekIndex < expectedWeeks.value) return "future"
-  return "extra"
-}
+  if (weekIndex < currentWeeks.value) return "active";
+  if (weekIndex < expectedWeeks.value) return "future";
+  return "extra";
+};
 const pluralizeYears = (num) => {
-  num = Math.abs(num) % 100
-  const n1 = num % 10
-  if (num > 10 && num < 20) return "лет"
-  if (n1 > 1 && n1 < 5) return "года"
-  if (n1 === 1) return "года"
-  return "лет"
-}
+  num = Math.abs(num) % 100;
+  const n1 = num % 10;
+  if (num > 10 && num < 20) return "лет";
+  if (n1 > 1 && n1 < 5) return "года";
+  if (n1 === 1) return "года";
+  return "лет";
+};
 
 const pluralizeYears2 = (num) => {
-  num = Math.abs(num) % 100
-  const n1 = num % 10
-  if (num > 10 && num < 20) return "лет"
-  if (n1 > 1 && n1 < 5) return "года"
-  if (n1 === 1) return "год"
-  return "лет"
-}
+  num = Math.abs(num) % 100;
+  const n1 = num % 10;
+  if (num > 10 && num < 20) return "лет";
+  if (n1 > 1 && n1 < 5) return "года";
+  if (n1 === 1) return "год";
+  return "лет";
+};
 
 onMounted(() => {
   getStat();
-   setTimeout(() => {
+  setTimeout(() => {
     if (container.value) {
       gsap.to(container.value, {
         scrollTop: container.value.scrollHeight, // вниз
         duration: 3, // длительность анимации в секундах
-        ease: "power1.inOut" // плавное замедление
-      })
+        ease: "power1.inOut", // плавное замедление
+      });
     }
-  }, 2000)
-})
+  }, 2000);
+});
 onBeforeUnmount(() => {
-  cancelAnimationFrame(animationFrame)
-})
+  cancelAnimationFrame(animationFrame);
+});
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="result-wrapper">
     <aside class="left">
       <div class="left_top">
         <h4>
           Статистически ожидаемая <br />
           продолжительность жизни в <br />
-          вашей когорте — около {{ Math.round(expectedWeeks / 52) }}
-          {{ pluralizeYears(Math.round(expectedWeeks / 52)) }}.
+          вашей когорте — около {{ Math.round(expectedWeeks / 12) }}
+          {{ pluralizeYears(Math.round(expectedWeeks / 12)) }}.
         </h4>
         <div class="aside_description">
-          {{ ['Луганская народная республика', 'Донецкая народная республика', 'Не выбирать'].includes(props.person.region.name) ? 'Оценка основана на средних по стране данных официальной статистики. Это усредненные данные, а не ваш индивидуальный прогноз.' : '*Оценка основана на данных официальной статистики об ожидаемой продолжительности жизни по полу и регионам. Это усредненные данные, а не ваш индивидуальный прогноз.' }}
-          
+          {{
+            [
+              "Луганская народная республика",
+              "Донецкая народная республика",
+              "Не выбирать",
+            ].includes(props.person.region.name)
+              ? "Оценка основана на средних по стране данных официальной статистики. Это усредненные данные, а не ваш индивидуальный прогноз."
+              : "*Оценка основана на данных официальной статистики об ожидаемой продолжительности жизни по полу и регионам. Это усредненные данные, а не ваш индивидуальный прогноз."
+          }}
+        </div>
+        <div class="result_info">
+          <div class="life_info">
+            Ваша жизнь в месяцах: <br />
+            1 квадрат - 1 месяц жизни
+          </div>
+          <ul class="life_numbers">
+            <li class="currentLife life_numbers-point">
+              <span></span>
+              <p>
+                Текущий возраст <br />
+                {{ currentWeeks }} месяцев -
+                <strong>{{ props.person.age }} лет</strong>
+              </p>
+            </li>
+            <li class="expectedLife life_numbers-point">
+              <span></span>
+              <p>
+                Ожидаемая продолжительность жизни <br />
+                {{ expectedWeeks }} месяцев -
+                <strong
+                  >{{ Math.round(expectedWeeks / 12) }}
+                  {{ pluralizeYears2(Math.round(expectedWeeks / 12)) }}</strong
+                >
+              </p>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="left_bottom">
-        <div class="result_info">
-          <div class="life_info">
-            <b>Ваша жизнь в неделях:</b> <br />
-            1 квадрат - 1 неделя жизни
-          </div>
-          <div class="life_numbers">
-            <li class="currentLife">
-              Текущий возраст <br />
-              {{ currentWeeks }} недели - {{ props.person.age }} лет
-            </li>
-            <li class="expectedLife">
-              Ожидаемая продолжительность жизни <br />
-              {{ expectedWeeks }} недель - {{ Math.round(expectedWeeks / 52) }} {{ pluralizeYears2(Math.round(expectedWeeks / 52)) }}
-            </li>
-          </div>
-        </div>
-        <div @click="emit('next')" class="btn">Далее</div>
+        <p class="left_bottom-text">
+          *Это оценка по популяционным данным, а не прогноз для вас персонально.
+        </p>
+        <button @click="emit('next')" class="quiz__btn">Дальше</button>
       </div>
     </aside>
 
-    <div class="container" ref="container">
-      <div class="result">
-        <div class="nickels">
-          <div v-for="(value, index) in nickelCount" :key="index" class="nickel">
-            <div class="rows">
-              <div v-for="r in 5" :key="r" class="row">
-                <div v-for="w in 52" :key="w + r + index" class="week"
-                  :class="getWeekClass((index * 260) + (r - 1) * 52 + (w - 1))"></div>
-              </div>
+    <div class="calendar" ref="container">
+      <div class="tint"></div>
+      <div class="nickels relative">
+        <div v-for="(value, index) in nickelCount" :key="index" class="nickel">
+          <div class="rows">
+            <div v-for="row in 5" :key="row" class="row">
+              <div
+                v-for="month in 12"
+                :key="month + row + index"
+                class="week"
+                :class="getWeekClass(index * 60 + (row - 1) * 12 + (month - 1))"
+              ></div>
             </div>
-            <div class="years">{{ 5 * (index + 1) + ' лет' }}</div>
           </div>
+          <div class="years">{{ 5 * (index + 1) + " лет" }}</div>
         </div>
       </div>
     </div>
@@ -148,44 +187,32 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.container {
-  width: 100%;
+.result-wrapper {
+  display: flex;
+  gap: 250px;
+}
 
-  margin: 0 auto;
-  box-sizing: border-box;
-  height: 100%;
-  overflow: auto;
+.relative {
   position: relative;
+  z-index: 1;
 }
 
 .container::-webkit-scrollbar {
   width: 0;
 }
-.wrapper {
-  background: #fff;
-  padding: 1.75rem;
-  display: flex;
-  gap: 10rem;
-}
-
-.wrapper * {
-  color: #000;
-}
-
-
 
 .left {
   z-index: 2;
-  height: calc(100% - 3.5rem);
+  height: 1156px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 60.43rem;
-  flex-shrink: 0;
+  max-width: 1182px;
+  width: 100%;
 }
 
 .left h3 {
-  color: #0E1117;
+  color: #0e1117;
   font-family: "TT Hoves";
   font-size: 6rem;
   font-weight: 700;
@@ -193,295 +220,163 @@ onBeforeUnmount(() => {
 }
 
 .left h4 {
-  color: #445371;
   font-family: "TT Hoves";
-  font-size: 4rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 120%;
-  /* 2.4rem */
-  letter-spacing: -0.04rem;
+  font-weight: 500;
+  font-size: 80px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 32px;
 }
 
 .aside_description {
-  color: #445371;
   font-family: "TT Hoves";
-  font-size: 2.5rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  letter-spacing: -0.02rem;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+.result_info {
+  margin-top: 64px;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.life_numbers {
+  display: grid;
+  gap: 24px;
+  list-style: none;
+}
+.life_numbers-point {
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
 
+.life_numbers-point span {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+}
+.life_numbers-point p {
+  font-family: "TT Hoves";
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.5);
+}
+.life_numbers-point p strong {
+  color: rgb(255, 255, 255);
+  font-weight: 700;
+}
+.currentLife span {
+  background: #14599b;
+  border: 1.4325px solid #14599b;
+}
+.expectedLife span {
+  background: #9d9d9d;
+  border: 1.4325px solid #9d9d9d;
+}
 .life_info {
-  color: #000;
   font-family: "TT Hoves";
-  font-size: 3rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.02rem;
+  font-size: 32px;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
-.left .etap {
-  font-size: 3.25rem;
+.left_bottom-text {
+  font-family: "TT Hoves";
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 57px;
+  max-width: 436px;
+}
+
+.quiz__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  width: 671px;
+  height: 134px;
+  border-radius: 1.5rem;
+  font-family: "TT Hoves";
   font-weight: 500;
+  font-size: 2.5rem;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  background-color: #ffffff;
+  color: #00040b;
+}
+.calendar {
+  padding: 40px;
+  width: 1511px;
+  height: 1156px;
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
+  backdrop-filter: blur(10px);
+  border-radius: 38px;
 }
 
-.step1 {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  text-align: center;
-  align-items: center;
-}
-
-.step1 h1 {
-  color: #0E1117;
-  font-size: 5.5425rem;
-  font-weight: 700;
-  letter-spacing: -0.11088rem;
-}
-
-.description {
-  color: #000;
-  font-size: 3.5rem;
-  font-weight: 700;
-  opacity: 0.5;
-  max-width: 39.9875rem;
-}
-
-.qr-code {
-  margin-top: 1rem;
-  border-radius: 1.25rem;
-  background: #000;
-  width: 17.6875rem;
-  height: 17.6875rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.qr-code img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
-  border-radius: 1.25rem;
-}
-
-.step {
-  height: 100%;
-  width: 100%;
-  max-width: 58.0625rem;
-  border-radius: 1.875rem;
-  background: rgba(0, 0, 0, 0.03);
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.quiz {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.question {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.label {
-  color: #445371;
-  font-family: "TT Hoves";
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.03rem;
-}
-
-.label:has(small) {
-  line-height: 100%;
-}
-
-.label small {
-  color: #445371;
-  font-family: "TT Hoves";
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.02rem;
-  opacity: 0.5;
-}
-
-.answers {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.answersColumn {
-  flex-direction: column;
-  width: 15.1875rem;
-}
-
-.answersColumn .answer {
-  width: 100%;
-}
-
-.answer {
-  display: flex;
-  height: var(--button-xl-height, 3.5rem);
-  padding: 0 var(--button-xl-padding-right, 1.25rem) 0 var(--button-xl-padding-left, 1.25rem);
-  justify-content: center;
-  align-items: center;
-  gap: var(--button-xl-spacing, 0.25rem);
-  border-radius: var(--button-xl-border-radius, 0.375rem);
-
-  background: var(--button-secondary-neutral-bg-color-default, rgba(68, 83, 113, 0.10));
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.00) inset;
-  text-align: center;
-  font-variant-numeric: lining-nums tabular-nums stacked-fractions;
-  font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "TT Hoves";
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1.5rem;
-  color: #445371;
-}
-
-.answer:has(input:checked) {
-  border-radius: var(--button-xl-border-radius, 0.375rem);
-
-  background: var(--button-primary-neutral-bg-color-default, #445371);
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.00) inset;
-  color: var(--button-primary-neutral-label-color-default, #FFF);
-
-  /* 150% */
-}
-
-.answer input {
-  display: none;
-}
-
-.input_quiz {
-  border-radius: var(--input-l-border-radius, 0.375rem);
-  border: 2px solid var(--input-primary-border-color-default, rgba(68, 83, 113, 0.15));
-  background: var(--input-primary-bg-color-default, #FFF);
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.00) inset;
-  color: var(--input-primary-label-color-default, #445371);
-  font-variant-numeric: lining-nums tabular-nums stacked-fractions;
-  font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "TT Hoves";
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.5rem;
-  padding: 0.75rem;
-  width: 17.5rem;
-}
-
-.input_wrap {
-  position: relative;
-  width: 17.5rem;
-}
-
-.custom_list {
+.calendar::before {
+  content: "";
   position: absolute;
-  top: 100%;
-  left: 0;
-  padding: 0.5rem;
-  border-radius: var(--dropdownmenu-m-border-radius, 0.375rem);
-  border: 0.001px solid var(--dropdownmenu-primary-border-color, rgba(255, 255, 255, 0.00));
-  background: var(--dropdownmenu-primary-bg-color, #FFF);
-  box-shadow: 0 0 32px 0 rgba(68, 83, 113, 0.10), 0 32px 32px 0 rgba(68, 83, 113, 0.05);
-  width: 17.5rem;
-  height: 13rem;
-  overflow-y: scroll;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(169deg, #646464 0%, #4c4c4c 86%, #7c7c7c  100%);
+  border-radius: 38px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.tint {
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.region {
-  padding: 0.5rem;
-  color: var(--dropdownmenu-primary-itemvalue-color-default, #0E1117);
-  font-family: "TT Hoves";
-  font-size: 0.875rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.25rem;
-  /* 142.857% */
-  cursor: pointer;
-}
-
-.region.active {
-  background: var(--dropdownmenu-primary-itemvalue-bg-color-default, rgba(68, 83, 113, 0.05));
-  border-radius: var(--dropdownmenu-m-border-radius, 0.375rem);
-}
-
-.btn {
-  display: flex;
-  min-width: 3.5rem;
-  justify-content: center;
-  align-items: center;
-  align-self: stretch;
-  border-radius: 0.375rem;
-  border: 2px solid rgba(255, 255, 255, 0.00);
-  background: #05F;
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.00) inset;
-  color: #FFF;
-  text-align: center;
-  font-family: "TT Hoves";
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1.5rem;
-  /* 150% */
-  padding: 1rem 1.5rem;
-}
-
-.result {
-  width: 100%;
+  position: absolute;
+  inset: 0;
+  border-radius: 3rem;
+  backdrop-filter: blur(10px);
+    background: linear-gradient(92deg, rgb(20 20 20) 3.83%, rgb(20 20 20 / 10%) 99.95%);
 }
 
 .nickels {
-  display: flex;
-  flex-direction: column;
-  gap: 2.29rem;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
   width: 100%;
 }
 
 .nickel {
   display: flex;
-  align-items: flex-end;
-  gap: 3.08rem;
+  flex-direction: column;
+  gap: 11px;
+  max-width: 340px;
+  width: 100%;
 }
 
 .rows {
-  display: flex;
-  flex-direction: column;
-  gap: 0.56rem;
-  row-gap: 1rem;
+  display: grid;
+  gap: 11px;
 }
 
 .row {
-  display: flex;
-  flex-direction: row;
-  gap: 0.56rem;
-
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 5px;
 }
 
 .week {
@@ -489,33 +384,36 @@ onBeforeUnmount(() => {
   height: 2.0345rem;
   flex-shrink: 0;
   border: 0.471px solid #000;
-  background: #FFF;
+  background: #fff;
+}
+
+.week {
+  width: 22px;
+  height: 22px;
 }
 
 .week.active {
-  background: #4cc9f0;
+  background: #14599b;
   /* голубой */
 }
 
 .week.future {
-  background: #ccc;
+  background: #9d9d9d;
   /* серый */
 }
 
 .week.extra {
-  background: #f2f2f2;
+  background: #24272c;
   /* бледный */
 }
 
 .years {
-  color: #000;
   font-family: "TT Hoves";
-  font-size: 1.774rem;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.0355rem;
-  white-space: nowrap;
+  font-size: 24px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #e2e3e5;
 }
 
 .wrapper .btn {
