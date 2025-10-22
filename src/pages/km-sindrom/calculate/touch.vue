@@ -5,7 +5,6 @@ const video = "/bg2.mp4";
 </script>
 <template>
   <div class="wrapper-content">
-    <video class="bg" :src="video" autoplay muted loop playsinline></video>
     <router-view></router-view>
   </div>
 </template>
@@ -21,7 +20,8 @@ const video = "/bg2.mp4";
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #000;
+background: linear-gradient(23.51deg, #000000 -4.02%, #030E22 117.07%, #000000 171.71%);
+
 }
 
 .bg {
