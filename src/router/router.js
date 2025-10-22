@@ -151,12 +151,12 @@ const routes = [
     children: [
       {
         name: "touch-qr",
-        path: "/touch-qr",
+        path: "touch-qr",
         component: () => import("@/pages/km-sindrom/calculate/touch-qr.vue"),
       },
       {
         name: "touch-calc",
-        path: "/touch-calc",
+        path: "touch-calc",
         component: () => import("@/pages/km-sindrom/calculate/touch-calc.vue"),
       },
     ],
