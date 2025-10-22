@@ -19,7 +19,8 @@ const route = useRoute()
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #020914;
+  background: linear-gradient(23.51deg, #000000 -4.02%, #030E22 117.07%, #000000 171.71%);
+
 }
 
 .bg {

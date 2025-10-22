@@ -241,7 +241,7 @@ onMounted(() => {
         <span class="to-back__text">Назад</span>
       </div>
       <p
-        class="content__subtitle animBtn"
+        class="content__subtitle"
         v-if="subtitle"
         v-html="subtitle"
       ></p>
@@ -391,12 +391,14 @@ onMounted(() => {
 .content__subtitle {
   font-family: "TT Hoves";
   font-weight: 400;
+
   font-size: 38px;
   line-height: 110%;
   text-align: center;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: #808389;
+
 }
 
 .to-back {

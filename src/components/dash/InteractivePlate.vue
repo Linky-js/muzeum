@@ -85,7 +85,7 @@ async function saveAsImage() {
 </script>
 <template>
   <div class="plate-wrapper" ref="plateArea">
-    <img src="/products/tarelka.jpg" class="layer plate-base" />
+    <div class="image"><img src="/dash/stol/fon.png" class="layer plate-base" /></div>
 
     <div class="mask-layer">
       <div
@@ -118,23 +118,19 @@ async function saveAsImage() {
 <style>
 .plate-wrapper {
   position: relative;
-  width: 1280px;
-  height: 720px;
+  width: 3840px;
+  height: 2160px;
   margin: 40px auto;
+  background: #C4BDAD;
+}
+.image {
+  height: 1541px;
+}
+.image img{
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Общие слои */
-.layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
-/* Фон */
-.plate-base {
-  z-index: 1;
-}
 
 /* Маска, применяем только к продуктам */
 .mask-layer {
