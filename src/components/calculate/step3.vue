@@ -201,7 +201,7 @@ const props = defineProps({
   padding: 32px 0 64px;
   width: 100%;
   max-width: 1422px;
-  margin-bottom: 175px;
+  margin-bottom: 230px;
 }
 .question {
   display: flex;
@@ -377,6 +377,7 @@ const props = defineProps({
   color: #ffffff;
 }
 .quiz__btn {
+  margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;

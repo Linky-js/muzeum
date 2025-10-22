@@ -90,9 +90,7 @@ const breadcrumbsList = ref([
         </div>
       </div>
     </div>
-    <div class="footer relative">
       <MenuNavigation class="footer__btn" />
-    </div>
   </div>
   <svg style="display: none">
     <filter
@@ -264,10 +262,10 @@ const breadcrumbsList = ref([
   display: grid;
   gap: 2rem;
 }
-.footer {
-  margin-top: auto;
-}
 .footer__btn {
-  margin-left: auto;
+  margin-top: auto;
+  position: fixed;
+  bottom: 10rem;
+  right: 31.875rem;
 }
 </style>

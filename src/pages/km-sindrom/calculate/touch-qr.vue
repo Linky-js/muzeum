@@ -69,9 +69,8 @@ onMounted(() => {
       <button @click="goNext" class="content__btn">Дальше</button>
     </div>
   </div>
-  <div class="footer relative">
+
     <MenuNavigation class="footer__btn" />
-  </div>
   <svg style="display: none">
     <filter
       id="glass-distortion"
@@ -154,6 +153,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
 }
 
 .content__top {
@@ -178,7 +178,7 @@ onMounted(() => {
   text-align: center;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #808389;
   text-align: center;
 }
 
@@ -188,7 +188,8 @@ onMounted(() => {
   align-items: center;
   max-width: 86.625rem;
   width: 100%;
-  gap: 19.5rem;
+  gap: 26.5rem;
+  height: 100%;
 }
 
 .content__qr {
@@ -253,14 +254,12 @@ onMounted(() => {
   color: #00040b;
 }
 
-.footer {
-  margin-top: auto;
-}
-
 .footer__btn {
-  margin-left: auto;
+  margin-top: auto;
+  position: fixed;
+  bottom: 10rem;
+  right: 31.875rem;
 }
-
 .effect {
   position: absolute;
   z-index: 0;

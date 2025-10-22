@@ -117,9 +117,7 @@ function touchSendVideo(chapter) {
         </div>
       </div>
     </div>
-    <div class="footer relative">
       <MenuNavigation class="footer__btn" />
-    </div>
   
   <svg style="display: none">
     <filter
@@ -310,11 +308,10 @@ function touchSendVideo(chapter) {
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
 }
-.footer {
+.footer__btn {
   margin-top: auto;
-}
-
-.footer__btn{
-  margin-left: auto;
+  position: fixed;
+  bottom: 10rem;
+  right: 31.875rem;
 }
 </style>

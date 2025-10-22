@@ -4,6 +4,8 @@ const emit = defineEmits(["next"]);
 
 const props = defineProps({
   person: Object,
+  step: Number,
+  goNextStep: Function,
 });
 
 const person2 = ref({
@@ -177,7 +179,7 @@ const percent = computed(() => {
           </tr>
         </tbody>
       </table>
-      <button @click="emit('next')" class="quiz__btn">Расчитать</button>
+      <button @click="goNextStep(7)" class="quiz__btn">Расчитать</button>
     </div>
   </div>
 </template>
@@ -189,6 +191,9 @@ const percent = computed(() => {
 }
 .diabet-wrapper {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .diabet__head {
   font-family: "TT Hoves";
@@ -209,9 +214,11 @@ const percent = computed(() => {
   justify-content: space-between;
   align-items: center;
   gap: 233px;
+  height: 100%;
 }
 
 .quiz__btn {
+  margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -276,7 +283,6 @@ const percent = computed(() => {
   padding: 25px 20px;
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
-
 
 /* При наведении подсветка */
 .table__row:hover {
