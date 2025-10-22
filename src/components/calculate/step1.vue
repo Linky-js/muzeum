@@ -411,6 +411,7 @@ const regionsHints = computed(() => {
 }
 
 .quiz__btn {
+  margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;

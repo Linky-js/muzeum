@@ -191,6 +191,9 @@ const percent = computed(() => {
 }
 .diabet-wrapper {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .diabet__head {
   font-family: "TT Hoves";
@@ -211,9 +214,11 @@ const percent = computed(() => {
   justify-content: space-between;
   align-items: center;
   gap: 233px;
+  height: 100%;
 }
 
 .quiz__btn {
+  margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;

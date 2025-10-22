@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import Breadcrums from "@/components/touchScreenComponents/Breadcrums.vue";
@@ -49,14 +49,13 @@ const person = ref({
   diabetFamily: "",
 });
 const goNextStep = (st) => {
-  
   if (st == 2) {
     if (person.value.age == "" || person.value.gender == "") {
       toast.error("Заполните поля Возраст и Пол");
       console.log(13);
     } else {
       step.value = st;
-      changeTitles(step.value)
+      changeTitles(step.value);
     }
   } else if (st == 3) {
     if (
@@ -69,7 +68,7 @@ const goNextStep = (st) => {
       toast.error("Заполните поля Рост, Вес, Окружность талии");
     } else {
       step.value = st;
-      changeTitles(step.value)
+      changeTitles(step.value);
     }
   } else if (st == 4) {
     if (
@@ -82,22 +81,22 @@ const goNextStep = (st) => {
       toast.error("Заполните поля Артерия, Сахар");
     } else {
       step.value = st;
-      changeTitles(step.value)
+      changeTitles(step.value);
       console.log(person.value);
     }
   } else {
     step.value = st;
-    changeTitles(step.value)
+    changeTitles(step.value);
   }
 };
 const checkStep = () => {
   console.log(person.value.diabet);
   if (person.value.diabet == "Нет") {
     step.value = 5;
-    changeTitles(step.value)
+    changeTitles(step.value);
   } else {
     step.value = 6;
-    changeTitles(step.value)
+    changeTitles(step.value);
   }
 };
 const changeTitles = (step) => {
@@ -108,6 +107,10 @@ const changeTitles = (step) => {
       break;
     case 6:
       title.value = "Вывод";
+      subtitle.value = "";
+      break;
+    case 7:
+      title.value = "Практические советы для<br /> долгой и здоровой жизни";
       subtitle.value = "";
       break;
     case 5:
@@ -123,6 +126,86 @@ const changeTitles = (step) => {
       break;
   }
 };
+
+watch(step, (newStep) => {
+  if (newStep === 4) {
+    breadcrumbsList.value = [
+      {
+        id: 0,
+        title: "Главная",
+        link: "/",
+      },
+      {
+        id: 1,
+        title: "Км Синдром",
+        link: "/",
+      },
+      {
+        id: 2,
+        title: "Калькулятор",
+        link: "/",
+      },
+      {
+        id: 3,
+        title: "Календарь дней",
+        link: "/",
+      },
+    ];
+  }
+  if (newStep === 6 || newStep === 5) {
+    breadcrumbsList.value = [
+      {
+        id: 0,
+        title: "Главная",
+        link: "/",
+      },
+      {
+        id: 1,
+        title: "Км Синдром",
+        link: "/",
+      },
+      {
+        id: 2,
+        title: "Калькулятор",
+        link: "/",
+      },
+      {
+        id: 3,
+        title: "Вывод",
+        link: "/",
+      },
+    ];
+  }
+  if (newStep === 7) {
+    breadcrumbsList.value = [
+      {
+        id: 0,
+        title: "Главная",
+        link: "/",
+      },
+      {
+        id: 1,
+        title: "Км Синдром",
+        link: "/",
+      },
+      {
+        id: 2,
+        title: "Калькулятор",
+        link: "/",
+      },
+      {
+        id: 3,
+        title: "Вывод",
+        link: "/",
+      },
+      {
+        id: 4,
+        title: "Рекомендации",
+        link: "/",
+      },
+    ];
+  }
+});
 
 onMounted(() => {
   changeTitles(step.value);
@@ -163,7 +246,10 @@ onMounted(() => {
         v-html="subtitle"
       ></p>
     </div>
-    <div class="content__inner" :class="{'full-width': step === 4 || step === 5}">
+    <div
+      class="content__inner"
+      :class="{ 'full-width': step === 4 || step === 5 }"
+    >
       <Step1
         v-if="step === 1"
         class="step1"
@@ -185,15 +271,28 @@ onMounted(() => {
         :step="step"
         :goNextStep="goNextStep"
       />
-      <result class="step4" v-if="step === 4" :person="person" @next="checkStep" />
-      <resultWin6 v-if="step === 5" :person="person" :step="step"
-        :goNextStep="goNextStep" />
-      <resultWin5 v-if="step === 6" :person="person" :step="step"
-        :goNextStep="goNextStep"  />
+      <result
+        class="step4"
+        v-if="step === 4"
+        :person="person"
+        @next="checkStep"
+      />
+      <resultWin6
+        v-if="step === 5"
+        :person="person"
+        :step="step"
+        :goNextStep="goNextStep"
+      />
+      <resultWin5
+        v-if="step === 6"
+        :person="person"
+        :step="step"
+        :goNextStep="goNextStep"
+      />
       <result-final v-if="step === 7" :person="person" />
     </div>
   </div>
-    <MenuNavigation v-if="step !== 4" class="footer__btn" />
+  <MenuNavigation v-if="step !== 4 && step !== 7" class="footer__btn" />
   <svg style="display: none">
     <filter
       id="glass-distortion"
@@ -331,7 +430,7 @@ onMounted(() => {
   height: 100%;
 }
 
-.full-width{
+.full-width {
   max-width: 100%;
 }
 
@@ -339,12 +438,13 @@ onMounted(() => {
 .step2,
 .step1 {
   margin-top: 6.25rem;
+  height: 100%;
 }
-.step4{
+.step4 {
   width: 100%;
   margin-top: 375px;
+  height: 100%;
 }
-
 
 .footer__btn {
   margin-top: auto;

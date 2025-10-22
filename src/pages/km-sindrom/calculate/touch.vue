@@ -19,7 +19,7 @@ const route = useRoute()
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #000;
+  background-color: #020914;
 }
 
 .bg {

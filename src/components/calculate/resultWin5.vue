@@ -113,7 +113,7 @@ import IconHeart from "../icons/IconHeart.vue";
         <p class="__item--text">{{ vesselsData.text }}</p>
       </div>
     </div>
-    <button @click="goNextStep(7)" class="quiz__btn">Далее</button>
+    <button @click="goNextStep(7)" class="quiz__btn">Рассчитать</button>
   </div>
 </template>
 
