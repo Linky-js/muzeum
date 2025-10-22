@@ -25,7 +25,7 @@ const breadcrumbsList = ref([
 ]);
 </script>
 <template>
-  <div class="wrapper-content">
+
     <div class="header">
       <Breadcrums :list="breadcrumbsList" />
       <div class="header__logo">
@@ -148,7 +148,7 @@ const breadcrumbsList = ref([
         ></feDisplacementMap>
       </filter>
     </svg>
-  </div>
+
 </template>
 <style scoped>
 .wrapper-content {
