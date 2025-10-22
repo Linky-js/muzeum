@@ -291,7 +291,7 @@ onMounted(() => {
 .content__subtitle {
   font-family: "TT Hoves";
   font-weight: 400;
-  font-size: 64px;
+  font-size: 38px;
   line-height: 110%;
   text-align: center;
   letter-spacing: -0.02em;
