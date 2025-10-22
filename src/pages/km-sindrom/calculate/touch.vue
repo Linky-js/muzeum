@@ -1,11 +1,9 @@
 <script setup>
 import { useRoute } from 'vue-router'
 const route = useRoute()
-const video = "/bg2.mp4";
 </script>
 <template>
   <div class="wrapper-content">
-    <video class="bg" :src="video" autoplay muted loop playsinline></video>
     <router-view></router-view>
   </div>
 </template>

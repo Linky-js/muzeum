@@ -4,6 +4,8 @@ const emit = defineEmits(["next"]);
 
 const props = defineProps({
   person: Object,
+  step: Number,
+  goNextStep: Function,
 });
 
 const person2 = ref({
@@ -177,7 +179,7 @@ const percent = computed(() => {
           </tr>
         </tbody>
       </table>
-      <button @click="emit('next')" class="quiz__btn">Расчитать</button>
+      <button @click="goNextStep(7)" class="quiz__btn">Расчитать</button>
     </div>
   </div>
 </template>
@@ -276,7 +278,6 @@ const percent = computed(() => {
   padding: 25px 20px;
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
-
 
 /* При наведении подсветка */
 .table__row:hover {

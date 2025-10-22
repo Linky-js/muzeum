@@ -49,7 +49,7 @@ const person = ref({
   diabetFamily: "",
 });
 const goNextStep = (st) => {
-  console.log(st);
+  
   if (st == 2) {
     if (person.value.age == "" || person.value.gender == "") {
       toast.error("Заполните поля Возраст и Пол");
@@ -183,9 +183,11 @@ onMounted(() => {
         :step="step"
         :goNextStep="goNextStep"
       />
-      <result class="step4" v-if="step === 4" :person="person" @next="checkStep(5)" />
-      <resultWin6 v-if="step === 5" :person="person" @next="step = 6" />
-      <resultWin5 v-if="step === 6" :person="person" @next="step = 7" />
+      <result class="step4" v-if="step === 4" :person="person" @next="checkStep" />
+      <resultWin6 v-if="step === 5" :person="person" :step="step"
+        :goNextStep="goNextStep" />
+      <resultWin5 v-if="step === 6" :person="person" :step="step"
+        :goNextStep="goNextStep"  />
       <result-final v-if="step === 7" :person="person" />
     </div>
   </div>

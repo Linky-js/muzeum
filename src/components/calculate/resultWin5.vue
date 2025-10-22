@@ -2,7 +2,9 @@
 import { defineProps, computed, defineEmits } from "vue";
 const emit = defineEmits(['next'])
 const props = defineProps({
-  person: Object
+  person: Object,
+    step: Number,
+  goNextStep: Function,
 })
 
 // --- Дислипидемия ---
@@ -90,7 +92,7 @@ const vessels = computed(() => {
           <p v-html="vessels"></p>
         </div>
       </div>
-      <div @click="emit('next')" class="btn">Далее</div>
+      <div @click="goNextStep(7)" class="btn">Далее</div>
     </div>
   </div>
 </template>
