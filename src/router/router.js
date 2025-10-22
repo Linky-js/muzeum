@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory, RouterView } from 'vue-router';
-import gsap from 'gsap'
+import { createRouter, createWebHistory, RouterView } from "vue-router";
+import gsap from "gsap";
 
 const routes = [
   {
@@ -28,7 +28,7 @@ const routes = [
         path: "screen-2",
         component: () => import("@/pages/touch1/touch-screen-2.vue"),
       },
-    ]
+    ],
   },
   {
     name: "monitor1-home",
@@ -46,7 +46,7 @@ const routes = [
         path: "screen-3",
         component: () => import("@/pages/monitor1/monitor-screen-3.vue"),
       },
-    ]
+    ],
   },
   {
     name: "touch2-home",
@@ -65,12 +65,12 @@ const routes = [
         path: "screen-astrazeneca",
         component: () => import("@/pages/touch2/touch-screen-astrazeneca.vue"),
       },
-    ]
+    ],
   },
   {
-    name: 'touch2-screen-regions',
-    path: '/touch-screen-regions',
-    component: () => import('@/pages/touch2/touchmaptwo.vue'),
+    name: "touch2-screen-regions",
+    path: "/touch-screen-regions",
+    component: () => import("@/pages/touch2/touchmaptwo.vue"),
   },
   {
     name: "monitor2-home",
@@ -89,16 +89,13 @@ const routes = [
         path: "screen-3",
         component: () => import("@/pages/monitor1/monitor-screen-3.vue"),
       },
-    ]
+    ],
   },
   {
-    name: 'monitor2-screen-regions',
-    path: '/monitor-screen-regions',
-    component: () => import('@/pages/monitor2/mapTwo.vue'),
+    name: "monitor2-screen-regions",
+    path: "/monitor-screen-regions",
+    component: () => import("@/pages/monitor2/mapTwo.vue"),
   },
-
-
-
 
   {
     name: "data-science",
@@ -151,6 +148,18 @@ const routes = [
     name: "touch-calculate",
     path: "/touch-calculate",
     component: () => import("@/pages/km-sindrom/calculate/touch.vue"),
+    children: [
+      {
+        name: "touch-qr",
+        path: "/touch-qr",
+        component: () => import("@/pages/km-sindrom/calculate/touch-qr.vue"),
+      },
+      {
+        name: "touch-calc",
+        path: "/touch-calc",
+        component: () => import("@/pages/km-sindrom/calculate/touch-calc.vue"),
+      },
+    ],
   },
   {
     name: "monitor-calculate",
@@ -165,32 +174,31 @@ const routes = [
     component: () => import("@/pages/mapRussia.vue"),
   },
 
-
   {
-    name: 'dashPageTest',
-    path: '/dashPageTest',
-    component: () => import('@/pages/dashPageTest.vue'),
-  }
+    name: "dashPageTest",
+    path: "/dashPageTest",
+    component: () => import("@/pages/dashPageTest.vue"),
+  },
 ];
 
 const router = createRouter({
-  mode: 'history',
+  mode: "history",
   routes,
   history: createWebHistory(),
   scrollBehavior() {
-    document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById("app").scrollIntoView({ behavior: "smooth" });
   },
 });
 router.beforeEach((to, from, next) => {
   if (!from.name) {
-    return next()
+    return next();
   }
 
-  const elements = document.querySelectorAll('.animBtn')
-  const elementsLeft = document.querySelectorAll('.animBtnLeft')
-  const elementsRight = document.querySelectorAll('.animBtnRight')
-  const elementsBottom = document.querySelectorAll('.animBtnBottom')
-  const videos = document.querySelectorAll('.animVideo')
+  const elements = document.querySelectorAll(".animBtn");
+  const elementsLeft = document.querySelectorAll(".animBtnLeft");
+  const elementsRight = document.querySelectorAll(".animBtnRight");
+  const elementsBottom = document.querySelectorAll(".animBtnBottom");
+  const videos = document.querySelectorAll(".animVideo");
 
   if (
     elements.length === 0 &&
@@ -199,37 +207,59 @@ router.beforeEach((to, from, next) => {
     elementsBottom.length === 0 &&
     videos.length === 0
   ) {
-    return next()
+    return next();
   }
 
-  let animationsDone = 0
-  const totalAnimations = 4 + (videos.length ? 1 : 0) // 4 группы + видео
+  let animationsDone = 0;
+  const totalAnimations = 4 + (videos.length ? 1 : 0); // 4 группы + видео
 
   const checkComplete = () => {
-    animationsDone++
+    animationsDone++;
     if (animationsDone >= totalAnimations) {
-      next()
+      next();
     }
-  }
+  };
 
-  gsap.to(elements, { opacity: 0, scale: 1, duration: 0.5, onComplete: checkComplete })
-  gsap.to(elementsLeft, { opacity: 0, x: '-100%', duration: 0.5, onComplete: checkComplete })
-  gsap.to(elementsRight, { opacity: 0, x: '100%', duration: 0.5, onComplete: checkComplete })
-  gsap.to(elementsBottom, { opacity: 0, y: '50%', duration: 0.5, onComplete: checkComplete })
+  gsap.to(elements, {
+    opacity: 0,
+    scale: 1,
+    duration: 0.5,
+    onComplete: checkComplete,
+  });
+  gsap.to(elementsLeft, {
+    opacity: 0,
+    x: "-100%",
+    duration: 0.5,
+    onComplete: checkComplete,
+  });
+  gsap.to(elementsRight, {
+    opacity: 0,
+    x: "100%",
+    duration: 0.5,
+    onComplete: checkComplete,
+  });
+  gsap.to(elementsBottom, {
+    opacity: 0,
+    y: "50%",
+    duration: 0.5,
+    onComplete: checkComplete,
+  });
 
   // затемнение видео
   gsap.to(videos, {
     opacity: 0,
-    filter: 'brightness(0%)',
+    filter: "brightness(0%)",
     duration: 0.6,
     onComplete: checkComplete,
-  })
-})
+  });
+});
 
 router.afterEach(() => {
   requestAnimationFrame(() => {
-    const elements = document.querySelectorAll('.animBtn, .animBtnLeft, .animBtnRight, .animBtnBottom')
-    const videos = document.querySelectorAll('.animVideo')
+    const elements = document.querySelectorAll(
+      ".animBtn, .animBtnLeft, .animBtnRight, .animBtnBottom"
+    );
+    const videos = document.querySelectorAll(".animVideo");
 
     gsap.to(elements, {
       opacity: 1,
@@ -240,16 +270,18 @@ router.afterEach(() => {
       stagger: 0.1,
       force3D: true,
       onUpdate: () => {
-        elements.forEach(el => el.classList.add('glass-active'))
-      }
-    })
+        elements.forEach((el) => el.classList.add("glass-active"));
+      },
+    });
 
     // плавное проявление нового видео
-    gsap.to(
-      videos,
-      { opacity: 1, filter: 'brightness(100%)', duration: 0.5, ease: 'power2.out' }
-    )
-  })
-})
+    gsap.to(videos, {
+      opacity: 1,
+      filter: "brightness(100%)",
+      duration: 0.5,
+      ease: "power2.out",
+    });
+  });
+});
 
 export default router;

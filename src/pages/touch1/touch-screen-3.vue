@@ -97,7 +97,7 @@ function touchSendVideo(chapter) {
             class="animBtnBottom"
           />
           <GlassBtn
-            link="kms"
+            link="touch-qr"
             supname="Интерактив"
             name="Калькулятор рисков"
             type-btn="toInfo"
