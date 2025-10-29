@@ -220,7 +220,7 @@ const regionsHints = computed(() => {
         </div>
       </div>
     </div>
-    <button @click="goNextStep(step + 1)" :disabled="person.age == '' || person.gender == '' || !person.region.id" class="quiz__btn">Дальше</button>
+    <button @click="goNextStep(step + 1)" :disabled="person.age == '' || person.gender == '' || !person.region.name" class="quiz__btn">Дальше</button>
   </div>
 </template>
 
