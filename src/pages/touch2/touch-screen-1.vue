@@ -55,7 +55,7 @@ const breadcrumbsList = ref([
             class="animBtnBottom"
           />
         <GlassBtn
-            link="kms"
+            link="touch2-astrazeneca"
             supname="Интерактив"
             name="Карта AstraZeneca"
             type-btn="toInfo"

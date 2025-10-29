@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue';
-import MapScene2 from '@/components/MapScene2.vue';
+import MapScene2 from '@/components/maps/MapScene2.vue';
 import RegionModal from '@/components/ui/RegionModal.vue';
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMonitorSync } from '@/composables/syncRouterSimple.js'

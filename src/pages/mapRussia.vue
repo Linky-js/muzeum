@@ -12,7 +12,7 @@ const patientsData = ref([]);
 
 // грузим JSON с пациентами
 async function loadPatients() {
-  const res = await fetch("/12.json");
+  const res = await fetch("/datas/12.json");
   patientsData.value = await res.json();
 }
 
