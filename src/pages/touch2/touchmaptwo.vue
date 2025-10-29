@@ -1,7 +1,7 @@
 <script setup>
 import Breadcrums from "@/components/touchScreenComponents/Breadcrums.vue";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
-import MapScene from '@/components/MapScene.vue';
+import MapScene from '@/components/maps/MapScene.vue';
 import { ref, computed, onMounted, nextTick } from 'vue';
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMasterSync } from '@/composables/syncRouterSimple.js'

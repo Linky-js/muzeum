@@ -60,11 +60,7 @@ const routes = [
         component: () => import("@/pages/touch2/touch-screen-1.vue"),
       },
 
-      {
-        name: "touch2-astrazeneca",
-        path: "screen-astrazeneca",
-        component: () => import("@/pages/touch2/touch-screen-astrazeneca.vue"),
-      },
+      
     ],
   },
   {
@@ -72,6 +68,11 @@ const routes = [
     path: "/touch-screen-regions",
     component: () => import("@/pages/touch2/touchmaptwo.vue"),
   },
+  {
+        name: "touch2-astrazeneca",
+        path: "/touch-screen-astrazeneca",
+        component: () => import("@/pages/touch2/touchMapAstra.vue"),
+      },
   {
     name: "monitor2-home",
     path: "/monitor2",

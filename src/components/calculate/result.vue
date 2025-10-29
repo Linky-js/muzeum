@@ -20,7 +20,7 @@ const speed = 0.3;
 // Загружаем статистику
 const getStat = async () => {
   try {
-    const res = await fetch("/data.json");
+    const res = await fetch("/datas/data.json");
     if (!res.ok) throw new Error("Ошибка HTTP " + res.status);
     const data = await res.json();
     stats.value = data;

@@ -1,15 +1,29 @@
 <script setup>
+import router from "@/router/router";
 import { defineProps }   from "vue";
 
 const props = defineProps({
   link: {
     type: String,
     required: false,
+  },
+  dontlink: {
+    type: Boolean,
+    default: false
   }
 })
+const goBack = () => {
+  if (!props.dontlink) {
+    if (props.link) {
+      router.push(link) 
+    } else {
+      router.back().back()
+    }
+  }
+}
 </script>
 <template>
-  <button class="menu-btn" @click="link ? $router.push(link) : $router.back().back()" ref="buttonRef">
+  <button class="menu-btn" @click="goBack" ref="buttonRef">
     <div class="tint" v-if="!isOpenMenu"></div>
     <span class="menu-btn__inner">
       <svg xmlns="http://www.w3.org/2000/svg" width="25" height="38" viewBox="0 0 25 38" fill="none">
