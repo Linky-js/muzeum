@@ -60,7 +60,7 @@ const routes = [
         component: () => import("@/pages/touch2/touch-screen-1.vue"),
       },
 
-      
+
     ],
   },
   {
@@ -69,10 +69,10 @@ const routes = [
     component: () => import("@/pages/touch2/touchmaptwo.vue"),
   },
   {
-        name: "touch2-astrazeneca",
-        path: "/touch-screen-astrazeneca",
-        component: () => import("@/pages/touch2/touchMapAstra.vue"),
-      },
+    name: "touch2-astrazeneca",
+    path: "/touch-screen-astrazeneca",
+    component: () => import("@/pages/touch2/touchMapAstra.vue"),
+  },
   {
     name: "monitor2-home",
     path: "/monitor2",
@@ -97,7 +97,11 @@ const routes = [
     path: "/monitor-screen-regions",
     component: () => import("@/pages/monitor2/mapTwo.vue"),
   },
-
+  {
+    name: "monitor2-astrazeneca",
+    path: "/monitor-astrazeneca",
+    component: () => import("@/pages/monitor2/mapAstra.vue"),
+  },
   {
     name: "data-science",
     path: "/touch-screen-2",

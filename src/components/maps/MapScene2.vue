@@ -66,7 +66,7 @@ function focusRegion(regionName) {
   const centerY = bbox.y + bbox.height / 2;
   let defaultParams = `${centerX - 600} ${centerY - 800} 1600 1600`
   console.log(regionName);
-  if (regionName === 'Республика Карелия' || regionName === 'Архангельская область') defaultParams = `${centerX - 900} ${centerY - 1200} 2400 2400`
+  if (regionName === 'Республика Карелия' || regionName === 'Архангельская область' || regionName === 'Республика Коми') defaultParams = `${centerX - 1050} ${centerY - 1400} 2800 2800`
   
   gsap.to(svgDoc.value.documentElement, {
     duration: 2.5,

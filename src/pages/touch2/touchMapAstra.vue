@@ -35,13 +35,18 @@ const dataAll = ref([]) // сырые данные
 const tree = ref([]) // иерархическая структура
 const currentLevel = ref('okrug') // текущий уровень (okrug / oblast / gorod / lpu)
 const currentList = ref([]) // список элементов на экране
+const currentRegion = ref(null)
 const stack = ref([]) // история для кнопки "Назад"
 const searchQuery = ref('')
 
 // --- поиск по всем 
 const flattenAll = computed(() => {
   const out = []
+
+
   tree.value.forEach((okrug) => {
+
+
     // Округ
     out.push({
       name: okrug.name,
@@ -51,7 +56,8 @@ const flattenAll = computed(() => {
     })
 
     // Области (если есть)
-    (okrug.children || []).forEach((oblast) => {
+    okrug.children.forEach((oblast) => {
+      console.log('oblast', oblast);
       out.push({
         name: oblast.name,
         type: 'oblast',
@@ -61,7 +67,7 @@ const flattenAll = computed(() => {
       })
 
       // Города
-      (oblast.children || []).forEach((gorod) => {
+      oblast.children.forEach((gorod) => {
         out.push({
           name: gorod.name,
           type: 'gorod',
@@ -79,6 +85,8 @@ const flattenAll = computed(() => {
       // ничего, уже обработали в общем случае
     }
   })
+
+
   return out
 })
 
@@ -90,17 +98,62 @@ const filteredList = computed(() => {
     // старое поведение: показываем текущий уровень
     return currentList.value
   }
+  console.log('flattenAll', flattenAll.value);
 
   // поиск по всем уровням (okrug/oblast/gorod)
   return flattenAll.value.filter(item => item.name.toLowerCase().includes(q))
 })
+
+const openSearchItem = (res) => {
+  // res: { name, type, path, node, parent, grandparent }
+  // Нужно:
+  // 1) очистить стек (или сохранить текущее состояние, как считаешь нужным)
+  // 2) найти соответствующий объект в tree и выставить currentList так,
+  //    чтобы пользователь увидел уровень, из которого можно перейти дальше.
+
+  // Простой, понятный вариант: если это округ — откроем его (показать его children)
+  // если область — откроем список областей внутри округа, затем выделим область
+  // если город — откроем список городов в области
+
+  if (res.type === 'okrug') {
+    // показать дети округа (области)
+    stack.value.push({ list: currentList.value, level: currentLevel.value })
+    currentList.value = res.node.children || []
+    currentLevel.value = 'oblast'
+  } else if (res.type === 'oblast') {
+    // открыть области внутри округа и затем показать города в этой области
+    stack.value.push({ list: currentList.value, level: currentLevel.value })
+    // сначала установим список на children округа (чтобы пользователь видел где область)
+    currentList.value = res.parent.children || []
+    currentLevel.value = 'oblast'
+    // затем можно автоматически "открыть" саму область — заменим список на города области
+    // и запомним предыдущий уровень в стеке
+    stack.value.push({ list: currentList.value, level: currentLevel.value })
+    currentList.value = res.node.children || []
+    currentLevel.value = 'gorod'
+  } else if (res.type === 'gorod') {
+    // аналогично — откроем список городов внутри области
+    stack.value.push({ list: currentList.value, level: currentLevel.value })
+    currentList.value = res.grandparent
+      ? (res.parent ? res.parent.children : [])
+      : (res.parent ? res.parent.children : [])
+    currentLevel.value = 'gorod'
+  }
+
+  // очистим поиск
+  searchQuery.value = ''
+
+  // опционально — синхронизируем с монитором
+  bus.send('navigate', { region: res.name, type: res.type, path: res.path }, { role: 'monitor', pairId: '2' })
+}
+
 // --- загрузка и нормализация данных ---
 const loadData = async (type = 'xsn') => {
   dataType.value = type
   const url = type === 'xsn' ? '/datas/xsn.json' : '/datas/xbp.json'
   const res = await fetch(url)
   const raw = await res.json()
-  console.log('raw', type);
+  console.log('raw', raw);
 
   dataAll.value = raw
 
@@ -111,7 +164,7 @@ const loadData = async (type = 'xsn') => {
     const oblast = item['Область/Регион'] || ''
     const city = item['Город']
     if (okrug == '') console.log(item);
-    
+
     if (!treeMap[okrug]) {
       treeMap[okrug] = { name: okrug, type: 'okrug', children: {} }
     }
@@ -130,11 +183,12 @@ const loadData = async (type = 'xsn') => {
         : item['ЛПУ'],
       type: 'lpu',
       patients: type === 'xsn'
-        ? item['Количество включенных пациентов']
-        : item['Набор пациентов']
+        ? item['Набор пациентов']
+        : item['Набор пациентов'],
+      fullname: item['Полное']
     })
   })
-  console.log('treeMap', treeMap);
+
 
 
   // преобразуем в массивы
@@ -145,28 +199,70 @@ const loadData = async (type = 'xsn') => {
       children: Object.values(ob.children),
     })),
   }))
-
+  console.log('tree', tree);
   currentLevel.value = 'okrug'
   currentList.value = tree.value
   stack.value = []
   searchQuery.value = ''
 }
 
+function sumPatients(node) {
+  if (!node) return 0
+
+  // Если у узла есть поле patients — это LPU
+  if (node.patients) return Number(node.patients) || 0
+
+  // Если есть дети — суммируем всех потомков
+  if (node.children && node.children.length) {
+    return node.children.reduce((sum, child) => sum + sumPatients(child), 0)
+  }
+
+  return 0
+}
 // --- открытие следующего уровня ---
-const openItem = async (item) => {
-  if (!item.children) return
-  stack.value.push({
-    list: currentList.value,
-    level: currentLevel.value,
-  })
-  currentList.value = item.children
-  currentLevel.value = item.children[0]?.type || 'lpu'
-  searchQuery.value = ''
+const openItem = async (item, el) => {
+  let newItem = {}
 
-  // при клике можно синхронизировать с монитором
-  bus.send('navigate', { region: item.name, type: currentLevel.value }, { role: 'monitor', pairId: '2' })
+  if (item.type === 'okrug') {
+    currentRegion.value = item
+    newItem = {
+      okrug: item.name,
+      patients: sumPatients(item),
+      type: 'okrug',
+    }
+  } else if (item.type === 'oblast') {
+    newItem = {
+      ...JSON.parse(JSON.stringify(currentRegion.value)),
+    }
+    newItem.oblast = item.name
+    newItem.type = 'oblast'
+    newItem.patients = sumPatients(item)
+  } else if (item.type === 'gorod') {
+    newItem = {
+      ...JSON.parse(JSON.stringify(currentRegion.value)),
+    }
+    newItem.gorod = item.name
+    newItem.type = 'gorod'
+    newItem.patients = sumPatients(item)
+  } else if (item.type === 'lpu') {
+    newItem = {
+      ...JSON.parse(JSON.stringify(currentRegion.value)),
+    }
+    newItem.lpu = item.name
+    newItem.fullname = item.fullname
+    newItem.type = 'lpu'
+    newItem.patients = sumPatients(item)
+  }
+  currentRegion.value = newItem
 
-  await nextTick()
+  bus.send('navigate', { region: newItem, type: dataType.value }, { role: 'monitor', pairId: '2' })
+
+  const elements = document.querySelectorAll('.region')
+  elements.forEach(el => el.classList.remove('active'))
+  const currentElement = el.target
+  console.log('currentElement', currentElement);
+
+  currentElement.classList.add('active')
   const activeEl = document.querySelector(`.region.active`)
   if (activeEl) {
     const wrapper = document.querySelector('.custom_list')
@@ -176,6 +272,18 @@ const openItem = async (item) => {
       behavior: 'smooth',
     })
   }
+
+
+  if (!item.children) return
+  stack.value.push({
+    list: currentList.value,
+    level: currentLevel.value,
+  })
+  currentList.value = item.children
+  currentLevel.value = item.children[0]?.type || 'lpu'
+  searchQuery.value = ''
+
+
 }
 
 // --- кнопка Назад ---
@@ -224,9 +332,30 @@ onMounted(() => {
     <MapSceneAstra class="map" :targetregion="targetRegionId" :dontscale="true" :un-focus="unFocus" />
     <div class="regions__btns">
       <div class="question">
+        <p class="dopText">
+          Выбери диагноз и регион, <br>чтобы узнать данные исследований AstraZeneca
+        </p>
         <div class="regions__switch">
-          <button @click="loadData('xsn')" :class="{ active: dataType === 'xsn' }">ХСН</button>
-          <button @click="loadData('xbp')" :class="{ active: dataType === 'xbp' }">ХБП</button>
+          <button @click="loadData('xsn')" :class="{ active: dataType === 'xsn' }">
+            ХСН
+            <svg width="48" height="53" viewBox="0 0 48 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M19.8362 0H25.6696V3.85583C27.526 3.74208 29.3242 3.85 30.94 4.19125C24.0858 6.88917 20.9315 13.8235 20.4152 14.9581L20.3831 15.0281C18.7075 14.7744 16.8933 14.5615 15.1769 14.5775C13.4065 14.7292 11.69 14.9902 8.86229 16.5827C8.46271 16.8656 7.92604 17.3265 7.19542 18.0323C7.14292 17.9929 7.08604 17.9594 7.01167 17.9112L6.79146 17.7712C6.23958 17.4136 5.66797 17.0874 5.07937 16.7942C3.59771 16.0592 1.78062 15.4335 0 15.4335V9.77667C3.07854 9.77667 5.84792 10.8223 7.73646 11.76C8.39125 12.0852 8.96583 12.409 9.44271 12.6977C9.87224 11.7918 10.4243 10.9493 11.0833 10.1937L7.87792 5.16687L13.0127 1.83167L15.9687 6.46917C17.2084 5.83571 18.5022 5.31447 19.8348 4.91167L19.8362 0ZM35.5235 12.6744C33.3973 13.6602 31.5569 15.279 29.8987 18.3969C29.8987 18.3969 26.2179 16.714 23.2312 15.839C25.5237 11.1927 28.1896 8.57938 32.1227 6.75646C35.9275 4.99188 40.4644 4.53979 45.8573 4.72792L45.6006 11.6667C40.6277 11.4946 37.7767 11.6302 35.5235 12.6744Z"
+                fill="white" />
+              <path
+                d="M10.0391 19.2795C-0.552757 28.7266 14.5775 52.3443 26.6831 52.3443C38.7887 52.3443 55.456 28.747 43.327 17.9291C43.0745 17.7034 42.8237 17.4759 42.5745 17.2466C41.5712 16.3278 40.9047 15.7153 39.0541 14.6157C35.3324 14.6157 33.0895 18.3388 32.0687 20.608C32.0171 20.7214 31.9536 20.829 31.8791 20.9288L29.5239 27.4768L28.6766 30.5232C28.587 30.8445 28.6101 31.1868 28.7422 31.493L29.7339 33.7826L34.8629 33.1876L35.1997 36.0838L30.3741 36.6453L30.6877 41.2405L27.7783 41.4389L27.3875 35.7061L26.0662 32.6509C25.6685 31.7321 25.598 30.7047 25.8664 29.7401L25.8912 29.6497L22.925 30.9913L20.9854 35.8928L18.2729 34.8195L19.81 30.9374L15.1287 29.8349L15.7966 26.9955L21.6387 28.3722L26.9689 25.9586L28.7627 20.9711C24.1427 18.7997 14.6547 15.1597 10.0377 19.2766"
+                fill="white" />
+            </svg>
+
+          </button>
+          <button @click="loadData('xbp')" :class="{ active: dataType === 'xbp' }">
+            ХБП
+            <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75" fill="none">
+              <path
+                d="M28.2969 34.375L28.7281 33.0875L28.7906 32.8937C29.3844 31.1437 30.1187 28.9562 30.6125 26.8687C31.0687 24.9562 31.6406 21.9375 30.8719 19.0875C30.3746 17.1503 29.2287 15.4419 27.625 14.2469C25.8031 12.9063 23.7594 12.5 22 12.5C14.6531 12.5 10.75 18.7312 9.07812 22.3719C7.19375 26.4656 6.25 31.1875 6.25 34.0906C6.25 37.1219 7.29688 41.175 8.64375 44.3563C9.3375 45.9969 10.2812 47.825 11.525 49.3563C12.5625 50.6344 14.9562 53.125 18.6906 53.125C20.075 53.125 21.6062 52.7938 23.025 51.8938C24.2276 51.1216 25.2053 50.0458 25.8594 48.775C26.8281 46.9188 27.0219 44.8969 27.1031 43.7812C27.1656 42.95 27.1906 41.9125 27.2156 41.0312L27.2281 40.625C28.2594 40.625 29.0562 40.6281 29.6875 40.6469V59.375C29.6879 60.2038 30.0176 60.9985 30.6039 61.5843C31.1902 62.17 31.9853 62.4989 32.8141 62.4984C33.6429 62.498 34.4376 62.1684 35.0233 61.582C35.6091 60.9957 35.9379 60.2007 35.9375 59.3719V39.8094C35.9375 39.3406 35.9437 38.4563 35.7187 37.6656C35.5418 37.0342 35.2179 36.4536 34.7736 35.9714C34.3294 35.4891 33.7773 35.1187 33.1625 34.8906C32.2406 34.5344 31.1844 34.4531 30.3094 34.4156C29.6388 34.3911 28.9679 34.3786 28.2969 34.3781M47.7719 40.625C46.7375 40.625 45.9406 40.6281 45.3125 40.6469V59.375C45.3121 60.2038 44.9824 60.9985 44.3961 61.5843C43.8098 62.17 43.0147 62.4989 42.1859 62.4984C41.3571 62.498 40.5624 62.1684 39.9767 61.582C39.3909 60.9957 39.0621 60.2007 39.0625 59.3719V39.8094C39.0625 39.3406 39.0562 38.4563 39.2812 37.6656C39.4582 37.0342 39.7821 36.4536 40.2263 35.9714C40.6706 35.4891 41.2227 35.1187 41.8375 34.8906C42.7562 34.5344 43.8156 34.4531 44.6906 34.4156C45.2594 34.3948 45.9292 34.3823 46.7 34.3781L46.2687 33.0875L46.2062 32.8937C45.6156 31.1437 44.8781 28.9562 44.3844 26.8687C43.9281 24.9562 43.3594 21.9375 44.1281 19.0875C44.6246 17.1507 45.7693 15.4424 47.3719 14.2469C49.1937 12.9063 51.2406 12.5 53 12.5C60.3469 12.5 64.25 18.7312 65.9219 22.3719C67.8062 26.4656 68.7469 31.1906 68.7469 34.0906C68.7469 37.1219 67.7 41.175 66.3531 44.3563C65.6594 45.9969 64.7156 47.825 63.4719 49.3563C62.4375 50.6344 60.0406 53.125 56.3125 53.125C54.925 53.125 53.3969 52.7938 51.975 51.8938C50.7724 51.1216 49.7947 50.0458 49.1406 48.775C48.1719 46.9188 47.9812 44.8969 47.9 43.7812C47.833 42.7303 47.7913 41.6779 47.775 40.625"
+                fill="white" />
+            </svg>
+          </button>
         </div>
         <div class="input_wrap">
           <div @click="clearRegion" class="btnSearch">
@@ -246,10 +375,20 @@ onMounted(() => {
             placeholder="Поиск по округу, региону, городу" />
           <div class="custom_list-wrapper">
             <div class="custom_list">
-              <div v-for="item in filteredList" :key="item.name" class="region" @click="openItem(item)"
-                :class="item.type">
-                {{ item.name }}
-              </div>
+              <!-- если поиск пуст — item это node с children и т.д. -->
+              <template v-if="!searchQuery.trim()">
+                <div v-for="item in filteredList" :key="item.name" class="region" @click="openItem(item, $event)">
+                  {{ item.name }}
+                </div>
+              </template>
+
+              <template v-else>
+                <div v-for="res in filteredList" :key="res.path.join('>')" class="region search-result"
+                  @click="openSearchItem(res)">
+                  <div class="name">{{ res.name }}</div>
+
+                </div>
+              </template>
             </div>
           </div>
           <div class="footer relative">
@@ -269,16 +408,48 @@ onMounted(() => {
 .regions__switch {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 4rem;
 }
 
 .regions__switch button {
-  padding: 1rem 2rem;
-  border-radius: 1.875rem;
-  border: 3px solid #ffffff44;
-  background: linear-gradient(85deg, rgba(217, 217, 217, 0.10) 3.83%, rgba(115, 115, 115, 0.10) 99.95%);
-  color: #ffffff;
+  border-radius: 2.375rem;
+  border: 3px solid #FFF;
+  background: rgba(0, 0, 0, 0.00);
+  display: flex;
+  width: 25.25rem;
+  height: 6.625rem;
+  padding: 1.5rem 1.5rem 1.5rem 5.9375rem;
+  align-items: center;
+  gap: 5.8125rem;
+  color: var(--White, #FFF);
+  font-family: "TT Hoves";
   font-size: 2.5rem;
-  margin-bottom: 3rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 110%;
+  /* 2.75rem */
+  letter-spacing: -0.05rem;
+  opacity: 0.5;
+}
+
+.regions__switch button.active {
+  opacity: 1;
+}
+
+.dopText {
+  color: var(--White, #FFF);
+  text-align: center;
+  -webkit-text-stroke-width: 0.54px;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.15);
+  font-family: "TT Hoves";
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  /* 1.5rem */
+  letter-spacing: -0.03rem;
+  opacity: 0.3;
+  margin-bottom: 2rem;
 }
 
 .wrapper-content .map {
@@ -380,9 +551,9 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  min-height: 52.5625rem;
+  min-height: 46.25rem;
 
-  max-height: 52.5625rem;
+  max-height: 46.25rem;
   overflow-y: scroll;
 }
 
@@ -420,7 +591,7 @@ onMounted(() => {
 }
 
 .footer {
-  margin-top: 10.56rem;
+  margin-top: 6.25rem;
   display: flex;
   width: 100%;
   justify-content: space-between;

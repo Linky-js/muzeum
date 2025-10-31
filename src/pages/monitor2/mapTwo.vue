@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import MapScene2 from '@/components/maps/MapScene2.vue';
-import RegionModal from '@/components/ui/RegionModal.vue';
+import RegionModal from '@/components/maps/RegionModal.vue';
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMonitorSync } from '@/composables/syncRouterSimple.js'
 import { useRouter } from 'vue-router'

@@ -40,7 +40,7 @@ const links = ref([
       {
         id: 0,
         name: "Курируемые регионы",
-        link: "/touchmaptwo",
+        link: "/touch-screen-regions",
 
       },
       {
@@ -99,7 +99,7 @@ const regionsHints = computed(() => {
 })
 
 const getRegions = async () => {
-  const res = await fetch('/spisok.json')
+  const res = await fetch('/datas/spisok.json')
 
   const data = await res.json()
   regions.value = data.map((r, index) => ({
