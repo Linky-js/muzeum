@@ -33,25 +33,28 @@ onMounted(() => {
   });
 });
 
-watch(() => props.targetregion, (regionName) => {
-  if (regionName && svgDoc.value) focusRegion(regionName);
+watch(() => props.targetregion, (regionObject) => {
+  console.log('regionObject', regionObject);
+  if (regionObject && svgDoc.value) focusRegion(regionObject);
 });
 
-function focusRegion(regionName) {
+function focusRegion(regionObject) {
   if (!svgDoc.value) return;
 
   if (activeRegion.value) {
-    activeRegion.value.setAttribute('fill', '#1B1C21');
-    activeRegion.value.setAttribute('stroke', '#7D7D7D');
-
+    
+  }
+  if (regionObject.type === "okrug") {
+    const region = svgDoc.value.getElementById(regionObject.okrug + '_ФО');
+    const name = region.querySelector('.okrugName')
+    name.classList.add('active')
+    const oblasti = region.querySelectorAll('.oblast')
+    oblasti.forEach(o => o.classList.add('active'))
   }
 
-  const region = svgDoc.value.getElementById(regionName);
-  if (!region) return;
-
-  activeRegion.value = region;
-  region.setAttribute('fill', 'rgba(255,255,255,0.2)');
-  region.setAttribute('stroke', 'rgba(255,255,255)');
+  activeRegion.value = regionObject;
+  // region.setAttribute('fill', 'rgba(255,255,255,0.2)');
+  // region.setAttribute('stroke', 'rgba(255,255,255)');
 }
 
 </script>
@@ -72,6 +75,7 @@ function focusRegion(regionName) {
   align-items: center;
   justify-content: center;
 }
+
 .map-svg {
   width: 100%;
   height: 100%;

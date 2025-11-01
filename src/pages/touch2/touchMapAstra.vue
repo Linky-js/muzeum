@@ -329,7 +329,7 @@ onMounted(() => {
         <h1 class="content__title animBtn">Сотрудничество Центра Алмазова с регионами</h1>
       </div>
     </div>
-    <MapSceneAstra class="map" :targetregion="targetRegionId" :dontscale="true" :un-focus="unFocus" />
+    <MapSceneAstra class="map" :targetregion="currentRegion" :dontscale="true" :un-focus="unFocus" />
     <div class="regions__btns">
       <div class="question">
         <p class="dopText">
@@ -454,10 +454,10 @@ onMounted(() => {
 
 .wrapper-content .map {
   position: absolute;
-  bottom: 1.11rem;
-  left: 5rem;
-  width: 155.19356rem;
-  height: 102.82969rem;
+      bottom: -12.89rem;
+    left: -16rem;
+    width: 192.19356rem;
+    height: 131.82969rem;
   flex-shrink: 0;
 }
 
