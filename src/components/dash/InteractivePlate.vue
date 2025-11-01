@@ -926,7 +926,6 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 .bottom-inputs {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 40px;
   background: rgba(0, 0, 0, 0.34);
   border-radius: 58px;
@@ -946,6 +945,10 @@ line-height: 110%;
 letter-spacing: -0.02em;
 color: #FFFFFF;
 
+}
+
+.bottom-inputs__btn{
+  margin-top: auto;
 }
 
 .categories {
