@@ -13,6 +13,8 @@ dist
 dist-ssr
 coverage
 *.local
+public/*.mp4
+
 
 # Игнорировать все mp4-файлы
 *.mp4

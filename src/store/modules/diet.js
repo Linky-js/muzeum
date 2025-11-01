@@ -65,8 +65,8 @@ export default {
         4: null,
         5: null,
         6: null,
-        7: null
-      }
+        7: null,
+      },
     },
 
     // Категории -> подкатегории. Подкатегория хранит:
@@ -75,91 +75,150 @@ export default {
       {
         id: "grains",
         name: "Зерновые",
+        img: "/products/cat/zernovie.png",
         subcategories: [
           {
             id: "grain_snacks",
             name: "зерновые снеки",
+            preview: "/products/subcat/subcat-1-1.png",
             allowedSlots: [1, 2, 3, 4, 5, 6, 7, 8],
             // images: ключ — номер слота; значение — путь к картинке для этого слота
             images: {
               1: "/products/grain_snacks1.png",
               2: "/products/grain_snacks2.png",
               3: "/products/grain_snacks3.png",
-              4: "/products/grain_snacks4.png"
-            }
+              4: "/products/grain_snacks4.png",
+            },
           },
           {
             id: "grains_refined",
             name: "злаки рафинир.варен.",
+            preview: "/products/subcat/subcat-1-2.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
               1: "/products/zlaki_raf1.png",
               2: "/products/zlaki_raf2.png",
               3: "/products/zlaki_raf3.png",
-              4: "/products/zlaki_raf4.png"
-            }
+              4: "/products/zlaki_raf4.png",
+            },
           },
           {
             id: "grains_whole",
             name: "злаки цельнозерновые",
+            preview: "/products/subcat/subcat-1-3.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
               1: "/products/zlaki_celno1.png",
               2: "/products/zlaki_celno2.png",
               3: "/products/zlaki_celno3.png",
-              4: "/products/zlaki_celno4.png"
-            }
+              4: "/products/zlaki_celno4.png",
+            },
           },
           {
             id: "popcorn",
             name: "попкорн несоленый",
+            preview: "/products/subcat/subcat-1-4.png",
             allowedSlots: [1, 2, 3, 4, 5, 6, 7, 8],
             images: {
               1: "/products/popcorn1.png",
               2: "/products/popcorn2.png",
               3: "/products/popcorn3.png",
-              4: "/products/popcorn4.png"
-            }
+              4: "/products/popcorn4.png",
+            },
           },
           {
             id: "muesli",
             name: "Сухие хлопья/мюсли",
+            preview: "/products/subcat/subcat-1-5.png",
             allowedSlots: [5, 6, 7, 8],
             images: {
               5: "/products/muesli5.png",
               6: "/products/muesli6.png",
               7: "/products/muesli7.png",
-              8: "/products/muesli8.png"
-            }
+              8: "/products/muesli8.png",
+            },
           },
           {
             id: "bread_white",
             name: "Хлеб белый",
+            preview: "/products/subcat/subcat-1-6.png",
             allowedSlots: [5, 6, 7, 8],
             images: {
               5: "/products/bread_white5.png",
               6: "/products/bread_white6.png",
               7: "/products/bread_white7.png",
-              8: "/products/bread_white8.png"
-            }
+              8: "/products/bread_white8.png",
+            },
           },
           {
             id: "bread_whole",
             name: "Хлеб цельнозерновой",
+            preview: "/products/subcat/subcat-1-7.png",
             allowedSlots: [5, 6, 7, 8],
             images: {
               5: "/products/bread_whole5.png",
               6: "/products/bread_whole6.png",
               7: "/products/bread_whole7.png",
-              8: "/products/bread_whole8.png"
-            }
-          }
-        ]
+              8: "/products/bread_whole8.png",
+            },
+          },
+        ],
       },
-
+      {
+        id: "fats",
+        name: "Жиры и масла",
+        img: "/products/cat/maslo.png",
+        subcategories: [
+          {
+            id: "sauce",
+            name: "заправки соусы",
+            allowedSlots: [16, 17, 18, 19],
+            images: {
+              16: "/products/kurica1.png",
+              17: "/products/kurica2.png",
+              18: "/products/kurica3.png",
+              19: "/products/kurica4.png",
+            },
+          },
+          {
+            id: "mayonnaise",
+            name: "Майонез",
+            allowedSlots: [16, 17, 18, 19],
+            images: {
+              16: "/products/kurica1.png",
+              17: "/products/kurica2.png",
+              18: "/products/kurica3.png",
+              19: "/products/kurica4.png",
+            },
+          },
+          {
+            id: "piece-of-butter",
+            name: "маргарин мягкий",
+            allowedSlots: [16, 17, 18, 19],
+            images: {
+              16: "/products/kurica1.png",
+              17: "/products/kurica2.png",
+              18: "/products/kurica3.png",
+              19: "/products/kurica4.png",
+            },
+          },
+          {
+            id: "sunflower-oil",
+            name: "растительные масла",
+            allowedSlots: [16, 17, 18, 19],
+            images: {
+              16: "/products/kurica1.png",
+              17: "/products/kurica2.png",
+              18: "/products/kurica3.png",
+              19: "/products/kurica4.png",
+            },
+          },
+        ],
+      },
       {
         id: "meat_fish",
-        name: "Мясо, птица, рыба",
+        name: "Нежирное мясо, птица и рыба",
+        img: "/products/cat/myaso.png",
         subcategories: [
           {
             id: "white_meat",
@@ -169,8 +228,8 @@ export default {
               1: "/products/kurica1.png",
               2: "/products/kurica2.png",
               3: "/products/kurica3.png",
-              4: "/products/kurica4.png"
-            }
+              4: "/products/kurica4.png",
+            },
           },
           {
             id: "red_meat",
@@ -180,8 +239,8 @@ export default {
               1: "/products/bife1.png",
               2: "/products/bife2.png",
               3: "/products/bife3.png",
-              4: "/products/bife4.png"
-            }
+              4: "/products/bife4.png",
+            },
           },
           {
             id: "seafood",
@@ -191,8 +250,8 @@ export default {
               1: "/products/sea1.png",
               2: "/products/sea2.png",
               3: "/products/sea3.png",
-              4: "/products/sea4.png"
-            }
+              4: "/products/sea4.png",
+            },
           },
           {
             id: "fish",
@@ -202,8 +261,8 @@ export default {
               1: "/products/fish1.png",
               2: "/products/fish2.png",
               3: "/products/fish3.png",
-              4: "/products/fish4.png"
-            }
+              4: "/products/fish4.png",
+            },
           },
           {
             id: "yaichnicas",
@@ -213,56 +272,270 @@ export default {
               1: "/products/yaichnica1.png",
               2: "/products/yaichnica2.png",
               3: "/products/yaichnica3.png",
-              4: "/products/yaichnica4.png"
-            }
-          }
-        ]
-      },
-
-      // Далее можно добавить "Овощи", "Фрукты", "Молочные и яйца" и др. — пока оставлю пустыми шаблонами
-      {
-        id: "vegetables",
-        name: "Овощи",
-        subcategories: [
-          // добавить позже
-        ]
-      },
-      {
-        id: "fruits",
-        name: "Фрукты",
-        subcategories: []
+              4: "/products/yaichnica4.png",
+            },
+          },
+        ],
       },
       {
         id: "dairy",
-        name: "Молочные и яйца",
-        subcategories: []
+        name: "Обезжиренные/ низкожирные молочные",
+        img: "/products/cat/moloko.png",
+        subcategories: [
+          {
+            id: "yogurt",
+            name: "Йогурт",
+            allowedSlots: [10],
+            images: {
+              10: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "kefir",
+            name: "Кефир",
+            allowedSlots: [10],
+            images: {
+              10: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "cheese",
+            name: "Сыр",
+            allowedSlots: [8],
+            images: {
+              8: "/products/yaichnica1.png",
+            },
+          },
+        ],
+      },
+      {
+        id: "vegetables",
+        name: "Овощи",
+        img: "/products/cat/ovoshi.png",
+        subcategories: [
+          {
+            id: "roots",
+            name: "Корнеплоды/крахмалистые",
+            allowedSlots: [1, 2, 3, 4],
+            images: {
+              1: "/products/yaichnica1.png",
+              2: "/products/yaichnica1.png",
+              3: "/products/yaichnica1.png",
+              4: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "cruciferous",
+            name: "Крестоцветные/прочие",
+            allowedSlots: [1, 2, 3, 4],
+            images: {
+              1: "/products/yaichnica1.png",
+              2: "/products/yaichnica1.png",
+              3: "/products/yaichnica1.png",
+              4: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "leafy",
+            name: "Листовые",
+            allowedSlots: [1, 2, 3, 4],
+            images: {
+              1: "/products/yaichnica1.png",
+              2: "/products/yaichnica1.png",
+              3: "/products/yaichnica1.png",
+              4: "/products/yaichnica1.png",
+            },
+          },
+        ],
       },
       {
         id: "nuts",
         name: "Орехи, семена и бобовые",
-        subcategories: []
-      },
-      {
-        id: "fats",
-        name: "Жиры и масла (+ снеки)",
-        subcategories: []
+        img: "/products/cat/orehi.png",
+        subcategories: [
+          {
+            id: "peanut-butter",
+            name: "Арахисовая паста",
+            allowedSlots: [16, 17, 18, 19],
+            images: {
+              16: "/products/yaichnica1.png",
+              17: "/products/yaichnica1.png",
+              18: "/products/yaichnica1.png",
+              19: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "legumes",
+            name: "Бобовые",
+            allowedSlots: [1, 2, 3, 4],
+            images: {
+              1: "/products/yaichnica1.png",
+              2: "/products/yaichnica1.png",
+              3: "/products/yaichnica1.png",
+              4: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "nuts",
+            name: "Орехи",
+            allowedSlots: [7, 6],
+            images: {
+              6: "/products/yaichnica1.png",
+              7: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "seeds",
+            name: "Семена",
+            allowedSlots: [7, 6],
+            images: {
+              6: "/products/yaichnica1.png",
+              7: "/products/yaichnica1.png",
+            },
+          },
+        ],
       },
       {
         id: "sweets",
-        name: "Сладости (+ эклер)",
-        subcategories: []
+        name: "Сладости и добавленные сахара",
+        img: "/products/cat/sladosti.png",
+        subcategories: [
+          {
+            id: "jam-preserve",
+            name: "джем/варенье",
+            allowedSlots: [16, 17, 18, 19],
+            images: {
+              16: "/products/yaichnica1.png",
+              17: "/products/yaichnica1.png",
+              18: "/products/yaichnica1.png",
+              19: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "jelly-sorbet",
+            name: "желейные/сорбет",
+            allowedSlots: [16, 17, 18, 19],
+            images: {
+              16: "/products/yaichnica1.png",
+              17: "/products/yaichnica1.png",
+              18: "/products/yaichnica1.png",
+              19: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "sweet-pastries",
+            name: "Сладкая сдоба",
+            allowedSlots: [12],
+            images: {
+              12: "/products/yaichnica1.png",
+            },
+          },
+        ],
       },
+      {
+        id: "fruits",
+        name: "Фрукты",
+        img: "/products/cat/fructi.png",
+        subcategories: [
+          {
+            id: "fresh-fruit",
+            name: "Свежие фрукты",
+            allowedSlots: [15],
+            images: {
+              15: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "dried-fruits",
+            name: "Сухофрукты",
+            allowedSlots: [7, 6],
+            images: {
+              6: "/products/yaichnica1.png",
+              7: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "berries-slices",
+            name: "Ягоды/ломтики",
+            allowedSlots: [16],
+            images: {
+              16: "/products/yaichnica1.png",
+            },
+          },
+        ],
+      },
+
       {
         id: "drinks",
         name: "Напитки",
-        subcategories: []
-      }
-    ]
-
+        img: "/products/cat/moloko.png",
+        subcategories: [
+          {
+            id: "milk",
+            name: "Молоко",
+            allowedSlots: [14, 9],
+            images: {
+              9: "/products/yaichnica1.png",
+              14: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "vegetable-juice",
+            name: "овощной сок",
+            allowedSlots: [14, 9],
+            images: {
+              9: "/products/yaichnica1.png",
+              14: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "fruit-juice",
+            name: "фруктовый сок",
+            allowedSlots: [9, 14],
+            images: {
+              14: "/products/yaichnica1.png",
+              9: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "sweetened-drinks",
+            name: "подслащенные напитки",
+            allowedSlots: [9, 14],
+            images: {
+              14: "/products/yaichnica1.png",
+              9: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "black-coffee",
+            name: "кофе черный",
+            allowedSlots: [13],
+            images: {
+              13: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "coffee-with-milk",
+            name: "кофе с молоком",
+            allowedSlots: [13],
+            images: {
+              13: "/products/yaichnica1.png",
+            },
+          },
+          {
+            id: "tea",
+            name: "чай",
+            allowedSlots: [13],
+            images: {
+              13: "/products/yaichnica1.png",
+            },
+          },
+        ],
+      },
+    ],
   }),
 
   getters: {
-
     // вернуть структуру дня (если synced=true и day!=1 — возвращаем копию day1)
     getDay: (state) => (dayId) => {
       if (state.week.synced && String(dayId) !== "1") {
@@ -284,13 +557,13 @@ export default {
 
     // найти категорию по id
     findCategory: (state) => (categoryId) => {
-      return state.categories.find(c => c.id === categoryId) || null;
+      return state.categories.find((c) => c.id === categoryId) || null;
     },
 
     // найти подкатегорию по id
     findSubcategory: (state) => (subcatId) => {
       for (const cat of state.categories) {
-        const sub = cat.subcategories?.find(s => s.id === subcatId);
+        const sub = cat.subcategories?.find((s) => s.id === subcatId);
         if (sub) return { category: cat, subcategory: sub };
       }
       return null;
@@ -305,25 +578,26 @@ export default {
     },
 
     // возвращает первый свободный слот из allowedSlots для заданного дня/приёма
-    getFirstFreeSlotForSubcategory: (state, getters) => (dayId, mealId, subcatId) => {
-      const found = getters.findSubcategory(subcatId);
-      if (!found) return null;
-      const allowed = found.subcategory.allowedSlots || [];
-      const meal = getters.getMeal(dayId, mealId);
-      if (!meal) return null;
-      // ищем первый allowed, который свободен
-      for (const s of allowed) {
-        if (!meal.usedSlots.includes(Number(s))) {
-          return Number(s);
+    getFirstFreeSlotForSubcategory:
+      (state, getters) => (dayId, mealId, subcatId) => {
+        const found = getters.findSubcategory(subcatId);
+        if (!found) return null;
+        const allowed = found.subcategory.allowedSlots || [];
+        const meal = getters.getMeal(dayId, mealId);
+        if (!meal) return null;
+        // ищем первый allowed, который свободен
+        for (const s of allowed) {
+          if (!meal.usedSlots.includes(Number(s))) {
+            return Number(s);
+          }
         }
-      }
-      return null; // нет свободного слота
-    },
+        return null; // нет свободного слота
+      },
     isMealFilled: (state, getters) => (dayId, mealId) => {
       const meal = getters.getMeal(dayId, mealId);
       if (!meal) return false;
       // meal.plate может содержать много слотов (1..19) — проверяем, есть ли непустой
-      return Object.values(meal.plate || {}).some(slot => slot !== null);
+      return Object.values(meal.plate || {}).some((slot) => slot !== null);
     },
   },
 
@@ -352,7 +626,7 @@ export default {
       // ищем подкатегорию
       let image = null;
       for (const cat of state.categories) {
-        const sub = cat.subcategories?.find(s => s.id === subcatId);
+        const sub = cat.subcategories?.find((s) => s.id === subcatId);
         if (sub) {
           image = sub.images?.[slotId] || null;
           break;
@@ -365,7 +639,7 @@ export default {
         image,
         slot: Number(slotId),
         weight,
-        ...extra
+        ...extra,
       };
       meal.usedSlots.push(Number(slotId));
 
@@ -383,7 +657,9 @@ export default {
       const meal = state.week.days[dayId].meals[mealId];
       if (!meal) return;
       meal.plate[slotId] = null;
-      meal.usedSlots = meal.usedSlots.filter(s => Number(s) !== Number(slotId));
+      meal.usedSlots = meal.usedSlots.filter(
+        (s) => Number(s) !== Number(slotId)
+      );
     },
 
     // Копирование day1 на все дни (полная замена)
@@ -409,49 +685,74 @@ export default {
         synced: true,
         days: {
           1: initialDay(),
-          2: null, 3: null, 4: null, 5: null, 6: null, 7: null
-        }
+          2: null,
+          3: null,
+          4: null,
+          5: null,
+          6: null,
+          7: null,
+        },
       };
-    }
+    },
   },
 
   actions: {
     // Добавить продукт — action принимает либо конкретный slotId, либо подставляет первый свободный из allowedSlots
-    addProduct({ commit, getters }, { dayId, mealId = 'breakfast', subcatId, weight = null, slotId = null, extra = {} }) {
+    addProduct(
+      { commit, getters },
+      {
+        dayId,
+        mealId = "breakfast",
+        subcatId,
+        weight = null,
+        slotId = null,
+        extra = {},
+      }
+    ) {
       // ensure day inited
-      commit('INIT_DAY', dayId);
+      commit("INIT_DAY", dayId);
 
       // если слот не указан — берём первый свободный подходящий
       let chosenSlot = slotId;
       if (!chosenSlot) {
-        chosenSlot = getters.getFirstFreeSlotForSubcategory(dayId, mealId, subcatId);
+        chosenSlot = getters.getFirstFreeSlotForSubcategory(
+          dayId,
+          mealId,
+          subcatId
+        );
       }
 
       if (!chosenSlot) {
         // нет места
-        console.warn('Нет свободного слота для выбранной подкатегории');
-        return { ok: false, reason: 'no-slot' };
+        console.warn("Нет свободного слота для выбранной подкатегории");
+        return { ok: false, reason: "no-slot" };
       }
 
-      commit('ADD_PRODUCT', { dayId, mealId, subcatId, slotId: chosenSlot, extra: { weight } });
+      commit("ADD_PRODUCT", {
+        dayId,
+        mealId,
+        subcatId,
+        slotId: chosenSlot,
+        extra: { weight },
+      });
 
       return { ok: true, slot: chosenSlot };
     },
 
     removeProduct({ commit }, payload) {
-      commit('REMOVE_PRODUCT', payload);
+      commit("REMOVE_PRODUCT", payload);
     },
 
     fillWeekFromDay1({ commit }) {
-      commit('FILL_WEEK_FROM_DAY1');
+      commit("FILL_WEEK_FROM_DAY1");
     },
 
     disableSync({ commit }) {
-      commit('DISABLE_SYNC');
+      commit("DISABLE_SYNC");
     },
 
     resetAll({ commit }) {
-      commit('RESET_ALL');
-    }
-  }
+      commit("RESET_ALL");
+    },
+  },
 };
