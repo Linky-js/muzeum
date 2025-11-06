@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { useStore } from "vuex";
+import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
 import IconInfo from "../icons/IconInfo.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -23,7 +24,7 @@ const showWeightModal = ref(false);
 const activeInfoBtn = ref(null);
 const weight = ref("");
 const useNumpad = ref(false);
-const moreDaysFlag = ref(false)
+const moreDaysFlag = ref(false);
 
 const days = [
   { id: 1, smallName: "Понедельник" },
@@ -149,7 +150,7 @@ const slotPositions = {
   4: { top: 60.4, left: 45.5, width: 350 },
   5: { top: 65, left: 60.4, width: 344 },
   6: { top: 51.3, left: 39.4, width: 220 },
-  8: { top: 55.4, left: 61,width: 280 },
+  8: { top: 55.4, left: 61, width: 280 },
   10: { top: 37.5, left: 40.2, width: 352 },
   11: { top: 65.4, left: 71.4, width: 520 },
   12: { top: 66, left: 32.5, width: 370 },
@@ -158,8 +159,6 @@ const slotPositions = {
   17: { top: 47.5, left: 29, width: 270 },
   18: { top: 46.4, left: 24, width: 236 },
   19: { top: 66.4, left: 25.5, width: 300 },
-  
-
 
   7: { top: 60.4, left: 55.4 },
   9: { top: 40, left: 44.4 },
@@ -167,7 +166,6 @@ const slotPositions = {
   13: { top: 40, left: 44.4 },
   14: { top: 39.3, left: 55 },
   15: { top: 60.4, left: 55.4 },
-
 };
 
 function slotStyle(slotId) {
@@ -234,6 +232,13 @@ function getNameCategory(id) {
   return null;
 }
 
+const activeMealProducts = computed(() =>
+  store.getters["diet/getActiveMealSimpleProducts"](
+    currentDay.value,
+    currentMeal.value
+  )
+);
+
 const modules = [Autoplay, Pagination, Navigation];
 
 const onSwiper = (swiper) => {
@@ -255,6 +260,28 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 
 <template>
   <div class="plate-wrapper" ref="plateArea">
+    <div class="top-info" v-if="activeMealProducts.length !== 0">
+      <div class="top-info__inner">
+        <div class="top-info__top">
+          <p class="top-info__top-left">Продукт</p>
+          <p class="top-info__top-rigth">Граммы</p>
+        </div>
+        <div class="top-info__content">
+          <div
+            class="top-info__product"
+            v-for="product in activeMealProducts"
+            :key="product.slotId"
+          >
+            <p class="top-info__content-title">
+              {{ getNameCategory(product.subcatId) }}
+            </p>
+            <p class="top-info__content-weight">
+               {{ product.weight }}г
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="image">
       <img :src="baseImgSrc" class="layer plate-base" ref="baseImg" />
       <div class="mask-layer">
@@ -472,7 +499,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
               class="categories-list__subcat-wrapper"
               v-if="openCategory === cat.id"
             >
-                <!-- :autoplay="{
+              <!-- :autoplay="{
                   delay: 3000,
                   disableOnInteraction: false,
                 }" -->
@@ -620,7 +647,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
     <div class="controls save-control">
       <button class="btn-save" @click="saveAsImage">💾 Сохранить PNG</button>
     </div> -->
-
+    <MenuNavigation class="footer__btn" on-page="dash" />
     <canvas ref="canvasRef" class="hidden"></canvas>
   </div>
 </template>
@@ -661,6 +688,56 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   bottom: 0;
   pointer-events: none;
   /* слоты перехватывают клики сами */
+}
+
+.top-info {
+  position: fixed;
+  top: 60px;
+  right: 60px;
+  padding: 32px;
+  width: 450px;
+  background: rgba(0, 0, 0, 0.34);
+  border-radius: 38px;
+  z-index: 5;
+}
+
+.top-info__inner {
+  position: relative;
+}
+
+.top-info__top {
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "TT Hoves";
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  opacity: 0.5;
+}
+
+.top-info__content {
+  margin-top: 16px;
+  display: grid;
+  gap: 16px;
+  max-height: 550px;
+  overflow-y: auto;
+}
+
+.top-info__product {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "TT Hoves";
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
 .slot {
@@ -1215,5 +1292,12 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   opacity: 1;
   visibility: visible;
   width: 200px;
+}
+
+.footer__btn {
+  margin-top: auto;
+  position: fixed;
+  bottom: 60px;
+  right: 60px;
 }
 </style>

@@ -10,12 +10,23 @@ const initialMeal = () => ({
     3: null,
     4: null,
     // остальное оставляем на будущее, но пока null
-    5: null, 6: null, 7: null, 8: null,
-    9: null, 10: null, 11: null, 12: null,
-    13: null, 14: null, 15: null, 16: null,
-    17: null, 18: null, 19: null
+    5: null,
+    6: null,
+    7: null,
+    8: null,
+    9: null,
+    10: null,
+    11: null,
+    12: null,
+    13: null,
+    14: null,
+    15: null,
+    16: null,
+    17: null,
+    18: null,
+    19: null,
   },
-  usedSlots: [] // список занятых id слотов
+  usedSlots: [], // список занятых id слотов
 });
 
 const initialDay = () => ({
@@ -23,10 +34,10 @@ const initialDay = () => ({
     breakfast: initialMeal(),
     lunch: initialMeal(),
     dinner: initialMeal(),
-    snack: initialMeal()
+    snack: initialMeal(),
   },
   // флаг: пользователь изменял этот день отдельно (если true — не синхронизируем с day1)
-  custom: false
+  custom: false,
 });
 
 export default {
@@ -579,6 +590,18 @@ export default {
       return day?.meals?.[mealId] || null;
     },
 
+    getActiveMealSimpleProducts: (state, getters) => (activeDay, activeMeal) => {
+      const meal = getters.getMeal(activeDay, activeMeal);
+      if (!meal) return [];
+
+      return Object.entries(meal.plate || {})
+        .filter(([_, product]) => product && product.subcatId)
+        .map(([slotId, product]) => ({
+          slotId: Number(slotId),
+          subcatId: product.subcatId,
+          weight: product.weight || null,
+        }));
+    },
     // найти категорию по id
     findCategory: (state) => (categoryId) => {
       return state.categories.find((c) => c.id === categoryId) || null;
