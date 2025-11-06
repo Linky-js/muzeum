@@ -15,7 +15,7 @@ let intervalId;
 
 onMounted(() => {
   generateQr(); // первый QR сразу
-  intervalId = setInterval(generateQr, 2000); // каждые 2 секунды обновляем
+  intervalId = setInterval(generateQr, 20000); // каждые 20 секунды обновляем
 });
 
 onUnmounted(() => {
@@ -26,8 +26,15 @@ onUnmounted(() => {
 <template>
   <div class="wrapper">
     <aside class="left">
-      <h3>Калькулятор рисков Монитор</h3>
-      <div class="etap"> Шаг {{ step }}</div>
+     <img :src="qrCodeUrl" alt="QR Code" />
+     <div class="dopInfo">
+      <div class="head">
+        Калькулятор продолжительности жизни и риска возникновения развития  метаболического синдрома 
+      </div>
+      <div class="description">
+        отсканируйте QR код, пройдите тест и получите расчет
+      </div>
+     </div>
     </aside>
     <div class="container">
       <div class="step1">
@@ -36,7 +43,7 @@ onUnmounted(() => {
           Узнайте прогноз вашей продолжительности жизни и рисков развития метаболического синдрома
         </div>
         <div class="qr-code">
-          <img :src="qrCodeUrl" alt="QR Code" />
+          
         </div>
       </div>
     </div>

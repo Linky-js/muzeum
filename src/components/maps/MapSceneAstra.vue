@@ -40,17 +40,58 @@ watch(() => props.targetregion, (regionObject) => {
 
 function focusRegion(regionObject) {
   if (!svgDoc.value) return;
+  if (regionObject.type === 'lpu') return
 
-  if (activeRegion.value) {
-    
-  }
+  let elements = svgDoc.value.querySelectorAll('g.active, path.active, text.active, g.activesmall, path.activesmall, text.activesmall');
+  elements.forEach(e => {
+    e.classList.remove('active');
+    e.classList.remove('activesmall');
+  });
+
   if (regionObject.type === "okrug") {
     const region = svgDoc.value.getElementById(regionObject.okrug + '_ФО');
     const name = region.querySelector('.okrugName')
     name.classList.add('active')
-    const oblasti = region.querySelectorAll('.oblast')
+    const oblasti = region.querySelectorAll('.oblast , .fulloblast')
     oblasti.forEach(o => o.classList.add('active'))
   }
+  if (regionObject.type === "oblast") {
+    if (regionObject.okrug) {
+      const okrug = svgDoc.value.getElementById(regionObject.okrug + '_ФО');
+      const oblasti = okrug.querySelectorAll('.oblast , .fulloblast')
+      oblasti.forEach(o => o.classList.add('activesmall'))
+    }
+    let idName = regionObject.oblast.replaceAll(' ', '_');
+    if (idName === 'Москва') idName = 'Москва_область'
+    if (idName === 'Санкт-Петербург') idName = 'Санкт-Петербург_область'
+    const oblast = svgDoc.value.getElementById(idName);
+    if (oblast) {
+      const name = oblast.querySelector('.oblastName')
+      name.classList.add('active')
+      oblast.classList.add('active')
+    }
+  }
+  if (regionObject.type === "gorod") {
+    if (regionObject.okrug) {
+      const okrug = svgDoc.value.getElementById(regionObject.okrug + '_ФО');
+      const oblasti = okrug.querySelectorAll('.oblast , .fulloblast')
+      oblasti.forEach(o => o.classList.add('activesmall'))
+    }
+    if (regionObject.oblast) {
+      let idName = regionObject.oblast.replaceAll(' ', '_');
+      const oblast = svgDoc.value.getElementById(idName);
+      if (oblast) {
+        oblast.classList.add('active')
+      }
+    }
+    let idName = regionObject.gorod.replaceAll(' ', '_');
+    const gorod = svgDoc.value.getElementById(idName);
+    if (gorod) {
+      console.log('gorod', gorod);
+      gorod.classList.add('active')
+    }
+  }
+
 
   activeRegion.value = regionObject;
   // region.setAttribute('fill', 'rgba(255,255,255,0.2)');

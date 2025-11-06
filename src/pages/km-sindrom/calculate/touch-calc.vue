@@ -5,13 +5,13 @@ import "vue3-toastify/dist/index.css";
 import Breadcrums from "@/components/touchScreenComponents/Breadcrums.vue";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
-import result from "@/components/calculate/result.vue";
-import resultWin5 from "@/components/calculate/resultWin5.vue";
-import resultWin6 from "@/components/calculate/resultWin6.vue";
-import resultFinal from "@/components/calculate/resultFinal.vue";
-import Step1 from "@/components/calculate/step1.vue";
-import Step2 from "@/components/calculate/step2.vue";
-import Step3 from "@/components/calculate/step3.vue";
+import result from "@/components/calculate/touch/result.vue";
+import resultWin5 from "@/components/calculate/touch/resultWin5.vue";
+import resultWin6 from "@/components/calculate/touch/resultWin6.vue";
+import resultFinal from "@/components/calculate/touch/resultFinal.vue";
+import Step1 from "@/components/calculate/touch/step1.vue";
+import Step2 from "@/components/calculate/touch/step2.vue";
+import Step3 from "@/components/calculate/touch/step3.vue";
 
 const breadcrumbsList = ref([
   {
@@ -185,12 +185,12 @@ watch(step, (newStep) => {
       },
       {
         id: 1,
-        title: "Км Синдром",
+        title: "Тест",
         link: "/",
       },
       {
         id: 2,
-        title: "Калькулятор",
+        title: "Календарь дней",
         link: "/",
       },
       {

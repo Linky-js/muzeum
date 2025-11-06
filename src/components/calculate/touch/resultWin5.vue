@@ -1,8 +1,8 @@
 <script setup>
   import { defineProps, computed, defineEmits } from "vue";
-import IconDislip from "../icons/IconDislip.vue";
-import IconPochki from "../icons/IconPochki.vue";
-import IconHeart from "../icons/IconHeart.vue";
+import IconDislip from "../../icons/IconDislip.vue";
+import IconPochki from "../../icons/IconPochki.vue";
+import IconHeart from "../../icons/IconHeart.vue";
   const emit = defineEmits(["next"]);
   const props = defineProps({
     person: Object,

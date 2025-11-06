@@ -15,14 +15,14 @@ const breadcrumbsList = ref([
 ])
 
 const links = ref([
-  { id: 0, name: "Курируемые регионы", link: "/touchmaptwo" },
-  { id: 1, name: "Карта AstraZeneca", link: "/touchmaptwo" },
+  { id: 0, name: "Курируемые регионы", link: "/touch-screen-regions" },
+  { id: 1, name: "Карта AstraZeneca", link: "/touch-screen-astrazeneca" },
   { id: 2, name: "Тепловая карта факторы риска", link: "/touchmaptwo" },
 ])
 
 // --- подключаем синхронизацию с монитором ---
 const router = useRouter()
-const bus = useBroadcastBus({ role: 'touch', pairId: '2', debug: true })
+const bus = useBroadcastBus({ role: 'touch', pairId: '2', debug: false })
 initMasterSync(router, bus, '2')
 
 // --- состояние карты и поиска ---
@@ -98,54 +98,13 @@ const filteredList = computed(() => {
     // старое поведение: показываем текущий уровень
     return currentList.value
   }
-  console.log('flattenAll', flattenAll.value);
+  console.log('flattenAll', flattenAll.value.filter(item => item.name.toLowerCase().includes(q)));
 
   // поиск по всем уровням (okrug/oblast/gorod)
   return flattenAll.value.filter(item => item.name.toLowerCase().includes(q))
 })
 
-const openSearchItem = (res) => {
-  // res: { name, type, path, node, parent, grandparent }
-  // Нужно:
-  // 1) очистить стек (или сохранить текущее состояние, как считаешь нужным)
-  // 2) найти соответствующий объект в tree и выставить currentList так,
-  //    чтобы пользователь увидел уровень, из которого можно перейти дальше.
 
-  // Простой, понятный вариант: если это округ — откроем его (показать его children)
-  // если область — откроем список областей внутри округа, затем выделим область
-  // если город — откроем список городов в области
-
-  if (res.type === 'okrug') {
-    // показать дети округа (области)
-    stack.value.push({ list: currentList.value, level: currentLevel.value })
-    currentList.value = res.node.children || []
-    currentLevel.value = 'oblast'
-  } else if (res.type === 'oblast') {
-    // открыть области внутри округа и затем показать города в этой области
-    stack.value.push({ list: currentList.value, level: currentLevel.value })
-    // сначала установим список на children округа (чтобы пользователь видел где область)
-    currentList.value = res.parent.children || []
-    currentLevel.value = 'oblast'
-    // затем можно автоматически "открыть" саму область — заменим список на города области
-    // и запомним предыдущий уровень в стеке
-    stack.value.push({ list: currentList.value, level: currentLevel.value })
-    currentList.value = res.node.children || []
-    currentLevel.value = 'gorod'
-  } else if (res.type === 'gorod') {
-    // аналогично — откроем список городов внутри области
-    stack.value.push({ list: currentList.value, level: currentLevel.value })
-    currentList.value = res.grandparent
-      ? (res.parent ? res.parent.children : [])
-      : (res.parent ? res.parent.children : [])
-    currentLevel.value = 'gorod'
-  }
-
-  // очистим поиск
-  searchQuery.value = ''
-
-  // опционально — синхронизируем с монитором
-  bus.send('navigate', { region: res.name, type: res.type, path: res.path }, { role: 'monitor', pairId: '2' })
-}
 
 // --- загрузка и нормализация данных ---
 const loadData = async (type = 'xsn') => {
@@ -230,6 +189,8 @@ const openItem = async (item, el) => {
       patients: sumPatients(item),
       type: 'okrug',
     }
+    console.log('currentRegion', currentRegion.value);
+    
   } else if (item.type === 'oblast') {
     newItem = {
       ...JSON.parse(JSON.stringify(currentRegion.value)),
@@ -254,6 +215,8 @@ const openItem = async (item, el) => {
     newItem.patients = sumPatients(item)
   }
   currentRegion.value = newItem
+  console.log('newItem', newItem);
+  
 
   bus.send('navigate', { region: newItem, type: dataType.value }, { role: 'monitor', pairId: '2' })
 
@@ -282,8 +245,51 @@ const openItem = async (item, el) => {
   currentList.value = item.children
   currentLevel.value = item.children[0]?.type || 'lpu'
   searchQuery.value = ''
+}
 
-
+const openSearchItem = (res) => {
+  console.log('res', res);
+  let newItem = {}
+  if (res.type === 'okrug') {
+    stack.value.push({ list: currentList.value, level: currentLevel.value })
+    currentList.value = res.node.children || []
+    currentLevel.value = 'oblast'
+    newItem = {
+      okrug: res.node.name,
+      patients: sumPatients(res.node),
+      type: 'okrug',
+    }
+  } else if (res.type === 'oblast') {
+    stack.value.push({ list: currentList.value, level: currentLevel.value })
+    currentList.value = res.parent.children || []
+    currentLevel.value = 'oblast'
+    stack.value.push({ list: currentList.value, level: currentLevel.value })
+    currentList.value = res.node.children || []
+    currentLevel.value = 'gorod'
+    newItem = {
+      okrug: res.parent.name,
+      oblast: res.node.name,
+      patients: sumPatients(res.node),
+      type: 'oblast',
+    }
+  } else if (res.type === 'gorod') {
+    // аналогично — откроем список городов внутри области
+    stack.value.push({ list: currentList.value, level: currentLevel.value })
+    currentList.value = res.grandparent
+      ? (res.parent ? res.parent.children : [])
+      : (res.parent ? res.parent.children : [])
+    currentLevel.value = 'gorod'
+    newItem = {
+      okrug: res.grandparent ? res.grandparent.name : '',
+      oblast: res.parent ? res.parent.name : '',
+      gorod: res.node.name,
+      patients: sumPatients(res.node),
+      type: 'gorod',
+    }
+  }
+  currentRegion.value = newItem
+  searchQuery.value = ''
+  bus.send('navigate', { region: newItem, type: dataType.value }, { role: 'monitor', pairId: '2' })
 }
 
 // --- кнопка Назад ---

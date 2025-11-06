@@ -46,7 +46,7 @@ const links = ref([
       {
         id: 1,
         name: "Карта AstraZeneca",
-        link: "/touchmaptwo",
+        link: "/touch-screen-astrazeneca",
 
       },
       {

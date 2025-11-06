@@ -1,12 +1,12 @@
 <script setup>
-import IconFinal1 from "../icons/IconFinal1.vue";
-import IconFinal2 from "../icons/IconFinal2.vue";
-import IconFinal3 from "../icons/IconFinal3.vue";
-import IconFinal4 from "../icons/IconFinal4.vue";
-import IconFinal5 from "../icons/IconFinal5.vue";
-import IconFinal6 from "../icons/IconFinal6.vue";
-import IconFinal7 from "../icons/IconFinal7.vue";
-import IconFinal8 from "../icons/IconFinal8.vue";
+import IconFinal1 from "../../icons/IconFinal1.vue";
+import IconFinal2 from "../../icons/IconFinal2.vue";
+import IconFinal3 from "../../icons/IconFinal3.vue";
+import IconFinal4 from "../../icons/IconFinal4.vue";
+import IconFinal5 from "../../icons/IconFinal5.vue";
+import IconFinal6 from "../../icons/IconFinal6.vue";
+import IconFinal7 from "../../icons/IconFinal7.vue";
+import IconFinal8 from "../../icons/IconFinal8.vue";
 
 const video = "/video.mp4";
 </script>

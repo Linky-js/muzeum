@@ -1,8 +1,8 @@
 <script setup>
-import { onMounted, defineProps, computed } from "vue";
+import { onMounted, defineProps, computed, ref, watch } from "vue";
 // import gsap from "gsap";
 // import SplitText from "gsap/SplitText";
-
+const animatedNumber = ref(0)
 const props = defineProps({
   show: { type: Boolean, default: false },
   region: {
@@ -34,6 +34,35 @@ const imageSrc = computed(() => {
   if (!props.region?.name) return "/touch2/regions/default.jpg";
   return getImagePath(props.region.name);
 });
+function pluralizePatients(n) {
+  n = Math.abs(n) % 100
+  const n1 = n % 10
+  if (n > 10 && n < 20) return 'пациентов'
+  if (n1 > 1 && n1 < 5) return 'пациента'
+  if (n1 === 1) return 'пациент'
+  return 'пациентов'
+}
+watch(
+  () => props.region.patients,
+  (newVal, oldVal) => {
+    if (newVal === oldVal) return
+    animateNumber(oldVal || 0, newVal)
+  },
+  { immediate: true }
+)
+
+function animateNumber(from, to) {
+  const duration = 400 // 0.8 сек
+  const startTime = performance.now()
+
+  function update(currentTime) {
+    const progress = Math.min((currentTime - startTime) / duration, 1)
+    animatedNumber.value = Math.floor(from + (to - from) * progress)
+    if (progress < 1) requestAnimationFrame(update)
+  }
+
+  requestAnimationFrame(update)
+}
 </script>
 
 
@@ -42,16 +71,17 @@ const imageSrc = computed(() => {
 
     <div class="frame animBtn"></div>
     <div class="regionInfo">
-      <svg class="line" xmlns="http://www.w3.org/2000/svg" width="11" height="685" viewBox="0 0 11 685" fill="none">
-        <path
-          d="M5.33301 0.000651042C2.38749 0.000650913 -0.000325392 2.38847 -0.000325521 5.33398C-0.00032565 8.2795 2.38749 10.6673 5.33301 10.6673C8.27853 10.6673 10.6663 8.2795 10.6663 5.33398C10.6663 2.38847 8.27853 0.00065117 5.33301 0.000651042ZM5.33298 674.001C2.38746 674.001 -0.000354854 676.388 -0.000354982 679.334C-0.000355111 682.28 2.38746 684.667 5.33298 684.667C8.2785 684.667 10.6663 682.28 10.6663 679.334C10.6663 676.388 8.2785 674.001 5.33298 674.001ZM5.33301 5.33398L4.33301 5.33398L4.33298 679.334L5.33298 679.334L6.33298 679.334L6.33301 5.33398L5.33301 5.33398Z"
-          fill="white" />
-      </svg>
+     <svg class="line" xmlns="http://www.w3.org/2000/svg" height="100" viewBox="0 0 11 685" preserveAspectRatio="none">
+  <path
+    d="M5.33301 0.000651042C2.38749 0.000650913 -0.000325392 2.38847 -0.000325521 5.33398C-0.00032565 8.2795 2.38749 10.6673 5.33301 10.6673C8.27853 10.6673 10.6663 8.2795 10.6663 5.33398C10.6663 2.38847 8.27853 0.00065117 5.33301 0.000651042ZM5.33298 674.001C2.38746 674.001 -0.000354854 676.388 -0.000354982 679.334C-0.000355111 682.28 2.38746 684.667 5.33298 684.667C8.2785 684.667 10.6663 682.28 10.6663 679.334C10.6663 676.388 8.2785 674.001 5.33298 674.001ZM5.33301 5.33398L4.33301 5.33398L4.33298 679.334L5.33298 679.334L6.33298 679.334L6.33301 5.33398L5.33301 5.33398Z"
+    fill="white"
+  />
+</svg>
       <div class="region__block">
         <div class="names">
-          <span :class="{ active: region.type === 'okrug' }">{{ region.type !== 'lpu' ? region.okrug : '' }}</span>
-          <span :class="{ active: region.type === 'oblast' }">{{ (region.type !== 'okrug' && region.type !== 'lpu') ?
-            region.oblast : '' }}</span>
+          <span v-if="region.type === 'okrug'" class="okrug">{{ region.type === 'okrug' ? region.okrug + ' Федеральный округ' : '' }}</span>
+          <span v-if="region.type !== 'lpu' && region.type !== 'okrug'">{{ region.type !== 'lpu' && region.type !== 'okrug' ? region.okrug + ' ФО' : '' }}</span>
+          <span v-if="region.type === 'oblast'" :class="{ active: region.type === 'oblast' }">{{ (region.type !== 'okrug' && region.type !== 'lpu') ? region.oblast : '' }}</span>
           <span :class="{ active: region.type === 'gorod' }">{{ (region.type === 'lpu' || region.type === 'gorod') ?
             region.gorod : '' }}</span>
         </div>
@@ -59,8 +89,8 @@ const imageSrc = computed(() => {
           {{ region.fullname }}
         </div>
         <div class="patients">
-          <span class="number">{{ region.patients }}</span>
-          {{ region.patients > 1 ? 'пациентов' : 'пациент' }}
+          <span class="number">{{ animatedNumber }}</span>
+          {{ pluralizePatients(region.patients) }}
         </div>
       </div>
     </div>
@@ -122,19 +152,28 @@ h1 {
   gap: 48px;
 }
 
+.okrug {
+  width: min-content;
+}
+
 .names .active {
   color: rgba(12, 106, 246, 1);
   font-weight: 700;
 }
 
 .regionInfo {
-  display: flex;
-  gap: 115px;
+  padding-left: 115px;
+  position: relative;
 }
 
 .line {
-  height: auto;
-
+  height: 100%;
+  width: 11px;
+  display: block;
+  position: absolute;
+  left: 0px;
+  top: 0;
+  bottom: 0;
 }
 
 .region__block {
@@ -158,6 +197,7 @@ h1 {
 
 .number {
   color: #FFF;
+  font-family: "TT Hoves";
   font-size: 234px;
   font-style: normal;
   font-weight: 600;

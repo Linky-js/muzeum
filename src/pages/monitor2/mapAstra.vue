@@ -7,7 +7,7 @@ import { initMonitorSync } from '@/composables/syncRouterSimple.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const bus = useBroadcastBus({ role: 'monitor', pairId: '2', debug: true })
+const bus = useBroadcastBus({ role: 'monitor', pairId: '2', debug: false })
 initMonitorSync(router, bus, '2')
 const targetregion = ref(null);
 const curRegion = ref(null);
