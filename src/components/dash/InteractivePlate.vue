@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, nextTick } from "vue";
 import { useStore } from "vuex";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
 import IconInfo from "../icons/IconInfo.vue";
@@ -24,7 +24,7 @@ const showWeightModal = ref(false);
 const activeInfoBtn = ref(null);
 const weight = ref("");
 const useNumpad = ref(false);
-const moreDaysFlag = ref(false);
+const weightInputRef = ref(null);
 
 const days = [
   { id: 1, smallName: "Понедельник" },
@@ -98,6 +98,10 @@ watch(
 function applyQuickWeight(val) {
   weight.value = String(val);
   useNumpad.value = true;
+  // Фокусируемся на инпуте после установки быстрого веса
+  nextTick(() => {
+    weightInputRef.value?.focus();
+  });
 }
 function numpadPress(char) {
   if (char === "C") weight.value = "";
@@ -127,7 +131,8 @@ async function confirmWeight() {
   });
 
   if (!res.ok) alert("Нет свободного места для продукта!");
-  showWeightModal.value = false;
+  useNumpad.value = false;
+  weight.value = "";
 }
 
 /* --- Slots --- */
@@ -144,28 +149,27 @@ function onSlotClick(slotId) {
 }
 
 const slotPositions = {
-  1: { top: 40, left: 45.4, width: 350 },
-  2: { top: 40, left: 54.2, width: 350 },
-  3: { top: 60.4, left: 54.1, width: 335 },
-  4: { top: 60.4, left: 45.5, width: 350 },
-  5: { top: 65, left: 60.4, width: 344 },
-  6: { top: 51.3, left: 39.4, width: 220 },
-  8: { top: 55.4, left: 61, width: 280 },
-  10: { top: 37.5, left: 40.2, width: 352 },
-  11: { top: 65.4, left: 71.4, width: 520 },
-  12: { top: 66, left: 32.5, width: 370 },
+  1: { top: 40, left: 45.4, width: "350px" },
+  2: { top: 40, left: 54.2, width: "350px" },
+  3: { top: 60.4, left: 54.1, width: "335px" },
+  4: { top: 60.4, left: 45.5, width: "350px" },
+  5: { top: 65, left: 60.4, width: "344px" },
+  6: { top: 51.3, left: 39.4, width: "220px", zIndex: 2 },
+  8: { top: 51.4, left: 61.2, width: "260px" },
+  10: { top: 37.5, left: 40.2, width: "352px" },
+  11: { top: 65.4, left: 71.4, width: "520px", zIndex: 2 },
+  12: { top: 66, left: 32.5, width: "370px" },
+  16: { top: 48.4, left: 34.5, width: "235px", zIndex: 3 },
+  17: { top: 47.5, left: 29, width: "270px" },
+  18: { top: 46.4, left: 24, width: "236px" },
+  19: { top: 66.4, left: 25.5, width: "300px" },
+  13: { top: 38, left: 72.4, width: "16%" },
+  15: { top: 19, left: 52.4, width: "26%" },
+  14: { top: 46.3, left: 47.6, zIndex: "initial", info: { top: 22, left: 25 } },
+  9: { top: 41, left: 63.4, width: '12%' },
 
-  16: { top: 48.4, left: 34.5, width: 235 },
-  17: { top: 47.5, left: 29, width: 270 },
-  18: { top: 46.4, left: 24, width: 236 },
-  19: { top: 66.4, left: 25.5, width: 300 },
-
+  
   7: { top: 60.4, left: 55.4 },
-  9: { top: 40, left: 44.4 },
-
-  13: { top: 40, left: 44.4 },
-  14: { top: 39.3, left: 55 },
-  15: { top: 60.4, left: 55.4 },
 };
 
 function slotStyle(slotId) {
@@ -173,7 +177,15 @@ function slotStyle(slotId) {
   return {
     top: p.top + "%",
     left: p.left + "%",
-    width: p.width ? p.width + "px" : "auto",
+    width: p.width ? p.width : "auto",
+    "z-index": p.zIndex ? p.zIndex : 1,
+  };
+}
+function slotForInfoStyle(slotId) {
+  const p = slotPositions[slotId];
+  return {
+    top: p.info?.top + "%",
+    left: p.info?.left + "%",
   };
 }
 
@@ -241,18 +253,8 @@ const activeMealProducts = computed(() =>
 
 const modules = [Autoplay, Pagination, Navigation];
 
-const onSwiper = (swiper) => {
-  console.log(swiper);
-};
-
-const onSlideChange = (swiper) => {
-  console.log("slide change", swiper.activeIndex);
-};
-
 const closeActiveInfo = () => {
   if (!activeInfoBtn.value) return;
-  console.log("sdsdf");
-
   activeInfoBtn.value = null;
 };
 onMounted(() => store.commit("diet/INIT_DAY", 1));
@@ -275,9 +277,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
             <p class="top-info__content-title">
               {{ getNameCategory(product.subcatId) }}
             </p>
-            <p class="top-info__content-weight">
-               {{ product.weight }}г
-            </p>
+            <p class="top-info__content-weight">{{ product.weight }}г</p>
           </div>
         </div>
       </div>
@@ -296,6 +296,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
           <div
             v-if="currentMealState?.plate[slotId]"
             class="info"
+            :style="slotForInfoStyle(slotId)"
             :class="{
               active:
                 activeInfoBtn ===
@@ -549,6 +550,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
       </div>
       <div class="bottom-inputs">
         <input
+          ref="weightInputRef"
           class="weight-input bottom-inputs__inp"
           v-model="weight"
           @focus="useNumpad = true"
@@ -724,8 +726,6 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   margin-top: 16px;
   display: grid;
   gap: 16px;
-  max-height: 550px;
-  overflow-y: auto;
 }
 
 .top-info__product {
@@ -1286,12 +1286,13 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 .text {
   opacity: 0;
   visibility: hidden;
-  width: 0;
+  max-width: 0;
+  width: fit-content;
 }
 .text.active {
   opacity: 1;
   visibility: visible;
-  width: 200px;
+  max-width: 600px;
 }
 
 .footer__btn {

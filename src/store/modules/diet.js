@@ -469,7 +469,7 @@ export default {
             preview: "/products/subcat/subcat-8-1.png",
             allowedSlots: [15],
             images: {
-              15: "/products/yaichnica1.png",
+              15: "/products/frukti.png",
             },
           },
           {
@@ -487,7 +487,7 @@ export default {
             preview: "/products/subcat/subcat-8-3.png",
             allowedSlots: [16],
             images: {
-              16: "/products/yaichnica1.png",
+              16: "/products/yagodi_1.png",
             },
           },
         ],
@@ -504,8 +504,8 @@ export default {
             preview: "/products/subcat/subcat-9-1.png",
             allowedSlots: [14, 9],
             images: {
-              9: "/products/yaichnica1.png",
-              14: "/products/yaichnica1.png",
+              9: "/products/moloko2_right.png",
+              14: "/products/moloko1_left.png",
             },
           },
           {
@@ -514,7 +514,7 @@ export default {
             preview: "/products/subcat/subcat-9-2.png",
             allowedSlots: [13],
             images: {
-              13: "/products/yaichnica1.png",
+              13: "/products/chay.png",
             },
           },
           {
@@ -523,7 +523,7 @@ export default {
             preview: "/products/subcat/subcat-9-3.png",
             allowedSlots: [13],
             images: {
-              13: "/products/yaichnica1.png",
+              13: "/products/cofe2.png",
             },
           },
           {
@@ -532,7 +532,7 @@ export default {
             preview: "/products/subcat/subcat-9-4.png",
             allowedSlots: [13],
             images: {
-              13: "/products/yaichnica1.png",
+              13: "/products/cofe1.png",
             },
           },
           {
@@ -590,18 +590,19 @@ export default {
       return day?.meals?.[mealId] || null;
     },
 
-    getActiveMealSimpleProducts: (state, getters) => (activeDay, activeMeal) => {
-      const meal = getters.getMeal(activeDay, activeMeal);
-      if (!meal) return [];
+    getActiveMealSimpleProducts:
+      (state, getters) => (activeDay, activeMeal) => {
+        const meal = getters.getMeal(activeDay, activeMeal);
+        if (!meal) return [];
 
-      return Object.entries(meal.plate || {})
-        .filter(([_, product]) => product && product.subcatId)
-        .map(([slotId, product]) => ({
-          slotId: Number(slotId),
-          subcatId: product.subcatId,
-          weight: product.weight || null,
-        }));
-    },
+        return Object.entries(meal.plate || {})
+          .filter(([_, product]) => product && product.subcatId)
+          .map(([slotId, product]) => ({
+            slotId: Number(slotId),
+            subcatId: product.subcatId,
+            weight: product.weight || null,
+          }));
+      },
     // найти категорию по id
     findCategory: (state) => (categoryId) => {
       return state.categories.find((c) => c.id === categoryId) || null;
