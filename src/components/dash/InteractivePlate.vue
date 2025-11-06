@@ -3,7 +3,7 @@ import { ref, computed, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import IconInfo from "../icons/IconInfo.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
@@ -23,6 +23,7 @@ const showWeightModal = ref(false);
 const activeInfoBtn = ref(null);
 const weight = ref("");
 const useNumpad = ref(false);
+const moreDaysFlag = ref(false)
 
 const days = [
   { id: 1, smallName: "Понедельник" },
@@ -95,6 +96,7 @@ watch(
 /* --- Вес --- */
 function applyQuickWeight(val) {
   weight.value = String(val);
+  useNumpad.value = true;
 }
 function numpadPress(char) {
   if (char === "C") weight.value = "";
@@ -105,6 +107,7 @@ function toggleCategory(catId) {
   openCategory.value = openCategory.value === catId ? null : catId;
 }
 function onSelectSubcategory(subcatId) {
+  console.log("subcatId", subcatId);
   selectedSubcat.value = subcatId;
   weight.value = "";
   useNumpad.value = false;
@@ -140,29 +143,31 @@ function onSlotClick(slotId) {
 }
 
 const slotPositions = {
-  1: { top: 40, left: 45.4 },
-  2: { top: 40, left: 54.2 },
-  3: { top: 60.4, left: 54.1, width: 344 },
-  4: { top: 60.4, left: 45.5 },
+  1: { top: 40, left: 45.4, width: 350 },
+  2: { top: 40, left: 54.2, width: 350 },
+  3: { top: 60.4, left: 54.1, width: 335 },
+  4: { top: 60.4, left: 45.5, width: 350 },
+  5: { top: 65, left: 60.4, width: 344 },
+  6: { top: 51.3, left: 39.4, width: 220 },
+  8: { top: 55.4, left: 61,width: 280 },
+  10: { top: 37.5, left: 40.2, width: 352 },
+  11: { top: 65.4, left: 71.4, width: 520 },
+  12: { top: 66, left: 32.5, width: 370 },
 
-  5: { top: 40, left: 44.4 },
-  6: { top: 39.3, left: 55 },
+  16: { top: 48.4, left: 34.5, width: 235 },
+  17: { top: 47.5, left: 29, width: 270 },
+  18: { top: 46.4, left: 24, width: 236 },
+  19: { top: 66.4, left: 25.5, width: 300 },
+  
+
+
   7: { top: 60.4, left: 55.4 },
-  8: { top: 60.4, left: 44.5 },
-
   9: { top: 40, left: 44.4 },
-  10: { top: 39.3, left: 55 },
-  11: { top: 60.4, left: 55.4 },
-  12: { top: 60.4, left: 44.5 },
 
   13: { top: 40, left: 44.4 },
   14: { top: 39.3, left: 55 },
   15: { top: 60.4, left: 55.4 },
-  16: { top: 60.4, left: 44.5 },
 
-  17: { top: 40, left: 44.4 },
-  18: { top: 39.3, left: 55 },
-  19: { top: 60.4, left: 44.5 },
 };
 
 function slotStyle(slotId) {
@@ -170,7 +175,7 @@ function slotStyle(slotId) {
   return {
     top: p.top + "%",
     left: p.left + "%",
-    width: p.width ? p.width + "px" : 351 + "px",
+    width: p.width ? p.width + "px" : "auto",
   };
 }
 
@@ -229,7 +234,7 @@ function getNameCategory(id) {
   return null;
 }
 
-const modules = [Autoplay];
+const modules = [Autoplay, Pagination, Navigation];
 
 const onSwiper = (swiper) => {
   console.log(swiper);
@@ -467,17 +472,26 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
               class="categories-list__subcat-wrapper"
               v-if="openCategory === cat.id"
             >
-              <swiper
-                slides-per-view="auto"
-                :space-between="16"
-                :loop="true"
-                :autoplay="{
+                <!-- :autoplay="{
                   delay: 3000,
                   disableOnInteraction: false,
+                }" -->
+              <swiper
+                :loop="true"
+                slides-per-view="auto"
+                :space-between="17"
+                :pagination="{
+                  el: '.custom-pagination',
+                  clickable: true,
+                }"
+                :navigation="{
+                  nextEl: '.custom-next',
+                  prevEl: '.custom-prev',
                 }"
                 :modules="modules"
                 @swiper="onSwiper"
                 @slideChange="onSlideChange"
+                class="categories-list__subcat-swiper"
               >
                 <swiper-slide
                   v-for="sub in cat.subcategories"
@@ -498,6 +512,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
                     </h6>
                   </div>
                 </swiper-slide>
+                <div class="custom-prev"></div>
+                <div class="custom-next"></div>
+                <div class="custom-pagination"></div>
               </swiper>
             </div>
           </div>
@@ -511,31 +528,48 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
           placeholder="г"
         />
 
-        <div v-if="!useNumpad" class="quick-btns">
+        <div v-if="!useNumpad" class="quick-btns bottom-inputs__quick">
           <button
             v-for="w in quickWeights"
             :key="w"
             @click="applyQuickWeight(w)"
+            class="bottom-inputs__quick-btn"
           >
             {{ w }} г
           </button>
         </div>
 
-        <div v-else class="numpad">
+        <div v-else class="numpad bottom-inputs__numpad">
           <button
             v-for="n in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']"
             :key="n"
             @click="numpadPress(n)"
+            class="bottom-inputs__numpad-btn"
           >
             {{ n }}
           </button>
 
-          <button @click="numpadPress('<')">⌫</button>
-          <button @click="numpadPress('C')">С</button>
+          <button @click="numpadPress('<')" class="bottom-inputs__numpad-btn">
+            <
+          </button>
+          <button @click="numpadPress('C')" class="bottom-inputs__numpad-btn">
+            С
+          </button>
         </div>
 
-        <button class="bottom-inputs__btn" @click="confirmWeight">
+        <button
+          v-if="!useNumpad"
+          class="bottom-inputs__btn"
+          @click="confirmWeight"
+        >
           Рассчитать
+        </button>
+        <button
+          v-if="useNumpad"
+          class="bottom-inputs__btn-numpad"
+          @click="confirmWeight"
+        >
+          ок
         </button>
       </div>
     </div>
@@ -582,10 +616,10 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
         </div>
       </div>
     </div>
-
+    <!-- 
     <div class="controls save-control">
       <button class="btn-save" @click="saveAsImage">💾 Сохранить PNG</button>
-    </div>
+    </div> -->
 
     <canvas ref="canvasRef" class="hidden"></canvas>
   </div>
@@ -637,7 +671,6 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   align-items: center;
   justify-content: center;
   background: transparent;
-  width: 351px;
 }
 
 .slot .product {
@@ -879,7 +912,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   letter-spacing: -0.02em;
   color: #ffffff;
 }
-
+.categories-list__subcat-swiper {
+  height: 213px;
+}
 .categories-list__subcat-wrapper {
   position: absolute;
   bottom: 0;
@@ -902,10 +937,10 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 }
 
 .categories-list__subcat-img {
-  width: 210px;
-  height: 147px;
-  min-width: 210px;
-  min-height: 147px;
+  width: 275px;
+  height: 162px;
+  min-width: 275px;
+  min-height: 162px;
   max-width: 210px;
   max-height: 147px;
   border-radius: 24px;
@@ -921,6 +956,48 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   color: #ffffff;
 }
 
+/* Стили для пагинации */
+.custom-pagination {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.custom-pagination span.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  min-height: 8px;
+  background: #ffffff;
+  opacity: 0.2;
+  display: block;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+/* Стили для навигации */
+.custom-prev,
+.custom-next {
+  color: #007bff;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.custom-prev:after,
+.custom-next:after {
+  font-size: 16px;
+}
+
 /* здесь стили подкатегорий нужно дописать */
 
 .bottom-inputs {
@@ -931,32 +1008,100 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   border-radius: 58px;
 }
 
-.bottom-inputs__inp{
-padding: 24px;
-width: 371px;
-height: 90px;
-background: rgba(255, 255, 255, 0.1);
-border-radius: 16px;
-border: none;
-font-family: 'TT Hoves';
-font-weight: 400;
-font-size: 32px;
-line-height: 110%;
-letter-spacing: -0.02em;
-color: #FFFFFF;
-
+.bottom-inputs__inp {
+  padding: 24px;
+  width: 371px;
+  height: 90px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  border: none;
+  font-family: "TT Hoves";
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
-.bottom-inputs__btn{
-  margin-top: auto;
+.bottom-inputs__quick {
+  display: grid;
+  margin-top: 16px;
+  gap: 16px 8px;
+  grid-template-columns: repeat(6, 1fr);
 }
 
-.categories {
+.bottom-inputs__quick-btn {
   display: flex;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 20px 30px;
-  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  height: 67px;
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
+  border-radius: 16px;
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 24.9214px;
+  line-height: 37px;
+  text-align: center;
+  color: #ffffff;
+  grid-column: span 2;
+}
+.bottom-inputs__quick-btn:nth-child(4),
+.bottom-inputs__quick-btn:last-child {
+  grid-column: span 3;
+}
+.bottom-inputs__btn-numpad,
+.bottom-inputs__btn {
+  margin-top: auto;
+  width: 361.81px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  height: 72px;
+  opacity: 0.2;
+  font-family: "TT Hoves";
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #1b1c21;
+}
+
+.bottom-inputs__btn-numpad {
+  opacity: 1;
+  text-transform: uppercase;
+}
+
+.bottom-inputs__numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 16px;
+  gap: 16px 8px;
+}
+
+.bottom-inputs__numpad-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 67px;
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
+  border-radius: 66px;
+  font-family: "Manrope";
+  font-weight: 600;
+  font-size: 24.9214px;
+  line-height: 37px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.bottom-inputs__numpad-btn:nth-child(10) {
+  grid-area: 4/2;
 }
 
 .category .cat-btn {
@@ -1007,15 +1152,6 @@ color: #FFFFFF;
   border-radius: 16px;
   width: 1000px;
   text-align: center;
-}
-
-
-.quick-btns button,
-.numpad button {
-  margin: 4px;
-  padding: 10px;
-  font-size: 35px;
-  border-radius: 10px;
 }
 
 .modal-actions button {
