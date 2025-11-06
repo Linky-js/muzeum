@@ -23,6 +23,10 @@ const props = defineProps({
 
       },
     ]
+  },
+  onPage: {
+    type: String,
+    default: ''
   }
 })
 const isOpenMenu = ref(false);
@@ -129,7 +133,7 @@ onUnmounted(() => {
 
 <template>
   <div class="menu">
-    <button class="menu-btn" @click="toggleMenu" :class="{ active: isOpenMenu }" ref="buttonRef">
+    <button class="menu-btn" @click="toggleMenu" :class="{ active: isOpenMenu, dash: onPage === 'dash' }" ref="buttonRef">
       <div class="tint" v-if="!isOpenMenu"></div>
       <span class="menu-btn__inner">
         <svg ref="svgRef" width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -137,7 +141,7 @@ onUnmounted(() => {
           <path d="M6 22H42V26H6V22Z" fill="white" />
           <path d="M6 36H42V40H6V36Z" fill="white" />
         </svg>
-        <span class="menu-btn__name">Меню</span>
+        <span class="menu-btn__name" v-if="onPage !== 'dash'">Меню</span>
       </span>
     </button>
     <div class="menu-block glass main-menu" v-if="isOpenMenu" ref="menuRef">
@@ -242,6 +246,21 @@ onUnmounted(() => {
   backdrop-filter: blur(10px);
 }
 
+.menu-btn.dash {
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.34);
+  padding: 0;
+  justify-content: center;
+}
+
+.menu-btn.dash .tint{
+  display: none;
+}
+.menu-btn.dash .menu-btn__inner{
+  justify-content: center;
+}
 .menu-btn.active {
   background: #ffffff;
   box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
@@ -290,6 +309,10 @@ onUnmounted(() => {
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+}
+
+.menu-btn.dash::before{
+    background: linear-gradient(169deg, #c6c6c6 0%, #d8d8d8 86%, #e2e2e2 100%);
 }
 
 .menu-btn__inner {
