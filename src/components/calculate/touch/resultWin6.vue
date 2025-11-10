@@ -314,4 +314,66 @@ td {
   backdrop-filter: blur(10px);
   background: rgba(217, 217, 217, 0.4);
 }
+
+@media screen and (max-width: 475px) {
+  .diabet-wrapper {
+    margin-top: -16px;
+  }
+  .diabet__head {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+
+  .diabet__info {
+    gap: 0;
+  }
+
+  .quiz__btn {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    width: auto;
+    border-radius: 12px;
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .table {
+    border-radius: 8px;
+    max-width: none;
+  }
+
+  .table::before {
+    padding: 1px;
+    border-radius: 8px;
+  }
+
+  .table__head {
+    position: relative;
+    background: rgba(255, 255, 255, 0.2);
+    border-width: 0.74px 0px 0px 0.74px;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .table__head th {
+    padding: 7.4px 8.9px;
+    text-align: left;
+  }
+
+  .table__body span,
+  .table__head span {
+    font-size: 12px;
+  }
+
+  /* Тело таблицы */
+.table__body td {
+  padding: 8px;
+}
+}
 </style>
