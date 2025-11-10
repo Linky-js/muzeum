@@ -338,7 +338,7 @@ onBeforeUnmount(() => {
   inset: 0;
   border-radius: inherit;
   padding: 3px;
-  background: linear-gradient(169deg, #646464 0%, #4c4c4c 86%, #7c7c7c  100%);
+  background: linear-gradient(169deg, #646464 0%, #4c4c4c 86%, #7c7c7c 100%);
   border-radius: 38px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -351,7 +351,11 @@ onBeforeUnmount(() => {
   inset: 0;
   border-radius: 3rem;
   backdrop-filter: blur(10px);
-    background: linear-gradient(92deg, rgb(20 20 20) 3.83%, rgb(20 20 20 / 10%) 99.95%);
+  background: linear-gradient(
+    92deg,
+    rgb(20 20 20) 3.83%,
+    rgb(20 20 20 / 10%) 99.95%
+  );
 }
 
 .nickels {
@@ -432,5 +436,118 @@ onBeforeUnmount(() => {
   letter-spacing: -0.015rem;
   margin-top: 5rem;
   opacity: 0.52;
+}
+
+@media screen and (max-width: 475px) {
+  .left {
+    height: auto;
+  }
+
+  .left h4 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 110%;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .aside_description {
+    display: none;
+  }
+  .result_info {
+    margin-top: 16px;
+    gap: 16px;
+    flex-direction: column;
+    align-items: start;
+  }
+  .life_info {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 110%;
+    letter-spacing: -0.02em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .life_numbers {
+    gap: 7px;
+  }
+  .life_numbers-point {
+    gap: 5px;
+  }
+
+  .life_numbers-point span {
+    min-width: 9px;
+    min-height: 9px;
+    width: 9px;
+    height: 9px;
+  }
+
+  .life_numbers-point p {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 110%;
+    letter-spacing: -0.02em;
+  }
+
+  .left_bottom-text {
+    display: none;
+  }
+
+  .quiz__btn {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    width: auto;
+    border-radius: 12px;
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .calendar {
+    padding: 16px;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .calendar::before {
+    padding: 1px;
+    border-radius: 16px;
+  }
+
+  .nickels {
+    gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nickel {
+    gap: 4.94px;
+    max-width: 148.66px;
+    width: 100%;
+  }
+
+
+.rows {
+  gap: 5px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2.5px;
+}
+
+.week {
+  width: 9.88px;
+  height: 9.88px;
+}
+
+.tint{
+  border-radius: 16px;
+}
+
 }
 </style>

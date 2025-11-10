@@ -21,7 +21,7 @@ const props = defineProps({
           v-if="index !== list.length - 1"
         >
           <span class="breadcrumbs__item-top">
-            <span class="breadcrumbs__item-round"></span>
+            <span class="breadcrumbs__item-round gray"></span>
             <span class="breadcrumbs__item-line"></span>
           </span>
           <span class="breadcrumbs__item-text gray">{{ item.title }}</span>
@@ -100,5 +100,42 @@ const props = defineProps({
 }
 .breadcrumbs__item-text.gray {
   opacity: 0.3;
+}
+
+@media screen and (max-width: 475px) {
+  .breadcrumbs__list {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .breadcrumbs__item-inner {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .breadcrumbs__item-top {
+    width: 8px;
+    display: block;
+  }
+
+  .breadcrumbs__item-round {
+    width: 8px;
+    height: 8px;
+  }
+  .breadcrumbs__item-round.gray {
+background: #FFFFFF;
+opacity: 0.2;
+box-shadow: 0px 0px 11.2px #FFFFFF;
+  }
+  .breadcrumbs__item-line {
+    display: none;
+  }
+
+  .breadcrumbs__item-text {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: -0.03em;
+  }
 }
 </style>

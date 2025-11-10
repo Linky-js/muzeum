@@ -59,8 +59,6 @@ const routes = [
         path: "screen-1",
         component: () => import("@/pages/touch2/touch-screen-1.vue"),
       },
-
-
     ],
   },
   {
@@ -163,6 +161,11 @@ const routes = [
         name: "touch-calc",
         path: "touch-calc",
         component: () => import("@/pages/km-sindrom/calculate/touch-calc.vue"),
+      },
+      {
+        name: "touch-calc-mobile",
+        path: "touch-calc-mobile",
+        component: () => import("@/pages/km-sindrom/calculate/touch-calc-mobile.vue"),
       },
     ],
   },
