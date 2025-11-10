@@ -1,6 +1,6 @@
 <script setup>
-import { useRoute } from 'vue-router'
-const route = useRoute()
+import { useRoute } from "vue-router";
+const route = useRoute();
 </script>
 <template>
   <div class="wrapper-content">
@@ -19,8 +19,12 @@ const route = useRoute()
   position: relative;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(23.51deg, #000000 -4.02%, #030E22 117.07%, #000000 171.71%);
-
+  background: linear-gradient(
+    23.51deg,
+    #000000 -4.02%,
+    #030e22 117.07%,
+    #000000 171.71%
+  );
 }
 
 .bg {
@@ -36,5 +40,12 @@ const route = useRoute()
 
 .relative {
   position: relative;
+}
+
+@media screen and (max-width: 475px) {
+  .wrapper-content {
+    height: auto;
+    padding: 16px;
+  }
 }
 </style>

@@ -116,12 +116,11 @@ const regions = [
   { id: 85, name: "Херсонская область" },
 ];
 
-
 const goRegion = (value) => {
   // Обновляем только локальную переменную для отображения
   props.person.region = value;
   regionUp.value = false;
-  
+
   // Если нужно обновить объект person.region, раскомментируйте следующую строку:
   // props.person.region = value;
 };
@@ -220,7 +219,13 @@ const regionsHints = computed(() => {
         </div>
       </div>
     </div>
-    <button @click="goNextStep(step + 1)" :disabled="person.age == '' || person.gender == '' || !person.region.name" class="quiz__btn">Дальше</button>
+    <button
+      @click="goNextStep(step + 1)"
+      :disabled="person.age == '' || person.gender == '' || !person.region.name"
+      class="quiz__btn"
+    >
+      Дальше
+    </button>
   </div>
 </template>
 
@@ -406,7 +411,7 @@ const regionsHints = computed(() => {
   color: #ffffff;
 }
 
-.region.active{
+.region.active {
   background: rgba(255, 255, 255, 0.5);
 }
 
@@ -424,7 +429,7 @@ const regionsHints = computed(() => {
   font-size: 2.5rem;
   line-height: 110%;
   letter-spacing: -0.02em;
-    background-color: #ffffff;
+  background-color: #ffffff;
   color: #00040b;
 }
 .quiz__btn:disabled {
@@ -460,5 +465,114 @@ const regionsHints = computed(() => {
   box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.1),
     inset -1px -1px 1px 1px rgba(255, 255, 255, 0.1);
   border-radius: 3rem;
+}
+
+@media screen and (max-width: 475px) {
+  .quiz-wrapper {
+    margin-top: 0 !important;
+    height: auto !important;
+    width: 100%;
+  }
+
+  .quiz {
+    gap: 0;
+    padding: 0;
+    max-width: 100%;
+    margin-bottom: 0;
+  }
+
+  .question {
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+    padding: 24px 0;
+    border-bottom: 1px solid #31353c;
+  }
+
+  .question:first-child {
+    border-top: 1px solid #31353c;
+  }
+
+  .label {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 110%;
+    letter-spacing: -0.02em;
+  }
+
+  .answers {
+    gap: 8px;
+    max-width: none;
+    width: 100%;
+  }
+
+  .answer {
+    padding: 24px 32px;
+    width: auto;
+    height: 48px;
+    border-radius: 109.09px;
+  }
+
+  .answer span {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 37px;
+  }
+
+  .input_wrap {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(
+      85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%
+    );
+    border-radius: 16px;
+  }
+  .answer::before {
+    padding: 2px;
+  }
+  .input_wrap::before {
+    padding: 1px;
+  }
+  .input_quiz {
+    font-size: 16px;
+    padding: 5px 16px;
+    padding-right: 40px;
+  }
+
+  .input_quiz::placeholder {
+    font-size: 16px;
+  }
+  .input_wrap-arr {
+    top: 18px;
+    right: 16px;
+    width: 15px;
+    height: 16px;
+  }
+
+  .quiz__btn {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    width: auto;
+    border-radius: 12px;
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .custom_list {
+    height: 350px;
+    bottom: 120%;
+    top: initial;
+    background-color: #010101d6;
+  }
+
+  .region{
+    font-size: 16px;
+    padding: 15px;
+  }
 }
 </style>
