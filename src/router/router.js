@@ -179,7 +179,7 @@ const routes = [
         name: "monitor-calculate-mobile",
         path: "monitor-calc-mobile",
         component: () =>
-          import("@/pages/km-sindrom/calculate/touch-calc-mobile.vue"),
+          import("@/pages/km-sindrom/calculate/monitor-calc-mobile.vue"),
       },
     ],
   },

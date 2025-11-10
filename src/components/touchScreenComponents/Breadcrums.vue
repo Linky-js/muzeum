@@ -4,11 +4,12 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  view: String,
 });
 </script>
 
 <template>
-  <div class="breadcrumbs">
+  <div class="breadcrumbs" :class="view">
     <ul class="breadcrumbs__list">
       <li
         class="breadcrumbs__item"
@@ -102,6 +103,42 @@ const props = defineProps({
   opacity: 0.3;
 }
 
+.breadcrumbs.mobile .breadcrumbs__list {
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.breadcrumbs.mobile .breadcrumbs__item-inner {
+  flex-direction: row;
+  gap: 8px;
+}
+
+.breadcrumbs.mobile .breadcrumbs__item-top {
+  width: 8px;
+  display: block;
+}
+
+.breadcrumbs.mobile .breadcrumbs__item-round {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  min-height: 8px;
+}
+.breadcrumbs.mobile .breadcrumbs__item-round.gray {
+  background: #ffffff;
+  opacity: 0.2;
+  box-shadow: 0px 0px 11.2px #ffffff;
+}
+.breadcrumbs.mobile .breadcrumbs__item-line {
+  display: none;
+}
+
+.breadcrumbs.mobile .breadcrumbs__item-text {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+}
 @media screen and (max-width: 475px) {
   .breadcrumbs__list {
     flex-wrap: wrap;
@@ -121,11 +158,13 @@ const props = defineProps({
   .breadcrumbs__item-round {
     width: 8px;
     height: 8px;
+    min-width: 8px;
+    min-height: 8px;
   }
   .breadcrumbs__item-round.gray {
-background: #FFFFFF;
-opacity: 0.2;
-box-shadow: 0px 0px 11.2px #FFFFFF;
+    background: #ffffff;
+    opacity: 0.2;
+    box-shadow: 0px 0px 11.2px #ffffff;
   }
   .breadcrumbs__item-line {
     display: none;

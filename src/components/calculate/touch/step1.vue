@@ -6,6 +6,7 @@ const props = defineProps({
   person: Object,
   step: Number,
   goNextStep: Function,
+  view: String,
 });
 const regionUp = ref(false);
 const ageUp = ref(false);
@@ -138,7 +139,7 @@ const regionsHints = computed(() => {
 </script>
 
 <template>
-  <div class="quiz-wrapper">
+  <div class="quiz-wrapper" :class="view">
     <div class="quiz">
       <div class="question">
         <div class="label">Пол:</div>
@@ -467,6 +468,116 @@ const regionsHints = computed(() => {
   border-radius: 3rem;
 }
 
+.quiz-wrapper.mobile {
+  margin-top: 0 !important;
+  height: auto !important;
+  width: 100%;
+}
+
+.quiz-wrapper.mobile .quiz {
+  gap: 0;
+  padding: 0;
+  max-width: 100%;
+  margin-bottom: 0;
+}
+
+.quiz-wrapper.mobile .question {
+  flex-direction: column;
+  align-items: start;
+  gap: 16px;
+  padding: 24px 0;
+  border-bottom: 1px solid #31353c;
+}
+
+.quiz-wrapper.mobile .question:first-child {
+  border-top: 1px solid #31353c;
+}
+
+.quiz-wrapper.mobile .label {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+}
+
+.quiz-wrapper.mobile .answers {
+  gap: 8px;
+  max-width: none;
+  width: 100%;
+}
+
+.quiz-wrapper.mobile .answer {
+  padding: 24px 32px;
+  width: auto;
+  height: 48px;
+  border-radius: 109.09px;
+}
+
+.quiz-wrapper.mobile .answer span {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 37px;
+}
+
+.quiz-wrapper.mobile .input_wrap {
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
+  border-radius: 16px;
+}
+.quiz-wrapper.mobile .answer::before {
+  padding: 2px;
+}
+.quiz-wrapper.mobile .input_wrap::before {
+  padding: 1px;
+}
+.quiz-wrapper.mobile .input_quiz {
+  font-size: 16px;
+  padding: 5px 16px;
+  padding-right: 40px;
+}
+
+.quiz-wrapper.mobile .input_quiz::placeholder {
+  font-size: 16px;
+}
+.quiz-wrapper.mobile .input_wrap-arr {
+  top: 18px;
+  right: 16px;
+  width: 15px;
+  height: 16px;
+}
+
+.quiz-wrapper.mobile .quiz__btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  left: 16px;
+  max-width: none;
+  width: auto;
+  border-radius: 12px;
+  height: 48px;
+  font-size: 14px;
+}
+
+.quiz-wrapper.mobile .quiz__btn:disabled {
+  background-color: #10131b;
+}
+
+.quiz-wrapper.mobile .custom_list {
+  height: 350px;
+  bottom: 120%;
+  top: initial;
+  background-color: #010101d6;
+}
+
+.quiz-wrapper.mobile .region {
+  font-size: 16px;
+  padding: 15px;
+}
 @media screen and (max-width: 475px) {
   .quiz-wrapper {
     margin-top: 0 !important;
@@ -552,7 +663,7 @@ const regionsHints = computed(() => {
   }
 
   .quiz__btn {
-    position: fixed;
+    position: absolute;
     bottom: 16px;
     right: 16px;
     left: 16px;
@@ -563,10 +674,9 @@ const regionsHints = computed(() => {
     font-size: 14px;
   }
 
-    .quiz__btn:disabled {
-    background-color: #10131B;
+  .quiz__btn:disabled {
+    background-color: #10131b;
   }
-
 
   .custom_list {
     height: 350px;
@@ -575,7 +685,7 @@ const regionsHints = computed(() => {
     background-color: #010101d6;
   }
 
-  .region{
+  .region {
     font-size: 16px;
     padding: 15px;
   }
