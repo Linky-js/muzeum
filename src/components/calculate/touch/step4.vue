@@ -426,4 +426,10 @@ const props = defineProps({
     inset -1px -1px 1px 1px rgba(255, 255, 255, 0.1);
   border-radius: 3rem;
 }
+
+@media screen and (max-width: 475px) {
+  .quiz__btn:disabled {
+    background-color: #10131b;
+  }
+}
 </style>
