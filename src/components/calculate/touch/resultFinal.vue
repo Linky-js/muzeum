@@ -225,34 +225,33 @@ const video = "/video.mp4";
   letter-spacing: -0.02em;
 }
 @media screen and (max-width: 475px) {
+  .final-wrapper {
+    margin-top: 0;
+  }
 
-.final-wrapper{
-  margin-top: 0;
-}
+  .final__body {
+    gap: 8px;
+    grid-template-columns: repeat(5, 321px);
+    overflow-x: auto;
+    padding-bottom: 16px;
+  }
 
-.final__body{
-  gap: 8px;
-  grid-template-columns: repeat(5, 321px);
-  overflow-x: auto;
-  padding-bottom: 16px;
-}
+  .final__item {
+    padding: 16px;
+    border-radius: 16px;
+  }
 
-.final__item{
-  padding: 16px;
-  border-radius: 16px;
-}
+  .final__item-top svg {
+    width: 32px;
+    height: fit-content;
+  }
+  .final__item-step {
+    font-size: 16px;
+  }
 
-.final__item-top svg{
-  width: 32px;
-  height: fit-content;
-}
-.final__item-step {
-font-size: 16px;
-}
-
-.final__item-title {
-font-weight: 500;
-font-size: 16px;
-}
+  .final__item-title {
+    font-weight: 500;
+    font-size: 16px;
+  }
 }
 </style>
