@@ -1,8 +1,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 
 const step = ref(0);
 const qrCodeUrl = ref("");
+const phoneImg = '/monitor-calc-mobile.png'
 
 // функция для генерации рандомного QR
 const generateQr = () => {
@@ -24,26 +27,30 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="wrapper">
-    <aside class="left">
-     <img :src="qrCodeUrl" alt="QR Code" />
-     <div class="dopInfo">
-      <div class="head">
-        Калькулятор продолжительности жизни и риска возникновения развития  метаболического синдрома 
-      </div>
-      <div class="description">
-        отсканируйте QR код, пройдите тест и получите расчет
-      </div>
-     </div>
-    </aside>
-    <div class="container">
-      <div class="step1">
-        <h1>Отсканируйте QR КОД</h1>
-        <div class="description">
-          Узнайте прогноз вашей продолжительности жизни и рисков развития метаболического синдрома
+  <div class="monitor">
+    <aside class="monitor-qr">
+      <div class="monitor-qr__wrapper">
+        <div class="tint"></div>
+        <div class="qr-code relative monitor-qr__qr-code">
+          <img :src="qrCodeUrl" alt="QR Code" />
         </div>
-        <div class="qr-code">
-          
+      </div>
+      <div class="monitor-qr__info">
+        <h2 class="monitor-qr__title">
+          Калькулятор продолжительности жизни и <br />риска возникновения
+          развития<br />
+          метаболического синдрома
+        </h2>
+        <p class="monitor-qr__description">
+          отсканируйте QR код, пройдите тест и получите расчет
+        </p>
+      </div>
+    </aside>
+    <div class="monitor-mobile">
+      <img class="monitor-mobile__img" :src="phoneImg" alt="">
+      <div class="monitor-mobile__content-wrapper">
+        <div class="monitor-mobile__content relative">
+          <router-view></router-view>
         </div>
       </div>
     </div>
@@ -51,77 +58,143 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.wrapper {
-  background: #fff;
+.relative {
+  position: relative;
+  z-index: 1;
 }
-.wrapper * {
-  color: #000;
-}
-.container {
-  width: max-content;
-  max-width: 112.24rem;
-  margin: 0 auto;
-  padding: 0 2rem;
-  box-sizing: border-box;
-  height: 100%;
+
+.monitor {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url(../monitor-calc.png);
+  padding: 107px 100px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 385px;
+  height: 100vh;
+}
+
+.monitor-qr {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.monitor-qr__wrapper {
+  width: 334px;
+  height: 334px;
+  min-width: 334px;
+  min-height: 334px;
+  display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-}
-.left {
-  position: absolute;
-  top: 1.75rem;
-  left: 1.75rem;
-  z-index: 2;
-}
-.left h3 {
-  color: #0E1117;
-  font-family: "TT Hoves";
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.04rem;
-}
-.left .etap {
-  font-size: 1.25rem;
-  font-weight: 500;
-}
-.step1 {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  text-align: center;
-  align-items: center;
-}
-.step1 h1 {
-  color: #0E1117;
-  font-size: 5.5425rem;
-  font-weight: 700;
-  letter-spacing: -0.11088rem;
-}
-.description {
-  color: #000;
-  font-size: 1.5rem;
-  font-weight: 700;
-  opacity: 0.5;
-  max-width: 39.9875rem;
-}
-.qr-code {
-  margin-top: 1rem;
-  border-radius: 1.25rem;
-  background: #000;
-  width: 17.6875rem;
-  height: 17.6875rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  padding: 41px;
+  background: rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
+  backdrop-filter: blur(10px);
+  border-radius: 19px;
 }
+
+.monitor-qr__wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
+  border-radius: 19px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.qr-code {
+  background-color: transparent;
+  width: 251px;
+  height: 251px;
+}
+
 .qr-code img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 1.25rem;
+}
+
+.tint {
+  z-index: 1;
+  position: absolute;
+  inset: 0;
+  border-radius: 3rem;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
+}
+
+.monitor-qr__title {
+  font-family: "TT Hoves";
+  font-weight: 500;
+  font-size: 80px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 28px;
+}
+
+.monitor-qr__description {
+  font-family: "TT Hoves";
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+  opacity: 0.5;
+}
+
+.monitor-mobile {
+  max-width: 810.45px;
+  width: 100%;
+  height: 1656.92px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 160px;
+  background: linear-gradient(
+    23.51deg,
+    #000000 -4.02%,
+    #030e22 117.07%,
+    #000000 171.71%
+  );
+}
+
+.monitor-mobile__img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.monitor-mobile__content {
+  height: 100%;
+  max-height: 100%;
+  padding: 60px 15px 25px;
+  overflow-y: auto;
 }
 </style>
