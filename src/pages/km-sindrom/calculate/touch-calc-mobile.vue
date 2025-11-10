@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
+import { useRouter, useRoute } from 'vue-router';
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import Breadcrums from "@/components/touchScreenComponents/Breadcrums.vue";
@@ -13,187 +14,162 @@ import Step1 from "@/components/calculate/touch/step1.vue";
 import Step2 from "@/components/calculate/touch/step2.vue";
 import Step3 from "@/components/calculate/touch/step3.vue";
 
+const router = useRouter();
+const route = useRoute();
+
+// Константы для переиспользования
+const ROUTE_PATH = '/touch-calculate/touch-calc-mobile';
+const STEP_VALIDATION_RULES = {
+  2: ['age', 'gender'],
+  3: ['rost', 'ves', 'taliya', 'fizActive', 'yagody'],
+  4: ['arteriya', 'sahar', 'diabet', 'priem', 'diabetFamily']
+};
+
 const breadcrumbsList = ref([
-  {
-    id: 0,
-    title: "Главная",
-    link: "/",
-  },
-  {
-    id: 1,
-    title: "Калькулятор",
-    link: "/",
-  },
+  { id: 0, title: "Главная", link: "/" },
+  { id: 1, title: "Калькулятор", link: `${ROUTE_PATH}?step=1` },
 ]);
+
 const step = ref(1);
 const title = ref();
 const subtitle = ref();
 const person = ref({
-  age: "",
-  gender: "",
-  region: { id: null, name: "" },
-  rost: "",
-  ves: "",
-  taliya: "",
-  fizActive: "",
-  yagody: "",
-  arteriya: "",
-  sahar: "",
-  diabet: "",
-  priem: "",
-  diabetFamily: "",
+  age: "", gender: "", region: { id: null, name: "" }, rost: "", ves: "", taliya: "",
+  fizActive: "", yagody: "", arteriya: "", sahar: "", diabet: "", priem: "", diabetFamily: "",
 });
-const goNextStep = (st) => {
-  if (st == 2) {
-    if (person.value.age == "" || person.value.gender == "") {
-      toast.error("Заполните поля Возраст и Пол");
-      console.log(13);
-    } else {
-      step.value = st;
-      changeTitles(step.value);
-    }
-  } else if (st == 3) {
-    if (
-      person.value.rost == "" ||
-      person.value.ves == "" ||
-      person.value.taliya == "" ||
-      person.value.fizActive == "" ||
-      person.value.yagody == ""
-    ) {
-      toast.error("Заполните поля Рост, Вес, Окружность талии");
-    } else {
-      step.value = st;
-      changeTitles(step.value);
-    }
-  } else if (st == 4) {
-    if (
-      person.value.arteriya == "" ||
-      person.value.sahar == "" ||
-      person.value.diabet == "" ||
-      person.value.priem == "" ||
-      person.value.diabetFamily == ""
-    ) {
-      toast.error("Заполните поля Артерия, Сахар");
-    } else {
-      step.value = st;
-      changeTitles(step.value);
-      console.log(person.value);
-    }
-  } else {
-    step.value = st;
-    changeTitles(step.value);
+
+// Универсальная функция для перехода по шагам
+const navigateToStep = (targetStep, updateUrl = true) => {
+  step.value = targetStep;
+  changeTitles(targetStep);
+  updateBreadcrumbs(targetStep);
+  
+  if (updateUrl) {
+    router.push({ path: ROUTE_PATH, query: { step: targetStep } });
   }
 };
+
+// Функция проверки заполненности полей
+const validateStepFields = (stepNumber) => {
+  const fieldsToCheck = STEP_VALIDATION_RULES[stepNumber] || [];
+  return fieldsToCheck.every(field => person.value[field] !== "");
+};
+
+// Оптимизированная функция перехода на шаг
+const goToStep = (targetStep) => {
+  if (targetStep === 1) {
+    navigateToStep(targetStep);
+    return;
+  }
+
+  const validationMap = {
+    4: { requiredStep: 3, error: "Заполните все предыдущие шаги для перехода к Календарю дней" },
+    5: { requiredStep: 4, error: "Заполните все данные для перехода к Выводу" },
+    6: { requiredStep: 4, error: "Заполните все данные для перехода к Выводу" }
+  };
+
+  const validation = validationMap[targetStep];
+  if (validation && !validateStepFields(validation.requiredStep)) {
+    toast.error(validation.error);
+    return;
+  }
+
+  // Дополнительные проверки для шагов 5 и 6
+  if (targetStep === 5 && person.value.diabet !== "Нет") {
+    toast.error("Нельзя перейти на этот шаг при наличии диабета");
+    return;
+  }
+  if (targetStep === 6 && person.value.diabet === "Нет") {
+    toast.error("Нельзя перейти на этот шаг при отсутствии диабета");
+    return;
+  }
+
+  navigateToStep(targetStep);
+};
+
+// Упрощенная функция goNextStep
+const goNextStep = (nextStep) => {
+  if (!validateStepFields(nextStep - 1)) {
+    const errorMessages = {
+      2: "Заполните поля Возраст и Пол",
+      3: "Заполните поля Рост, Вес, Окружность талии", 
+      4: "Заполните поля Артерия, Сахар"
+    };
+    toast.error(errorMessages[nextStep] || "Заполните необходимые поля");
+    return;
+  }
+  
+  navigateToStep(nextStep);
+};
+
 const checkStep = () => {
-  console.log(person.value.diabet);
-  if (person.value.diabet == "Нет") {
-    step.value = 5;
-    changeTitles(step.value);
-  } else {
-    step.value = 6;
-    changeTitles(step.value);
-  }
+  const targetStep = person.value.diabet === "Нет" ? 5 : 6;
+  navigateToStep(targetStep);
 };
+
+// Оптимизированная функция хлебных крошек
+const updateBreadcrumbs = (currentStep) => {
+  const baseBreadcrumbs = [
+    { id: 0, title: "Главная", link: "/" },
+    { id: 1, title: "Калькулятор", link: `${ROUTE_PATH}?step=1` },
+  ];
+
+  const breadcrumbsConfig = {
+    1: baseBreadcrumbs,
+    2: baseBreadcrumbs,
+    3: baseBreadcrumbs,
+    4: [...baseBreadcrumbs, { id: 2, title: "Календарь дней", link: `${ROUTE_PATH}?step=4` }],
+    5: [...baseBreadcrumbs, 
+        { id: 2, title: "Календарь дней", link: `${ROUTE_PATH}?step=4` },
+        { id: 3, title: "Вывод", link: `${ROUTE_PATH}?step=5` }],
+    6: [...baseBreadcrumbs,
+        { id: 2, title: "Календарь дней", link: `${ROUTE_PATH}?step=4` },
+        { id: 3, title: "Вывод", link: `${ROUTE_PATH}?step=6` }],
+    7: [...baseBreadcrumbs,
+        { id: 2, title: "Календарь дней", link: `${ROUTE_PATH}?step=4` },
+        { id: 3, title: "Вывод", link: `${ROUTE_PATH}?step=${person.value.diabet === "Нет" ? 5 : 6}` },
+        { id: 4, title: "Рекомендации", link: `${ROUTE_PATH}?step=7` }]
+  };
+
+  breadcrumbsList.value = breadcrumbsConfig[currentStep] || baseBreadcrumbs;
+};
+
 const changeTitles = (step) => {
-  switch (step) {
-    case 4:
-      title.value = "Календарь дней";
-      subtitle.value = "";
-      break;
-    case 6:
-      title.value = "Вывод";
-      subtitle.value = "";
-      break;
-    case 7:
-      title.value = "Практические советы для<br /> долгой и здоровой жизни";
-      subtitle.value = "";
-      break;
-    case 5:
-      title.value =
-        "Для людей с подобным<br /> профилем риск развития<br /> диабета - низкий.";
-      subtitle.value = "";
-      break;
+  const titles = {
+    4: { title: "Календарь дней", subtitle: "" },
+    5: { title: "Для людей с подобным<br /> профилем риск развития<br /> диабета - низкий.", subtitle: "" },
+    6: { title: "Вывод", subtitle: "" },
+    7: { title: "Практические советы для<br /> долгой и здоровой жизни", subtitle: "" },
+    default: { 
+      title: "Калькулятор", 
+      subtitle: "Введите ваши данные для определения статистической продолжительности жизни на основе данных" 
+    }
+  };
 
-    default:
-      title.value = "Калькулятор";
-      subtitle.value =
-        "Введите ваши данные для определения статистической продолжительности жизни на основе данных";
-      break;
-  }
+  const { title: newTitle, subtitle: newSubtitle } = titles[step] || titles.default;
+  title.value = newTitle;
+  subtitle.value = newSubtitle;
 };
 
-watch(step, (newStep) => {
-  if (newStep === 4) {
-    breadcrumbsList.value = [
-      {
-        id: 0,
-        title: "Главная",
-        link: "/",
-      },
-      {
-        id: 2,
-        title: "Калькулятор",
-        link: "/",
-      },
-      {
-        id: 3,
-        title: "Календарь дней",
-        link: "/",
-      },
-    ];
-  }
-  if (newStep === 6 || newStep === 5) {
-    breadcrumbsList.value = [
-      {
-        id: 0,
-        title: "Главная",
-        link: "/",
-      },
-      {
-        id: 2,
-        title: "Калькулятор",
-        link: "/",
-      },
-      {
-        id: 3,
-        title: "Вывод",
-        link: "/",
-      },
-    ];
-  }
-  if (newStep === 7) {
-    breadcrumbsList.value = [
-      {
-        id: 0,
-        title: "Главная",
-        link: "/",
-      },
-      {
-        id: 1,
-        title: "Тест",
-        link: "/",
-      },
-      {
-        id: 2,
-        title: "Календарь дней",
-        link: "/",
-      },
-      {
-        id: 3,
-        title: "Вывод",
-        link: "/",
-      },
-      {
-        id: 4,
-        title: "Рекомендации",
-        link: "/",
-      },
-    ];
+// Обработка изменения параметров URL
+watch(() => route.query.step, (newStep) => {
+  if (newStep) {
+    const stepNumber = parseInt(newStep);
+    if (stepNumber >= 1 && stepNumber <= 7) {
+      goToStep(stepNumber);
+    }
   }
 });
 
+// Инициализация при загрузке
 onMounted(() => {
+  const urlStep = parseInt(route.query.step);
+  if (urlStep >= 1 && urlStep <= 7) {
+    step.value = urlStep;
+  }
+  
   changeTitles(step.value);
+  updateBreadcrumbs(step.value);
 });
 </script>
 <template>
