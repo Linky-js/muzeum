@@ -563,6 +563,11 @@ const regionsHints = computed(() => {
     font-size: 14px;
   }
 
+    .quiz__btn:disabled {
+    background-color: #10131B;
+  }
+
+
   .custom_list {
     height: 350px;
     bottom: 120%;

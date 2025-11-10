@@ -165,7 +165,8 @@ const routes = [
       {
         name: "touch-calc-mobile",
         path: "touch-calc-mobile",
-        component: () => import("@/pages/km-sindrom/calculate/touch-calc-mobile.vue"),
+        component: () =>
+          import("@/pages/km-sindrom/calculate/touch-calc-mobile.vue"),
       },
     ],
   },
@@ -173,6 +174,14 @@ const routes = [
     name: "monitor-calculate",
     path: "/monitor-calculate",
     component: () => import("@/pages/km-sindrom/calculate/monitor.vue"),
+    children: [
+      {
+        name: "monitor-calculate-mobile",
+        path: "monitor-calc-mobile",
+        component: () =>
+          import("@/pages/km-sindrom/calculate/touch-calc-mobile.vue"),
+      },
+    ],
   },
 
   // пробы

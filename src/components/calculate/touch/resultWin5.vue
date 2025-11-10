@@ -281,5 +281,11 @@ const vesselsData = computed(() => {
     height: 48px;
     font-size: 14px;
   }
+
+    .quiz__btn:disabled {
+    background-color: #10131B;
+  }
+
 }
+
 </style>

@@ -108,7 +108,7 @@ const percent = computed(() => {
     <div class="diabet__info">
       <table class="table">
         <thead class="table__head reltive">
-          <div class="tint-light"></div>
+          <span class="tint-light"></span>
           <tr class="relative">
             <th class="table__item relative"><span>Баллы</span></th>
             <th class="table__item relative"><span>Уровень риска</span></th>
@@ -342,6 +342,11 @@ td {
     height: 48px;
     font-size: 14px;
   }
+
+    .quiz__btn:disabled {
+    background-color: #10131B;
+  }
+
 
   .table {
     border-radius: 8px;
