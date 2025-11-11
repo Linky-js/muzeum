@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 
-const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: true })
+const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 const VIDEO_SRC = '/2.mp4'
 </script>

@@ -14,8 +14,14 @@ import Step1 from "@/components/calculate/touch/step1.vue";
 import Step2 from "@/components/calculate/touch/step2.vue";
 import Step3 from "@/components/calculate/touch/step3.vue";
 
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMasterSync } from '@/composables/syncRouterSimple.js'
+
 const router = useRouter();
 const route = useRoute();
+
+const bus = useBroadcastBus({ role: 'touch', pairId: '1', debug: false })
+initMasterSync(router, bus, '1')
 
 // Константы для переиспользования
 const ROUTE_PATH = '/touch-calculate/touch-calc';

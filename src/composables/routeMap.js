@@ -10,4 +10,5 @@ export default {
     'touch2-screen-1': { name: 'monitor2-screen-1' },
     'touch2-screen-regions': { name: 'monitor2-screen-regions' },
     'touch2-astrazeneca': { name: 'monitor2-astrazeneca' },
+    'touch-qr': { name: 'monitor-calculate' },
 }

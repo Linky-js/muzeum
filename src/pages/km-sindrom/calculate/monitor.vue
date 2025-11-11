@@ -1,7 +1,13 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { useRoute } from "vue-router";
-const route = useRoute();
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMonitorSync } from '@/composables/syncRouterSimple.js'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
+initMonitorSync(router, bus, '1')
 
 const step = ref(0);
 const qrCodeUrl = ref("");
