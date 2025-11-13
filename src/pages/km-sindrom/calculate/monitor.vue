@@ -1,11 +1,15 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import { useRoute } from "vue-router";
-const route = useRoute();
+import Mobile from "@/components/calculate/monitor.vue/mobile.vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
-const step = ref(0);
 const qrCodeUrl = ref("");
-const phoneImg = '/monitor-calc-mobile.png'
+const phoneImg = "/monitor-calc-mobile.png";
+const router = useRouter();
+const route = useRoute();
+const isShowMobile = ref(true);
+
+const ROUTE_PATH = "/monitor-calculate";
 
 // функция для генерации рандомного QR
 const generateQr = () => {
@@ -16,19 +20,31 @@ const generateQr = () => {
 
 let intervalId;
 
+watch(
+  () => route.query.step,
+  (newStep) => {
+    console.log('newStep', newStep)
+    if (newStep > 3) isShowMobile.value = false;
+  }
+);
+
 onMounted(() => {
   generateQr(); // первый QR сразу
   intervalId = setInterval(generateQr, 20000); // каждые 20 секунды обновляем
 });
 
+onMounted(() => {
+  console.log('route.query.step', route.query.step)
+  if (route.query.step > 3) isShowMobile.value = false;
+});
 onUnmounted(() => {
   clearInterval(intervalId);
 });
 </script>
 
 <template>
-  <div class="monitor">
-    <aside class="monitor-qr">
+  <div class="monitor" :class="{ 'not-mobile': !isShowMobile }">
+    <aside class="monitor-qr" v-if="isShowMobile">
       <div class="monitor-qr__wrapper">
         <div class="tint"></div>
         <div class="qr-code relative monitor-qr__qr-code">
@@ -46,11 +62,18 @@ onUnmounted(() => {
         </p>
       </div>
     </aside>
-    <div class="monitor-mobile">
-      <img class="monitor-mobile__img" :src="phoneImg" alt="">
+    <div class="monitor-mobile" :class="{ 'not-mobile': !isShowMobile }">
+      <img
+        class="monitor-mobile__img"
+        v-if="isShowMobile"
+        :src="phoneImg"
+        alt=""
+      />
       <div class="monitor-mobile__content-wrapper">
-        <div class="monitor-mobile__content relative">
-          <router-view></router-view>
+        <div class="monitor-mobile__screen relative">
+          <div class="monitor-mobile__content">
+            <Mobile :is-not-mobile="isShowMobile" />
+          </div>
         </div>
       </div>
     </div>
@@ -68,13 +91,18 @@ onUnmounted(() => {
   background-size: cover;
   background-position: center;
   background-image: url(../monitor-calc.png);
+  height: 100vh;
   padding: 107px 100px;
   display: flex;
   align-items: center;
   gap: 385px;
-  height: 100vh;
 }
 
+.not-mobile {
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+}
 .monitor-qr {
   display: flex;
   align-items: center;
@@ -180,7 +208,7 @@ onUnmounted(() => {
   );
 }
 
-.monitor-mobile__img{
+.monitor-mobile__img {
   position: absolute;
   top: 0;
   left: 0;
@@ -189,12 +217,33 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
 }
-
-
+.monitor-mobile__screen {
+  padding: 120px 0 53px;
+  height: 1601px;
+}
 .monitor-mobile__content {
-  height: 100%;
-  max-height: 100%;
-  padding: 60px 15px 25px;
   overflow-y: auto;
+  height: 100%;
+  padding: 0 30px;
+  width: 724px;
+}
+
+.monitor-mobile.not-mobile {
+  max-width: none;
+  height: auto;
+  background: none;
+  display: block;
+  border-radius: 0;
+}
+
+.monitor-mobile.not-mobile .monitor-mobile__screen {
+  padding: 0;
+  height: auto;
+}
+.monitor-mobile.not-mobile .monitor-mobile__content {
+  overflow-y: initial;
+  height: auto;
+  padding: 0;
+  width: auto;
 }
 </style>
