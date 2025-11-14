@@ -139,6 +139,42 @@ const props = defineProps({
   line-height: 100%;
   letter-spacing: -0.03em;
 }
+.breadcrumbs.monitor .breadcrumbs__list {
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.breadcrumbs.monitor .breadcrumbs__item-inner {
+  flex-direction: row;
+  gap: 15px;
+}
+
+.breadcrumbs.monitor .breadcrumbs__item-top {
+  width: 15px;
+  display: block;
+}
+
+.breadcrumbs.monitor .breadcrumbs__item-round {
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+  min-height: 15px;
+}
+.breadcrumbs.monitor .breadcrumbs__item-round.gray {
+  background: #ffffff;
+  opacity: 0.2;
+  box-shadow: 0px 0px 11.2px #ffffff;
+}
+.breadcrumbs.monitor .breadcrumbs__item-line {
+  display: none;
+}
+
+.breadcrumbs.monitor .breadcrumbs__item-text {
+  font-weight: 500;
+  font-size: 23.168px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+}
 @media screen and (max-width: 475px) {
   .breadcrumbs__list {
     flex-wrap: wrap;

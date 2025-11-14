@@ -4,19 +4,23 @@ import { useRouter, useRoute } from "vue-router";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import Breadcrums from "@/components/touchScreenComponents/Breadcrums.vue";
-import result from "@/components/calculate/touch/result.vue";
-import resultWin5 from "@/components/calculate/touch/resultWin5.vue";
-import resultWin6 from "@/components/calculate/touch/resultWin6.vue";
-import resultFinal from "@/components/calculate/touch/resultFinal.vue";
-import Step1 from "@/components/calculate/touch/step1.vue";
-import Step2 from "@/components/calculate/touch/step2.vue";
-import Step3 from "@/components/calculate/touch/step3.vue";
+import Result from "./result.vue";
+import ResultWin5 from "./resultWin5.vue";
+import ResultWin6 from "./resultWin6.vue";
+import ResultFinal from "./resultFinal.vue";
+import Step1 from "./step1.vue";
+import Step2 from "./step2.vue";
+import Step3 from "./step3.vue";
+
+defineProps({
+  isNotMobile: Boolean,
+});
 
 const router = useRouter();
 const route = useRoute();
 
 // Константы для переиспользования
-const ROUTE_PATH = "/monitor-calculate/monitor-calc-mobile";
+const ROUTE_PATH = "/monitor-calculate";
 const STEP_VALIDATION_RULES = {
   2: ["age", "gender"],
   3: ["rost", "ves", "taliya", "fizActive", "yagody"],
@@ -210,8 +214,8 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="header">
-    <Breadcrums :list="breadcrumbsList" view="mobile" />
+  <div class="header" v-if="isNotMobile">
+    <Breadcrums :list="breadcrumbsList" view="monitor" />
     <div class="header__logo">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -231,14 +235,17 @@ onMounted(() => {
       </svg>
     </div>
   </div>
-  <div class="content relative">
-    <div class="content__top">
+  <div class="content" :class="{ 'not-mobile': !isNotMobile }">
+    <div class="content__top" v-if="![4, 6, 7].includes(step)">
       <h1 class="content__title animBtn" v-html="title"></h1>
       <p class="content__subtitle" v-if="subtitle" v-html="subtitle"></p>
     </div>
     <div
       class="content__inner"
-      :class="{ 'full-width': step === 4 || step === 5 }"
+      :class="{
+        'full-width': step === 4 || step === 5,
+        'not-mobile': !isNotMobile,
+      }"
     >
       <Step1
         v-if="step === 1"
@@ -264,28 +271,25 @@ onMounted(() => {
         :goNextStep="goNextStep"
         view="mobile"
       />
-      <result
+      <Result
         class="step4"
         v-if="step === 4"
         :person="person"
         @next="checkStep"
-        view="mobile"
       />
-      <resultWin6
+      <ResultWin6
         v-if="step === 5"
         :person="person"
         :step="step"
         :goNextStep="goNextStep"
-        view="mobile"
       />
-      <resultWin5
+      <ResultWin5
         v-if="step === 6"
         :person="person"
         :step="step"
         :goNextStep="goNextStep"
-        view="mobile"
       />
-      <result-final v-if="step === 7" :person="person" view="mobile" />
+      <ResultFinal v-if="step === 7" :person="person" />
     </div>
   </div>
   <svg style="display: none">
@@ -364,12 +368,12 @@ onMounted(() => {
   position: relative;
   z-index: 1;
   flex-direction: column-reverse;
-  gap: 20px;
-  padding-bottom: 16px;
+  gap: 38px;
+  padding: 30px 0;
 }
 
 .header__logo {
-  max-width: 95px;
+  max-width: 184px;
 }
 .header__logo svg {
   width: 100%;
@@ -377,30 +381,44 @@ onMounted(() => {
 }
 
 .content {
-  margin-top: 24px;
+  margin-top: 46px;
   display: block;
   height: auto;
-  padding-bottom: 60px;
+  padding-bottom: 72px;
+}
+
+.content.not-mobile {
+  margin: 0;
+  padding: 0;
 }
 
 .content__title {
   font-family: "TT Commons";
   font-weight: 500;
   color: #ffffff;
-  font-size: 32px;
+  font-size: 62px;
   line-height: 100%;
   letter-spacing: -0.03em;
   text-align: left;
-  margin-bottom: 16px;
+  margin-bottom: 30px;
+}
+.content.not-mobile .content__title {
+  font-family: "TT Hoves";
+  font-weight: 500;
+  font-size: 140px;
+  line-height: 100%;
+  text-align: center;
+  letter-spacing: -0.03em;
+  margin-bottom: 32px;
 }
 
 .content__subtitle {
   font-family: "TT Hoves";
   font-weight: 400;
-  font-size: 14px;
+  font-size: 27px;
   line-height: 120%;
   text-align: left;
-  max-width: 300px;
+  max-width: 620px;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: #808389;
@@ -412,9 +430,14 @@ onMounted(() => {
   align-items: center;
   width: 100%;
   max-width: none;
-  margin-top: 32px;
+  margin-top: 64px;
   padding: 0;
   height: auto;
+}
+
+.content__inner.not-mobile {
+  margin: 0;
+  display: block;
 }
 
 .full-width {
@@ -425,13 +448,6 @@ onMounted(() => {
 .step2,
 .step1 {
   margin-top: 6.25rem;
-  height: 100%;
-}
-.step4 {
-  width: 100%;
-  margin-top: 0;
-  gap: 24px;
-  flex-direction: column;
   height: 100%;
 }
 
@@ -447,5 +463,4 @@ onMounted(() => {
     rgba(115, 115, 115, 0.1) 99.95%
   );
 }
-
 </style>
