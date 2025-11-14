@@ -178,7 +178,6 @@ const percent = computed(() => {
           </tr>
         </tbody>
       </table>
-      <button @click="goNextStep(7)" class="quiz__btn">Расчитать</button>
     </div>
   </div>
 </template>

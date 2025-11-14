@@ -108,7 +108,6 @@ const percent = computed(() => {
     <div class="diabet__info">
       <table class="table">
         <thead class="table__head reltive">
-          <span class="tint-light"></span>
           <tr class="relative">
             <th class="table__item relative"><span>Баллы</span></th>
             <th class="table__item relative"><span>Уровень риска</span></th>
