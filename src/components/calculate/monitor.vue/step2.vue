@@ -350,6 +350,7 @@ const props = defineProps({
   overflow-y: scroll;
   z-index: 1;
 }
+
 .custom_list-wrapper {
   padding: 15px;
   display: flex;

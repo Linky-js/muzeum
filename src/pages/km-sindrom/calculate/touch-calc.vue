@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
@@ -16,7 +16,9 @@ import Step3 from "@/components/calculate/touch/step3.vue";
 
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMasterSync } from '@/composables/syncRouterSimple.js'
+import { useStore } from "vuex";
 
+const store = useStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -39,14 +41,23 @@ const breadcrumbsList = ref([
 const step = ref(1);
 const title = ref();
 const subtitle = ref();
-const person = ref({
-  age: "", gender: "", region: { id: null, name: "" }, rost: "", ves: "", taliya: "",
-  fizActive: "", yagody: "", arteriya: "", sahar: "", diabet: "", priem: "", diabetFamily: "",
-});
+const person = computed(() => store.state.person);
 
+watch(
+  person,
+  (newValue) => {
+   bus.send('person', JSON.parse(JSON.stringify(newValue)), { role: 'monitor', pairId: '1' })
+  },
+  { deep: true }
+);
+
+const updateField = (key, value) => {
+  store.commit("updatePerson", { [key]: value });
+};
 // Универсальная функция для перехода по шагам
 const navigateToStep = (targetStep, updateUrl = true) => {
   step.value = targetStep;
+  bus.send('step', targetStep, { role: 'monitor', pairId: '1' })
   changeTitles(targetStep);
   updateBreadcrumbs(targetStep);
   
@@ -203,7 +214,7 @@ onMounted(() => {
   <div class="content relative">
     <div class="content__top">
       <h1 class="content__title animBtn" v-html="title"></h1>
-      <div @click="$router.back()" class="to-back">
+      <div @click="$router.push('touch-qr')" class="to-back">
         <IconArrow class="to-back__icon" />
         <span class="to-back__text">Назад</span>
       </div>

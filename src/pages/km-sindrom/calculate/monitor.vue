@@ -5,16 +5,16 @@ import { useRouter, useRoute } from "vue-router";
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMonitorSync } from '@/composables/syncRouterSimple.js'
 
-const router = useRouter()
 
-const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
-initMonitorSync(router, bus, '1')
 
 const qrCodeUrl = ref("");
 const phoneImg = "/monitor-calc-mobile.png";
 const router = useRouter();
 const route = useRoute();
 const isShowMobile = ref(true);
+
+const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
+initMonitorSync(router, bus, '1')
 
 const ROUTE_PATH = "/monitor-calculate";
 
@@ -34,6 +34,17 @@ watch(
     if (newStep > 3) isShowMobile.value = false;
   }
 );
+const onScroll = (direction) => {
+  const el = document.querySelector('.monitor-mobile__content');
+
+  if (!el) return;
+
+  if (direction === 'bottom') {
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+  } else {
+    el.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
 
 onMounted(() => {
   generateQr(); // первый QR сразу
@@ -70,16 +81,11 @@ onUnmounted(() => {
       </div>
     </aside>
     <div class="monitor-mobile" :class="{ 'not-mobile': !isShowMobile }">
-      <img
-        class="monitor-mobile__img"
-        v-if="isShowMobile"
-        :src="phoneImg"
-        alt=""
-      />
+      <img class="monitor-mobile__img" v-if="isShowMobile" :src="phoneImg" alt="" />
       <div class="monitor-mobile__content-wrapper">
         <div class="monitor-mobile__screen relative">
           <div class="monitor-mobile__content">
-            <Mobile :is-not-mobile="isShowMobile" />
+            <Mobile :is-not-mobile="isShowMobile" @scrollDirection="onScroll" />
           </div>
         </div>
       </div>
@@ -110,6 +116,7 @@ onUnmounted(() => {
   padding: 0;
   gap: 0;
 }
+
 .monitor-qr {
   display: flex;
   align-items: center;
@@ -141,11 +148,9 @@ onUnmounted(() => {
   inset: 0;
   border-radius: inherit;
   padding: 3px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
   border-radius: 19px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -170,11 +175,9 @@ onUnmounted(() => {
   inset: 0;
   border-radius: 3rem;
   backdrop-filter: blur(10px);
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
 }
 
 .monitor-qr__title {
@@ -207,12 +210,10 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
   border-radius: 160px;
-  background: linear-gradient(
-    23.51deg,
-    #000000 -4.02%,
-    #030e22 117.07%,
-    #000000 171.71%
-  );
+  background: linear-gradient(23.51deg,
+      #000000 -4.02%,
+      #030e22 117.07%,
+      #000000 171.71%);
 }
 
 .monitor-mobile__img {
@@ -224,17 +225,21 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
 }
+
 .monitor-mobile__screen {
   padding: 120px 0 53px;
   height: 1601px;
 }
+
 .monitor-mobile__content {
   overflow-y: auto;
   height: 100%;
   padding: 0 30px;
   width: 724px;
 }
-
+.monitor-mobile__content::-webkit-scrollbar {
+  display: none;
+}
 .monitor-mobile.not-mobile {
   max-width: none;
   height: auto;
@@ -247,6 +252,7 @@ onUnmounted(() => {
   padding: 0;
   height: auto;
 }
+
 .monitor-mobile.not-mobile .monitor-mobile__content {
   overflow-y: initial;
   height: auto;
