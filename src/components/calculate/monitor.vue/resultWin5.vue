@@ -123,7 +123,6 @@ const vesselsData = computed(() => {
         <p class="__item--text">{{ vesselsData.text }}</p>
       </div>
     </div>
-    <button @click="goNextStep(7)" class="quiz__btn">Рассчитать</button>
   </div>
 </template>
 

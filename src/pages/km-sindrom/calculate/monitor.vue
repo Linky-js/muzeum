@@ -12,6 +12,7 @@ const phoneImg = "/monitor-calc-mobile.png";
 const router = useRouter();
 const route = useRoute();
 const isShowMobile = ref(true);
+const step = ref(1)
 
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
@@ -24,6 +25,13 @@ const generateQr = () => {
   const randomData = Math.random().toString(36).substring(2, 10);
   qrCodeUrl.value = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${randomData}`;
 };
+
+bus.on('step', (data) => {
+  step.value = data
+  console.log('data', data)
+  if(step.value > 3) isShowMobile.value = false;
+  else isShowMobile.value = true;
+})
 
 let intervalId;
 

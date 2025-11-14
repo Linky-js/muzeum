@@ -161,7 +161,6 @@ onBeforeUnmount(() => {
         <p class="left_bottom-text">
           *Это оценка по популяционным данным, а не прогноз для вас персонально.
         </p>
-        <button @click="emit('next')" class="quiz__btn">Дальше</button>
       </div>
     </aside>
 

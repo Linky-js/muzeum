@@ -73,6 +73,7 @@ bus.on('person', (data) => {
 bus.on('step', (data) => {
   step.value = data
   emit('scrollDirection', 'top');
+  changeTitles(step.value);
 })
 // Константы для переиспользования
 const ROUTE_PATH = "/monitor-calculate";
