@@ -2,6 +2,13 @@
 import Mobile from "@/components/calculate/monitor.vue/mobile.vue";
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMonitorSync } from '@/composables/syncRouterSimple.js'
+
+const router = useRouter()
+
+const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
+initMonitorSync(router, bus, '1')
 
 const qrCodeUrl = ref("");
 const phoneImg = "/monitor-calc-mobile.png";

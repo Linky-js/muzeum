@@ -1,6 +1,14 @@
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
+
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMasterSync } from '@/composables/syncRouterSimple.js'
+
+const router = useRouter();
+
+const bus = useBroadcastBus({ role: 'touch', pairId: '1', debug: false })
+initMasterSync(router, bus, '1')
 </script>
 <template>
   <div class="wrapper-content">
