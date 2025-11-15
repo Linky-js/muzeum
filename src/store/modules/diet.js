@@ -146,6 +146,8 @@ export default {
           {
             id: "muesli",
             name: "Мюсли",
+            oldname: "Сухие хлопья/мюсли",
+            alteration: true,
             preview: "/products/subcat/subcat-1-5.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -157,7 +159,9 @@ export default {
           },
           {
             id: "bread_white",
-            name: "Белый хлеб",
+            name: "Кусок хлеба",
+            oldname: "Хлеб белый",
+            alteration: true,
             preview: "/products/subcat/subcat-1-6.png",
             allowedSlots: [11],
             images: {
@@ -167,7 +171,9 @@ export default {
           },
           {
             id: "bread_whole",
-            name: "Хлеб цельнозерновой",
+            name: "кусок хлеба зерновой",
+            oldname: "Хлеб цельнозерновой",
+            alteration: true,
             preview: "/products/subcat/subcat-1-7.png",
             allowedSlots: [11],
             images: {
@@ -199,6 +205,8 @@ export default {
           {
             id: "mayonnaise",
             name: "Майонез",
+            oldname: "майонез",
+            alteration: true,
             preview: "/products/subcat/subcat-2-3.png",
             allowedSlots: [16, 17, 18, 19],
             images: {
@@ -245,7 +253,9 @@ export default {
         subcategories: [
           {
             id: "white_meat",
-            name: "белое мясо",
+            name: "куриная грудка жарен",
+            oldname: "белое мясо",
+            alteration: true,
             preview: "/products/subcat/subcat-3-1.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -257,7 +267,9 @@ export default {
           },
           {
             id: "yaichnicas",
-            name: "яйца",
+            name: "яичница",
+            oldname: "яйца",
+            alteration: true,
             preview: "/products/subcat/subcat-3-2.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -269,7 +281,9 @@ export default {
           },
           {
             id: "red_meat",
-            name: "Красное мясо",
+            name: "свинина или говяд. кусок жар.",
+            oldname: "красное мясо",
+            alteration: true,
             preview: "/products/subcat/subcat-3-3.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -281,7 +295,9 @@ export default {
           },
           {
             id: "seafood",
-            name: "Морепродукты",
+            name: "набор (креветки, мидии, осьминог)",
+            oldname: "морепродукты",
+            alteration: true,
             preview: "/products/subcat/subcat-3-4.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -293,7 +309,9 @@ export default {
           },
           {
             id: "fish",
-            name: "рыба",
+            name: "жареная",
+            oldname: "рыба",
+            alteration: true,
             preview: "/products/subcat/subcat-3-5.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -313,6 +331,7 @@ export default {
           {
             id: "kefir",
             name: "Кефир",
+            alteration: true,
             preview: "/products/subcat/subcat-4-1.png",
             allowedSlots: [10],
             images: {
@@ -321,7 +340,9 @@ export default {
           },
           {
             id: "yogurt",
-            name: "Йогурт",
+            name: "фруктовый",
+            oldname: "Йогурт",
+            alteration: true,
             preview: "/products/subcat/subcat-4-2.png",
             allowedSlots: [10],
             images: {
@@ -330,7 +351,9 @@ export default {
           },
           {
             id: "cheese",
-            name: "Сыр",
+            name: "кусочек (2 кусочка)",
+            oldname: "Сыр",
+            alteration: true,
             preview: "/products/subcat/subcat-4-3.png",
             allowedSlots: [8],
             images: {
@@ -347,7 +370,9 @@ export default {
         subcategories: [
           {
             id: "leafy",
-            name: "Листовые",
+            name: "салат микс",
+            oldname: "Листовые",
+            alteration: true,
             preview: "/products/subcat/subcat-5-1.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -359,7 +384,9 @@ export default {
           },
           {
             id: "cruciferous",
-            name: "Крестоцветные/прочие",
+            name: "огурец, томаты (кусочки крупно)",
+            oldname: "Крестоцветные/прочие",
+            alteration: true,
             preview: "/products/subcat/subcat-5-2.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -371,7 +398,9 @@ export default {
           },
           {
             id: "roots",
-            name: "Корнеплоды/крахмалистые",
+            name: "Картофель печёный, Морковь (варёная), Свёкла (варёная)",
+            oldname: "Корнеплоды/крахмалистые",
+            alteration: true,
             preview: "/products/subcat/subcat-5-3.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -390,7 +419,9 @@ export default {
         subcategories: [
           {
             id: "legumes",
-            name: "Бобовые",
+            name: "вареная фасоль, бобы",
+            oldname: "Бобовые",
+            alteration: true,
             preview: "/products/subcat/subcat-6-1.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -402,7 +433,9 @@ export default {
           },
           {
             id: "nuts",
-            name: "Орехи",
+            name: "горсть небольшая",
+            oldname: "Орехи",
+            alteration: true,
             preview: "/products/subcat/subcat-6-2.png",
             allowedSlots: [6],
             images: {
@@ -411,7 +444,9 @@ export default {
           },
           {
             id: "seeds",
-            name: "Семена",
+            name: "горсть небольшая",
+            oldname: "Семена",
+            alteration: true,
             preview: "/products/subcat/subcat-6-3.png",
             allowedSlots: [6],
             images: {
@@ -421,6 +456,8 @@ export default {
           {
             id: "peanut-butter",
             name: "Арахисовая паста",
+            oldname: "Арахисовая паста",
+            alteration: true,
             preview: "/products/subcat/subcat-6-4.png",
             allowedSlots: [16, 17, 18, 19],
             images: {
@@ -439,7 +476,9 @@ export default {
         subcategories: [
           {
             id: "jam-preserve",
-            name: "джем/варенье",
+            name: "варенье",
+            oldname: "джем/варенье",
+            alteration: true,
             preview: "/products/subcat/subcat-7-1.png",
             allowedSlots: [16, 17, 18, 19],
             images: {
@@ -451,7 +490,9 @@ export default {
           },
           {
             id: "jelly-sorbet",
-            name: "желейные/сорбет",
+            name: "желе",
+            oldname: "желейные/сорбет",
+            alteration: true,
             preview: "/products/subcat/subcat-7-2.png",
             allowedSlots: [16, 17, 18, 19],
             images: {
@@ -463,7 +504,9 @@ export default {
           },
           {
             id: "sweet-pastries",
-            name: "Сладкая сдоба",
+            name: "кусок торта/пирожное",
+            oldname: "Сладкая сдоба",
+            alteration: true,
             preview: "/products/subcat/subcat-7-3.png",
             allowedSlots: [12],
             images: {
@@ -479,41 +522,45 @@ export default {
         subcategories: [
           {
             id: "fresh-fruit",
-            name: "Свежие фрукты",
+            name: "кусок яблока, банан кус. (или др.)",
+            oldname: "Свежие фрукты",
+            alteration: true,
             preview: "/products/subcat/subcat-8-1.png",
             allowedSlots: [15],
             images: {
               15: "/products/frukti.png",
             },
             products: [
-              'Абрикос (2 шт)',
-              'Айва',
-              'Ананас кольца (1 чашка)',
-              'Апельсин',
-              'Арбуз (1 чашка кубиков)',
-              'Банан',
-              'Гранат (1/2 плода)',
-              'Грейпфрут (1/2)',
-              'Груша',
-              'Гуава',
-              'Дыня канталупа (1 чашка кубиков)',
-              'Инжир свежий (2 шт)',
-              'Киви (2 шт)',
-              'Лайм (небольшой)',
-              'Лимон (небольшой)',
-              'Манго (1/2 плода)',
-              'Мандарин',
-              'Нектарин',
-              'Папайя (1/2 плода)',
-              'Персик',
-              'Слива',
-              'Хурма',
-              'Яблоко',
+              "Абрикос (2 шт)",
+              "Айва",
+              "Ананас кольца (1 чашка)",
+              "Апельсин",
+              "Арбуз (1 чашка кубиков)",
+              "Банан",
+              "Гранат (1/2 плода)",
+              "Грейпфрут (1/2)",
+              "Груша",
+              "Гуава",
+              "Дыня канталупа (1 чашка кубиков)",
+              "Инжир свежий (2 шт)",
+              "Киви (2 шт)",
+              "Лайм (небольшой)",
+              "Лимон (небольшой)",
+              "Манго (1/2 плода)",
+              "Мандарин",
+              "Нектарин",
+              "Папайя (1/2 плода)",
+              "Персик",
+              "Слива",
+              "Хурма",
+              "Яблоко",
             ],
           },
           {
             id: "dried-fruits",
-            name: "Сухофрукты",
+            name: "горсть курага/изюм",
+            oldname: "Сухофрукты",
+            alteration: true,
             preview: "/products/subcat/subcat-8-2.png",
             allowedSlots: [6],
             images: {
@@ -522,7 +569,9 @@ export default {
           },
           {
             id: "berries-slices",
-            name: "Ягоды/ломтики",
+            name: "малина, черника (или др)",
+            oldname: "Ягоды/ломтики",
+            alteration: true,
             preview: "/products/subcat/subcat-8-3.png",
             allowedSlots: [16],
             images: {
@@ -540,6 +589,7 @@ export default {
           {
             id: "milk",
             name: "Молоко",
+            oldname: "Молоко",
             alteration: true,
             oldCategory: "dairy",
             preview: "/products/subcat/subcat-9-1.png",
@@ -552,6 +602,8 @@ export default {
           {
             id: "tea",
             name: "чай",
+            oldname: "чай",
+            alteration: true,
             preview: "/products/subcat/subcat-9-2.png",
             allowedSlots: [13],
             images: {
@@ -561,6 +613,8 @@ export default {
           {
             id: "black-coffee",
             name: "кофе черный",
+            oldname: "кофе черный",
+            alteration: true,
             preview: "/products/subcat/subcat-9-3.png",
             allowedSlots: [13],
             images: {
@@ -570,6 +624,8 @@ export default {
           {
             id: "coffee-with-milk",
             name: "кофе с молоком",
+            oldname: "кофе с молоком",
+            alteration: true,
             preview: "/products/subcat/subcat-9-4.png",
             allowedSlots: [13],
             images: {
@@ -579,6 +635,8 @@ export default {
           {
             id: "vegetable-juice",
             name: "овощной сок",
+            oldname: "овощной сок",
+            alteration: true,
             preview: "/products/subcat/subcat-9-5.png",
             allowedSlots: [14, 9],
             images: {
@@ -589,6 +647,8 @@ export default {
           {
             id: "fruit-juice",
             name: "фруктовый сок",
+            oldname: "фруктовый сок",
+            alteration: true,
             preview: "/products/subcat/subcat-9-6.png",
             allowedSlots: [9, 14],
             images: {
@@ -599,6 +659,8 @@ export default {
           {
             id: "sweetened-drinks",
             name: "подслащенные напитки",
+            oldname: "подслащенные напитки",
+            alteration: true,
             preview: "/products/subcat/subcat-9-7.png",
             allowedSlots: [9, 14],
             images: {
