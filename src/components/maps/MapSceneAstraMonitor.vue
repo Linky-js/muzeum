@@ -132,12 +132,16 @@ function focusRegion(regionObject) {
 
   if (regionObject.type !== 'okrug') {
     console.log(regionObject.oblast);
-    
+
   }
 
   // Для округов — увеличить масштаб
   if (regionObject.type === 'okrug') {
-    viewBoxParams = `${centerX - bbox.width / 2 - 2100} ${centerY - bbox.height / 2 - 2100} ${bbox.width + 5500} ${bbox.height + 5500}`;
+    if (regionObject.okrug === 'Южный') {
+      viewBoxParams = `${centerX - bbox.width / 2 - 1100} ${centerY - bbox.height / 2 - 1100} ${bbox.width + 3500} ${bbox.height + 3500}`;
+    } else {
+      viewBoxParams = `${centerX - bbox.width / 2 - 2100} ${centerY - bbox.height / 2 - 2100} ${bbox.width + 5500} ${bbox.height + 5500}`;
+    }
   }
   gsap.to(svgDoc.value.documentElement, {
     duration: 2,
