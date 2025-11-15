@@ -1,9 +1,6 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
-import gsap from 'gsap'
-import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
 
-gsap.registerPlugin(MorphSVGPlugin)
 
 const svg = ref(null)
 const mainPath = ref(null)
@@ -16,25 +13,6 @@ onMounted(async () => {
     const path3 = svg.value.querySelector('#state3')
 
     if (!mainPath.value || !path1 || !path2 || !path3) return
-
-    // 🔥 "прогрев" морфинга — нормализуем сегменты
-    gsap.set(mainPath.value, { opacity: 0 })
-    gsap.set(mainPath.value, { morphSVG: path2 })
-    gsap.set(mainPath.value, { morphSVG: path3 })
-    gsap.set(mainPath.value, { morphSVG: path1 })
-
-    // 🔄 бесконечный цикл: 1 → 2 → 3 → 2 → 1 → ...
-    const tl = gsap.timeline({ repeat: -1, defaults: { duration: 1.2, ease: 'linear' } })
-
-    // первые 4 шага — невидимо
-    tl.to(mainPath.value, { morphSVG: path2 })
-        .to(mainPath.value, { morphSVG: path3 })
-        .to(mainPath.value, { morphSVG: path2 })
-        .to(mainPath.value, {
-            morphSVG: path1, onComplete: () => {
-                gsap.to(mainPath.value, { opacity: 1, duration: 0.3 })
-            }
-        })
 })
 </script>
 

@@ -60,7 +60,7 @@ const nickelCount = computed(() => {
   const expectedYears = Math.round(expectedWeeks.value / 12);
 
   // Берём максимум из возраста и прогноза
-  const maxYears = Math.max(currentYears, expectedYears);
+  const maxYears = Math.max(currentYears, expectedYears, 100);
 
   // Округляем в большую сторону до кратного 5
   const roundFive = Math.ceil(maxYears / 5);

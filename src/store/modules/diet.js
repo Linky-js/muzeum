@@ -91,6 +91,8 @@ export default {
           {
             id: "grain_snacks",
             name: "Крекеры",
+            oldname: "зерновые снеки",
+            alteration: true,
             preview: "/products/subcat/subcat-1-1.png",
             allowedSlots: [5],
             // images: ключ — номер слота; значение — путь к картинке для этого слота
@@ -102,6 +104,8 @@ export default {
           {
             id: "grains_refined",
             name: "Макароны",
+            oldname: "злаки рафинир.варен.",
+            alteration: true,
             preview: "/products/subcat/subcat-1-2.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -114,6 +118,8 @@ export default {
           {
             id: "grains_whole",
             name: "Гречка",
+            oldname: "злаки цельнозерновые",
+            alteration: true,
             preview: "/products/subcat/subcat-1-3.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -126,6 +132,8 @@ export default {
           {
             id: "popcorn",
             name: "Попкорн",
+            oldname: "попкорн несоленый",
+            alteration: true,
             preview: "/products/subcat/subcat-1-4.png",
             allowedSlots: [1, 2, 3, 4],
             images: {
@@ -176,7 +184,9 @@ export default {
         subcategories: [
           {
             id: "sunflower-oil",
-            name: "растительные масла",
+            name: "Подсолнечное масло",
+            oldname: "растительные масла",
+            alteration: true,
             preview: "/products/subcat/subcat-2-1.png",
             allowedSlots: [16, 17, 18, 19],
             images: {
@@ -200,7 +210,9 @@ export default {
           },
           {
             id: "piece-of-butter",
-            name: "маргарин мягкий",
+            name: "кусочек слив. масла",
+            oldname: "маргарин мягкий",
+            alteration: true,
             preview: "/products/subcat/subcat-2-2.png",
             allowedSlots: [16, 17, 18, 19],
             images: {
@@ -212,7 +224,9 @@ export default {
           },
           {
             id: "sauce",
-            name: "заправки соусы",
+            name: "Соус (бальзамик или масло с травами)",
+            oldname: "заправки соусы",
+            alteration: true,
             preview: "/products/subcat/subcat-2-4.png",
             allowedSlots: [16, 17, 18, 19],
             images: {
@@ -526,6 +540,8 @@ export default {
           {
             id: "milk",
             name: "Молоко",
+            alteration: true,
+            oldCategory: "dairy",
             preview: "/products/subcat/subcat-9-1.png",
             allowedSlots: [14, 9],
             images: {

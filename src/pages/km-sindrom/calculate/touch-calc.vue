@@ -34,7 +34,7 @@ const STEP_VALIDATION_RULES = {
 };
 
 const breadcrumbsList = ref([
-  { id: 0, title: "Главная", link: "/" },
+  { id: 0, title: "Главная", link: "/touch1/screen-1" },
   { id: 1, title: "Калькулятор", link: `${ROUTE_PATH}?step=1` },
 ]);
 
@@ -127,7 +127,7 @@ const checkStep = () => {
 // Оптимизированная функция хлебных крошек
 const updateBreadcrumbs = (currentStep) => {
   const baseBreadcrumbs = [
-    { id: 0, title: "Главная", link: "/" },
+    { id: 0, title: "Главная", link: "/touch1/screen-1" },
     { id: 1, title: "Калькулятор", link: `${ROUTE_PATH}?step=1` },
   ];
 
