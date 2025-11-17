@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from "vue";
+import { ref, computed, onMounted, watch, nextTick, defineEmits } from "vue";
 import { useStore } from "vuex";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
 import IconInfo from "../icons/IconInfo.vue";
@@ -10,6 +10,7 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
 
+const emit = defineEmits(["goResult"]);
 const store = useStore();
 
 const baseImgSrc = "/dash/stol/fon.png";
@@ -264,6 +265,8 @@ const closeActiveInfo = () => {
   if (!activeInfoBtn.value) return;
   activeInfoBtn.value = null;
 };
+
+const goResult = () => emit("goResult");
 onMounted(() => store.commit("diet/INIT_DAY", 1));
 </script>
 
@@ -432,7 +435,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
                 class="categories-list__subcat-swiper">
                 <swiper-slide v-for="sub in cat.subcategories" :key="sub.id" class="categories-list__subcat-slide"
                   :class="{ activeSubcat: selectedSubcat === sub.id }">
-                  <div class="categories-list__subcat" @click="onSelectSubcategory(sub.id)">
+                  <div class="categories-list__subcat" @click="onSelectSubcategory(sub.id, sub)">
                     <div class="categories-list__subcat-img-wrapper" :class="{ added: isInPlate(sub.id) }">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-check2-circle" viewBox="0 0 16 16">
@@ -481,7 +484,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
               </button>
         </div>
 
-        <button v-if="!useNumpad" class="bottom-inputs__btn" @click="confirmWeight">
+        <button v-if="!useNumpad" class="bottom-inputs__btn" @click="goResult">
           Рассчитать
         </button>
         <button v-if="useNumpad" class="bottom-inputs__btn-numpad" @click="confirmWeight">

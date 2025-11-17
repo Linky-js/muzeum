@@ -1,9 +1,11 @@
 import { createStore } from 'vuex';
 import diet from './modules/diet.js';
+import dashResult from './modules/dashResult.js';
 
 export default createStore({
   modules: {
-    diet
+    diet,
+    dashResult
   },
   state() {
     return {
