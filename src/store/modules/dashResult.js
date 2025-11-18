@@ -29,7 +29,7 @@ export default {
       console.log('1categories', categories)
       console.log('2day', day)
 
-      const meals = ['breakfast', 'lunch', 'dinner', 'snack']
+      const meals = ['breakfast', 'lunch', 'dinner']
 
       let totalCalories = 0
       let totalSodium = 0
@@ -44,14 +44,15 @@ export default {
         for (const slotKey in plate) {
           const slot = plate[slotKey]
           if (!slot) continue // пустой слот пропускаем
-
+          
+          console.log('slot.subcatId', slot.subcatId);
           const subcatId = slot.subcatId
           const weight = slot.weight ?? 0
 
           // Ищем субкатегорию в store.state.diet.categories
           const { dashCategoryName, dashSubcatName, colorCategory } =
             findDashCategoryData(categories, subcatId);
-
+          console.log('dashSubcatName', dashSubcatName);
           if (!dashSubcatName) continue
           // Ищем соответствующий продукт в dash.json
           const dashProduct = dashData.find((p) => p.subcategory === dashSubcatName)
@@ -99,7 +100,7 @@ function findDashCategoryData(categories, subcatId) {
     for (const sub of cat.subcategories) {
       if (sub.id === subcatId) {
         return {
-          dashCategoryName: cat.name,
+          dashCategoryName: sub.oldCategory ? sub.oldCategory : cat.name,
           dashSubcatName: sub.alteration ? sub.oldname : sub.name,
           colorCategory: cat.color,
         };
