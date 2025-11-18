@@ -9,10 +9,41 @@ import { initMasterSync } from '@/composables/syncRouterSimple.js'
 import { useRouter } from 'vue-router'
 
 // --- базовые элементы интерфейса ---
-const breadcrumbsList = ref([
+const breadcrumbsListDefault = [
   { id: 0, title: "Главная", link: "/touch2" },
-  { id: 1, title: "Сотрудничество Центра Алмазова с регионами", link: "/touch-screen-3" },
-])
+  { id: 1, title: "AstraZeneca", link: "/touch-screen-3" },
+]
+const breadcrumbsList = computed(() => {
+  const list = [...breadcrumbsListDefault]
+
+  if (currentRegion.value?.okrug) {
+    list.push({
+      id: `okrug_${currentRegion.value.okrug}`,
+      title: currentRegion.value.okrug,
+      link: { type: 'okrug', name: currentRegion.value.okrug }
+    })
+  }
+
+  if (currentRegion.value?.oblast) {
+    list.push({
+      id: `oblast_${currentRegion.value.oblast}`,
+      title: currentRegion.value.oblast,
+      link: { type: 'oblast', name: currentRegion.value.oblast }
+    })
+  }
+
+  if (currentRegion.value?.gorod) {
+    list.push({
+      id: `gorod_${currentRegion.value.gorod}`,
+      title: currentRegion.value.gorod,
+      link: { type: 'gorod', name: currentRegion.value.gorod }
+    })
+  }
+
+  
+
+  return list
+})
 
 const links = ref([
   { id: 0, name: "Курируемые регионы", link: "/touch-screen-regions" },
@@ -57,7 +88,6 @@ const flattenAll = computed(() => {
 
     // Области (если есть)
     okrug.children.forEach((oblast) => {
-      console.log('oblast', oblast);
       out.push({
         name: oblast.name,
         type: 'oblast',
@@ -98,7 +128,6 @@ const filteredList = computed(() => {
     // старое поведение: показываем текущий уровень
     return currentList.value
   }
-  console.log('flattenAll', flattenAll.value.filter(item => item.name.toLowerCase().includes(q)));
 
   // поиск по всем уровням (okrug/oblast/gorod)
   return flattenAll.value.filter(item => item.name.toLowerCase().includes(q))
@@ -112,8 +141,8 @@ const loadData = async (type = 'xsn') => {
   const url = type === 'xsn' ? '/datas/xsn.json' : '/datas/xbp.json'
   const res = await fetch(url)
   const raw = await res.json()
-  console.log('raw', raw);
 
+  bus.send('sindrom', { sindrom: type }, { role: 'monitor', pairId: '2' })
   dataAll.value = raw
 
   const treeMap = {}
@@ -158,7 +187,6 @@ const loadData = async (type = 'xsn') => {
       children: Object.values(ob.children),
     })),
   }))
-  console.log('tree', tree);
   currentLevel.value = 'okrug'
   currentList.value = tree.value
   stack.value = []
@@ -181,7 +209,8 @@ function sumPatients(node) {
 // --- открытие следующего уровня ---
 const openItem = async (item, el) => {
   let newItem = {}
-
+  
+  
   if (item.type === 'okrug') {
     currentRegion.value = item
     newItem = {
@@ -189,8 +218,8 @@ const openItem = async (item, el) => {
       patients: sumPatients(item),
       type: 'okrug',
     }
-    console.log('currentRegion', currentRegion.value);
     
+
   } else if (item.type === 'oblast') {
     newItem = {
       ...JSON.parse(JSON.stringify(currentRegion.value)),
@@ -198,6 +227,8 @@ const openItem = async (item, el) => {
     newItem.oblast = item.name
     newItem.type = 'oblast'
     newItem.patients = sumPatients(item)
+    
+
   } else if (item.type === 'gorod') {
     newItem = {
       ...JSON.parse(JSON.stringify(currentRegion.value)),
@@ -205,6 +236,7 @@ const openItem = async (item, el) => {
     newItem.gorod = item.name
     newItem.type = 'gorod'
     newItem.patients = sumPatients(item)
+   
   } else if (item.type === 'lpu') {
     newItem = {
       ...JSON.parse(JSON.stringify(currentRegion.value)),
@@ -215,8 +247,8 @@ const openItem = async (item, el) => {
     newItem.patients = sumPatients(item)
   }
   currentRegion.value = newItem
-  console.log('newItem', newItem);
-  
+  console.log('currentRegion', currentRegion.value);
+
 
   bus.send('navigate', { region: newItem, type: dataType.value }, { role: 'monitor', pairId: '2' })
 
@@ -332,7 +364,13 @@ onMounted(() => {
     </div>
     <div class="content relative">
       <div class="content__top">
-        <h1 class="content__title animBtn">Сотрудничество Центра Алмазова с регионами</h1>
+        <h1 class="content__title animBtn">
+          {{ currentRegion?.type === 'okrug' ? currentRegion?.okrug : currentRegion?.type === 'oblast' ? currentRegion?.oblast : currentRegion?.type === 'gorod' ? currentRegion?.gorod : currentRegion?.type === 'lpu' ? currentRegion?.gorod : 'AstraZeneca' }}
+        </h1>
+        <p :class="{show: !currentRegion}" class="content__subtitle animBtn">
+          Масштаб исследований Хронической болезни почек
+          и хронической Сердечной недостаточности по регионам России
+        </p>
       </div>
     </div>
     <MapSceneAstra class="map" :targetregion="currentRegion" :dontscale="true" :un-focus="unFocus" />
@@ -411,6 +449,26 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.content__subtitle {
+  color: rgb(128, 131, 137);
+  text-align: center;
+  -webkit-text-stroke-width: 0.79px;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.15);
+  font-family: "TT Hoves";
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+  /* 45.6px */
+  letter-spacing: -0.76px;
+  text-transform: uppercase;
+  visibility: hidden;
+  max-width: 1383px;
+}
+.content__subtitle.show{
+  visibility: visible;
+}
+
 .regions__switch {
   display: flex;
   justify-content: space-between;
@@ -460,10 +518,10 @@ onMounted(() => {
 
 .wrapper-content .map {
   position: absolute;
-      bottom: -12.89rem;
-    left: -16rem;
-    width: 192.19356rem;
-    height: 131.82969rem;
+  bottom: -12.89rem;
+  left: -16rem;
+  width: 192.19356rem;
+  height: 131.82969rem;
   flex-shrink: 0;
 }
 

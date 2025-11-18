@@ -5,6 +5,7 @@ import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vu
 import IconInfo from "../icons/IconInfo.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import products from '@/../public/datas/dash.json'
 
 // Import Swiper styles
 import "swiper/css";
@@ -13,7 +14,7 @@ import "swiper/css/autoplay";
 const emit = defineEmits(["goResult"]);
 const store = useStore();
 
-const baseImgSrc = "/dash/stol/fon.png";
+const baseImgSrc = "/dash/stol/fon2.png";
 
 const currentDay = ref(1);
 const currentMeal = ref("breakfast");
@@ -118,13 +119,21 @@ function numpadPress(char) {
 function toggleCategory(catId) {
   openCategory.value = openCategory.value === catId ? null : catId;
 }
-function onSelectSubcategory(subcatId) {
-  console.log("subcatId", subcatId);
+function onSelectSubcategory(subcatId, sub) {
+  console.log("sub", sub);
+  if (sub.alternation && sub.oldName){
+    getProducts(sub.oldName);
+  } else {
+    getProducts(sub.name);
+  }
   selectedSubcat.value = subcatId;
   weight.value = "";
   useNumpad.value = false;
 }
-
+const getProducts = async (name) => {
+  console.log('products', products[0]);
+  
+}
 async function confirmWeight() {
   if (!weight.value || Number(weight.value) <= 0) {
     alert("Введите количество грамм!");
@@ -157,11 +166,11 @@ function onSlotClick(slotId) {
 }
 
 const slotPositions = {
-  1: { top: 40, left: 45.4, width: "350px" },
-  2: { top: 40, left: 54.2, width: "350px" },
-  3: { top: 60.4, left: 54.1, width: "335px" },
+  1: { top: 29.5, left: 45.1, width: "360px" },
+  2: { top: 29.5, left: 54.5, width: "360px" },
+  3: { top: 44.9, left: 54.5, width: "360px" },
   4: { top: 60.4, left: 45.5, width: "350px" },
-  5: { top: 65, left: 60.4, width: "344px" },
+  5: { top: 49, left: 60.4, width: "344px" },
   6: { top: 51.3, left: 39.4, width: "220px", zIndex: 2 },
   8: { top: 51.4, left: 61.2, width: "260px" },
   10: { top: 37.5, left: 40.2, width: "352px" },
@@ -312,29 +321,13 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
               {{ currentMealState?.plate[slotId].weight }}г</span>
 
             <div class="btnInfo">
-              <svg v-if="
-                activeInfoBtn ===
-                currentMealState?.plate[slotId].subcatId +
-                '-' +
-                currentMealState?.plate[slotId].slot
-              " @click="onSlotClick(slotId)" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+              <svg  @click="onSlotClick(slotId)" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                 viewBox="0 0 20 20" fill="none">
                 <path
                   d="M5 2V0H15V2H20V4H18V19C18 19.5523 17.5523 20 17 20H3C2.44772 20 2 19.5523 2 19V4H0V2H5ZM4 4V18H16V4H4ZM7 7H9V15H7V7ZM11 7H13V15H11V7Z"
                   fill="black" />
               </svg>
-              <svg v-else @click="
-                goActiveInfoBtn(
-                  currentMealState?.plate[slotId].subcatId +
-                  '-' +
-                  currentMealState?.plate[slotId].slot,
-                  $el
-                )
-                " xmlns="http://www.w3.org/2000/svg" width="6" height="17" viewBox="0 0 6 17" fill="none">
-                <path
-                  d="M3 3C3.8284 3 4.5 2.32843 4.5 1.5C4.5 0.67157 3.8284 0 3 0C2.1716 0 1.5 0.67157 1.5 1.5C1.5 2.32843 2.1716 3 3 3ZM0 7H2V15H0V17H6V15H4V5H0V7Z"
-                  fill="black" />
-              </svg>
+             
             </div>
           </div>
           <img v-if="currentMealState?.plate[slotId]" :src="currentMealState.plate[slotId].image" class="product"
@@ -552,7 +545,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 }
 
 .image {
-  height: 1522px;
+  height: 2160px;
   width: 100%;
   position: relative;
 }

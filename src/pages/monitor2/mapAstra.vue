@@ -13,6 +13,7 @@ const targetregion = ref(null);
 const curRegion = ref(null);
 const isModalOpen = ref(false)
 let offListener = null
+const currentVideo = ref(null)
 
 bus.on('navigate', (region) => {
   console.log('navigate', region);
@@ -20,6 +21,53 @@ bus.on('navigate', (region) => {
   targetregion.value = region.region
   curRegion.value = region
 })
+bus.on('sindrom', (sindrom) => {
+  console.log('sindrom', sindrom);
+  currentVideo.value = sindrom.sindrom === 'xsn' ? '/video/xsn.webm' : sindrom.sindrom === 'xbp' ? '/video/xbp.webm' : null
+console.log('currentVideo', currentVideo.value);
+  
+})
+const videoA = ref(null);
+const videoB = ref(null);
+
+const videoA_src = ref("");
+const videoB_src = ref("");
+
+const activeLayer = ref("A"); // какая из двух активна сейчас
+
+watch(currentVideo, (newSrc) => {
+  // Если сейчас активен слой A → загружаем в B
+  if (activeLayer.value === "A") {
+    videoB_src.value = newSrc;
+
+    // Даем Vue перестроить DOM
+    setTimeout(() => {
+      videoB.value.load();
+      videoB.value.play();
+
+      // Плавно показать B и скрыть A
+      videoB.value.style.opacity = 1;
+      videoA.value.style.opacity = 0;
+
+      activeLayer.value = "B";
+    }, 50);
+  } 
+  
+  // Если активен слой B → загружаем в A
+  else {
+    videoA_src.value = newSrc;
+
+    setTimeout(() => {
+      videoA.value.load();
+      videoA.value.play();
+
+      videoA.value.style.opacity = 1;
+      videoB.value.style.opacity = 0;
+
+      activeLayer.value = "A";
+    }, 50);
+  }
+});
 </script>
 
 <template>
@@ -44,6 +92,29 @@ bus.on('navigate', (region) => {
     <MapSceneAstraMonitor :targetregion="targetregion" :bg="true" @showmodal="isModalOpen = true" />
   </div>
   <RegionModalAstra v-if="curRegion" :show="isModalOpen" :region="curRegion?.region" />
+  <div class="video_sindrom">
+   <!-- Нижний слой -->
+  <video
+    ref="videoA"
+    :src="videoA_src"
+    autoplay
+    muted
+    loop
+    playsinline
+    class="video_layer"
+  ></video>
+
+  <!-- Верхний слой (переключаемый) -->
+  <video
+    ref="videoB"
+    :src="videoB_src"
+    autoplay
+    muted
+    loop
+    playsinline
+    class="video_layer layer_top"
+  ></video>
+  </div>
 </template>
 <style scoped>
 .map__wrapper {
@@ -82,4 +153,27 @@ bus.on('navigate', (region) => {
   /* 125% */
   letter-spacing: 0.96px;
 }
+.video_sindrom{
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  z-index: 5;
+  width: 2000px;
+}
+
+.video_layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.6s ease; 
+}
+
+.layer_top {
+  opacity: 0; 
+}
+
 </style>

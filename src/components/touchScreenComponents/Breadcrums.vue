@@ -19,7 +19,7 @@ const props = defineProps({
         <RouterLink
           class="breadcrumbs__item-inner"
           :to="item.link"
-          v-if="index !== list.length - 1"
+          v-if="index !== list.length - 1 && typeof item.link === 'string'"
         >
           <span class="breadcrumbs__item-top">
             <span class="breadcrumbs__item-round gray"></span>
