@@ -109,7 +109,7 @@ onMounted(() => {
                 <RoundDiagram
                   :value="resultObj.totalCalories"
                   label="Целевой диапазон"
-                  :maxValue="resultObj.totalCalories * 5"
+                  :maxValue="resultObj.TDEE"
                   fill-color="#00FF11"
                 />
               </div>

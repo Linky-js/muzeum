@@ -5,17 +5,31 @@ export default {
 
   state: () => ({
     result: null, // финальные расчёты
+    TDEE: null,
+    BMR: null,
   }),
 
   getters: {
     getResult(state) {
       return state.result
     },
+    getTDEE(state) {
+      return state.TDEE
+    },
+    getBMR(state) {
+      return state.BMR
+    },
   },
 
   mutations: {
     SET_RESULT(state, payload) {
       state.result = payload
+    },
+    SET_TDEE(state, payload) {
+      state.TDEE = payload
+    },
+    SET_BMR(state, payload) {
+      state.BMR = payload
     },
   },
 
