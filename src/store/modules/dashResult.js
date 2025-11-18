@@ -50,7 +50,7 @@ export default {
           const weight = slot.weight ?? 0
 
           // Ищем субкатегорию в store.state.diet.categories
-          const { dashCategoryName, dashSubcatName, colorCategory } =
+          const { dashCategoryName, dashSubcatName } =
             findDashCategoryData(categories, subcatId);
           console.log('dashSubcatName', dashSubcatName);
           if (!dashSubcatName) continue
@@ -73,12 +73,10 @@ export default {
           if (!dashCategories[dashCategoryName]) {
             dashCategories[dashCategoryName] = {
               portions: 0,
-              color: '',
             }
           }
 
           dashCategories[dashCategoryName].portions += portions
-          dashCategories[dashCategoryName].color = colorCategory
         }
       }
 
@@ -102,12 +100,11 @@ function findDashCategoryData(categories, subcatId) {
         return {
           dashCategoryName: sub.oldCategory ? sub.oldCategory : cat.name,
           dashSubcatName: sub.alteration ? sub.oldname : sub.name,
-          colorCategory: cat.color,
         };
       }
     }
   }
-  return { dashCategoryName: null, dashSubcatName: null, colorCategory: null };
+  return { dashCategoryName: null, dashSubcatName: null };
 }
 
 /**
@@ -130,13 +127,11 @@ function normalizeDashCategories(cats) {
 
   for (const cat in cats) {
     const portions = cats[cat].portions
-    const color = cats[cat].color;
     const norm = DASH_LIMITS[cat] ?? 1
 
     out[cat] = {
       portions,
       percent: Math.min(Math.round((portions / norm) * 100), 150),
-      color,
     }
   }
 

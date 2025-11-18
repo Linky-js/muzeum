@@ -1089,6 +1089,14 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   color: #1b1c21;
 }
 
+.bottom-inputs__btn{
+  opacity: 1;
+}
+
+.bottom-inputs__btn:disabled{
+  opacity: 0.2;
+}
+
 .bottom-inputs__btn-numpad {
   opacity: 1;
   text-transform: uppercase;

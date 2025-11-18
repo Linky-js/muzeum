@@ -3,24 +3,28 @@ import { computed, ref, onMounted } from "vue";
 
 const props = defineProps({
   value: {
-    type: String,
+    type: [String, Number],
     default: "значение",
   },
   label: {
     type: String,
     default: "заголовок",
   },
+  maxValue: {
+    type: Number,
+    default: 100,
+  },
   width: {
     type: Number,
-    default: 347,
+    default: 348,
   },
   height: {
     type: Number,
-    default: 347,
+    default: 348,
   },
   strokeWidth: {
     type: Number,
-    default: 37,
+    default: 38,
   },
   backgroundColor: {
     type: String,
@@ -32,7 +36,7 @@ const props = defineProps({
   },
   percentage: {
     type: Number,
-    default: 80,
+    default: 500,
   },
   animate: {
     type: Boolean,
@@ -41,7 +45,7 @@ const props = defineProps({
 });
 
 // Анимированное значение
-const animatedPercentage = ref(0);
+const animatedValue = ref(0);
 
 // Вычисляемые свойства
 const centerX = computed(() => props.width / 2);
@@ -49,17 +53,33 @@ const centerY = computed(() => props.height / 2);
 const radius = computed(
   () => Math.min(props.width, props.height) / 2 - props.strokeWidth / 2
 );
-const circumference = computed(() => 2 * Math.PI * radius.value * 0.9);
+const circumference = computed(() => 2 * Math.PI * radius.value);
+
+const calculatedPercentage = computed(() => {
+  const numericValue =
+    typeof props.value === "number"
+      ? props.value
+      : parseFloat(props.value) || 0;
+  return Math.min((numericValue / props.maxValue) * 100, 100);
+});
 
 const dashOffset = computed(() => {
   const percentage = props.animate
-    ? animatedPercentage.value
-    : props.percentage;
+    ? animatedValue.value
+    : calculatedPercentage.percentage;
   const filledLength = circumference.value * (percentage / 100);
   return circumference.value - filledLength;
 });
 
-const animatedOffset = computed(() => dashOffset.value);
+// Позиции текста
+const textY = computed(() => centerY.value - 10);
+const labelY = computed(() => centerY.value + 20);
+
+// Форматируем значение для отображения
+const displayValue = computed(() => {
+  if (typeof props.value === "string") return props.value;
+  return props.value.toString();
+});
 // Анимация при монтировании
 onMounted(() => {
   if (props.animate) {
@@ -72,7 +92,7 @@ onMounted(() => {
 
       // easing function
       const easeOut = 1 - Math.pow(1 - progress, 3);
-      animatedPercentage.value = props.percentage * easeOut;
+      animatedValue.value = calculatedPercentage.value * easeOut;
 
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -81,7 +101,7 @@ onMounted(() => {
 
     requestAnimationFrame(animate);
   } else {
-    animatedPercentage.value = props.percentage;
+    animatedValue.value = calculatedPercentage.value;
   }
 });
 </script>
@@ -89,7 +109,7 @@ onMounted(() => {
   <div class="gauge-chart">
     <svg :width="width" :height="height" :viewBox="'0 0 347 347'">
       <!-- Фон -->
-      <path
+      <circle
         class="gauge-background"
         :cx="centerX"
         :cy="centerY"
@@ -97,9 +117,9 @@ onMounted(() => {
         fill="none"
         :stroke="backgroundColor"
         :stroke-width="strokeWidth"
+        stroke-linecap="round"
       />
-
-      <!-- Заполненная часть -->
+      <!-- Заполнение с анимацией -->
       <circle
         class="gauge-fill"
         :cx="centerX"
@@ -109,26 +129,16 @@ onMounted(() => {
         :stroke="fillColor"
         :stroke-width="strokeWidth"
         :stroke-dasharray="circumference"
-        :stroke-dashoffset="animatedOffset"
+        :stroke-dashoffset="dashOffset"
         stroke-linecap="round"
-        transform="rotate(-90 173.5 173.5)"
+        :transform="`rotate(95 ${centerX} ${centerY})`"
       />
 
-      <!-- Центральный текст -->
-      <text
-        :x="centerX"
-        :y="centerY - 15"
-        text-anchor="middle"
-        class="gauge-value"
-      >
-        {{ value }}
+      <!-- Тексты -->
+      <text :x="centerX" :y="textY" text-anchor="middle" class="gauge-value">
+        {{ displayValue }}
       </text>
-      <text
-        :x="centerX"
-        :y="centerY + 15"
-        text-anchor="middle"
-        class="gauge-label"
-      >
+      <text :x="centerX" :y="labelY" text-anchor="middle" class="gauge-label">
         {{ label }}
       </text>
     </svg>
@@ -137,6 +147,7 @@ onMounted(() => {
 <style scoped>
 .gauge-chart {
   display: inline-block;
+  font-family: Arial, sans-serif;
 }
 
 .gauge-background {
@@ -144,6 +155,7 @@ onMounted(() => {
 }
 
 .gauge-fill {
+  stroke-linecap: round;
   transition: stroke-dashoffset 1.5s ease-out;
 }
 
@@ -153,7 +165,7 @@ onMounted(() => {
   font-size: 40px;
   line-height: 100%;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  fill: #ffffff;
   margin-bottom: 4px;
 }
 
@@ -163,7 +175,7 @@ onMounted(() => {
   font-size: 16px;
   line-height: 110%;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  fill: #ffffff;
   opacity: 0.5;
 }
 </style>
