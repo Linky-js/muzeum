@@ -87,6 +87,7 @@ export default {
         id: "grains",
         name: "Зерновые",
         img: "/products/cat/zernovie.png",
+        color: "#00FF11",
         subcategories: [
           {
             id: "grain_snacks",
@@ -187,6 +188,7 @@ export default {
         id: "fats",
         name: "Жиры и масла",
         img: "/products/cat/maslo.png",
+        color: "#FF0004",
         subcategories: [
           {
             id: "sunflower-oil",
@@ -250,6 +252,7 @@ export default {
         id: "meat_fish",
         name: "Нежирное мясо, птица и рыба",
         img: "/products/cat/myaso.png",
+        color: "#00FF11",
         subcategories: [
           {
             id: "white_meat",
@@ -280,7 +283,7 @@ export default {
             },
           },
           {
-            id: "red_meat",
+            id: "#FF0004_meat",
             name: "свинина или говяд. кусок жар.",
             oldname: "Красное мясо (готовое, 1 oz)",
             alteration: true,
@@ -327,6 +330,7 @@ export default {
         id: "dairy",
         name: "Обезжиренные/ низкожирные молочные",
         img: "/products/cat/moloko.png",
+        color: "#FFAE00",
         subcategories: [
           {
             id: "kefir",
@@ -367,6 +371,7 @@ export default {
         id: "vegetables",
         name: "Овощи",
         img: "/products/cat/ovoshi.png",
+        color: "#00FF11",
         subcategories: [
           {
             id: "leafy",
@@ -416,6 +421,7 @@ export default {
         id: "nuts",
         name: "Орехи, семена и бобовые",
         img: "/products/cat/orehi.png",
+        color: "#00FF11",
         subcategories: [
           {
             id: "legumes",
@@ -473,6 +479,7 @@ export default {
         id: "sweets",
         name: "Сладости и добавленные сахара",
         img: "/products/cat/sladosti.png",
+        color: "#FF0004",
         subcategories: [
           {
             id: "jam-preserve",
@@ -519,6 +526,7 @@ export default {
         id: "fruits",
         name: "Фрукты",
         img: "/products/cat/fructi.png",
+        color: "#00FF11",
         subcategories: [
           {
             id: "fresh-fruit",
@@ -560,6 +568,7 @@ export default {
         id: "drinks",
         name: "Напитки",
         img: "/products/cat/napitki.png",
+        color: "#FFAE00",
         subcategories: [
           {
             id: "milk",

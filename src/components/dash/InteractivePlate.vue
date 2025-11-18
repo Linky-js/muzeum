@@ -22,7 +22,7 @@ const openCategory = ref(null);
 const canvasRef = ref(null);
 const plateArea = ref(null);
 const selectedSubcat = ref(null);
-const showWeightModal = ref(false);
+const isOpenModal = ref(false);
 const activeInfoBtn = ref(null);
 const weight = ref("");
 const useNumpad = ref(false);
@@ -275,7 +275,12 @@ const closeActiveInfo = () => {
   activeInfoBtn.value = null;
 };
 
-const goResult = () => emit("goResult");
+const goResult = () => {
+  isOpenModal.value = false;
+  emit("goResult");
+};
+
+const toggleModal = () => (isOpenModal.value = !isOpenModal.value);
 onMounted(() => store.commit("diet/INIT_DAY", 1));
 </script>
 
@@ -477,7 +482,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
               </button>
         </div>
 
-        <button v-if="!useNumpad" class="bottom-inputs__btn" @click="goResult">
+        <button v-if="!useNumpad" class="bottom-inputs__btn" @click="toggleModal">
           Рассчитать
         </button>
         <button v-if="useNumpad" class="bottom-inputs__btn-numpad" @click="confirmWeight">
@@ -487,36 +492,34 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
     </div>
 
     <!-- Weight Modal -->
-    <div v-if="showWeightModal" class="modal-backdrop">
-      <div class="modal">
-        <h3>Граммовка</h3>
-        <!-- <input
-          class="weight-input"
-          v-model="weight"
-          @focus="useNumpad = true"
-          placeholder="г"
-        /> -->
-
-        <div v-if="!useNumpad" class="quick-btns">
-          <button v-for="w in quickWeights" :key="w" @click="applyQuickWeight(w)">
-            {{ w }} г
-          </button>
+    <div v-if="isOpenModal" class="modal-backdrop" @click="toggleModal">
+      <div class="modal" @click.stop>
+        <div class="modal__close" @click="toggleModal">
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 26 26"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="25.6" height="25.6" fill="white" />
+            <path
+              d="M12.7999 11.2915L18.0797 6.01172L19.5882 7.52021L14.3084 12.8L19.5882 18.0796L18.0797 19.5881L12.7999 14.3084L7.52022 19.5881L6.01172 18.0796L11.2915 12.8L6.01172 7.52021L7.52022 6.01172L12.7999 11.2915Z"
+              fill="black"
+            />
+          </svg>
         </div>
-
-        <div v-else class="numpad">
-          <button v-for="n in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']" :key="n" @click="numpadPress(n)">
-            {{ n }}
-          </button>
-
-          <button @click="numpadPress('<')">⌫</button>
-          <button @click="numpadPress('C')">С</button>
-        </div>
-
-        <div class="modal-actions">
-          <button class="ok-btn" @click="confirmWeight">OK ✅</button>
-          <button class="cancel-btn" @click="showWeightModal = false">
-            Отмена
-          </button>
+        <div class="modal__inner">
+          <h3 class="modal__title">
+            Вы уверены, что хотите рассчитать созданный прием пищи или хотите
+            добавить еще продуктов?
+          </h3>
+          <div class="modal__btns">
+            <button class="modal__btn cancel" @click="toggleModal">
+              Добавить
+            </button>
+            <button class="modal__btn ok" @click="goResult">Рассчитать</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1132,27 +1135,80 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   display: none;
 }
 
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
+  background: rgba(78, 78, 78, 0.4);
+  backdrop-filter: blur(37px);
 }
 
 .modal {
-  background: #fff;
-  padding: 20px;
-  border-radius: 16px;
-  width: 1000px;
-  text-align: center;
+  width: 1267px;
+  height: 648px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 58px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.modal-actions button {
-  margin: 25px;
-  padding: 30px;
-  font-size: 25px;
+.modal__inner {
+  max-width: 700px;
+}
+
+.modal__title {
+  font-family: "TT Hoves";
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 110%;
+  text-align: center;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 50px;
+}
+.modal__btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24.4221px 32.5628px;
+  width: 343.89px;
+  height: 79.53px;
+  background: #ffffff;
+  border-radius: 26.5085px;
+  font-family: "TT Hoves";
+  font-weight: 500;
+  font-size: 22.0905px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #1b1c21;
+}
+.modal__btn.ok {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.modal__close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  background-color: #ffffff;
+  border-radius: 32px;
+  top: 40px;
+  right: 40px;
+  position: absolute;
 }
 
 .info {
