@@ -69,7 +69,7 @@ function animateNumber(from, to) {
 <template>
   <div class="modal-overlay" :class="props.show ? 'show' : ''">
 
-    <div class="frame animBtn"></div>
+    <div class="frame"></div>
     <div class="regionInfo">
      <svg class="line" xmlns="http://www.w3.org/2000/svg" height="100" viewBox="0 0 11 685" preserveAspectRatio="none">
   <path
@@ -82,11 +82,11 @@ function animateNumber(from, to) {
           <span v-if="region.type === 'okrug'" class="okrug">{{ region.type === 'okrug' ? region.okrug + ' Федеральный округ' : '' }}</span>
           <span v-if="region.type !== 'lpu' && region.type !== 'okrug'">{{ region.type !== 'lpu' && region.type !== 'okrug' ? region.okrug + ' ФО' : '' }}</span>
           <span v-if="region.type === 'oblast'" :class="{ active: region.type === 'oblast' }">{{ (region.type !== 'okrug' && region.type !== 'lpu') ? region.oblast : '' }}</span>
-          <span :class="{ active: region.type === 'gorod' }">{{ (region.type === 'lpu' || region.type === 'gorod') ?
+          <span :class="{ active: region.type === 'gorod' || region.type === 'lpu' }">{{ (region.type === 'lpu' || region.type === 'gorod') ?
             region.gorod : '' }}</span>
         </div>
         <div v-if="region.type === 'lpu'" class="fullName">
-          {{ region.fullname }}
+          {{ region.lpu }}
         </div>
         <div class="patients">
           <span class="number">{{ animatedNumber }}</span>
@@ -130,6 +130,7 @@ h1 {
   border: 3px dashed #999999;
   border-radius: 100px;
   flex-shrink: 0;
+  visibility: hidden;
 }
 
 .show .animBtn {
@@ -207,7 +208,7 @@ h1 {
 }
 
 .fullName {
-  color: #115BFF;
+  color: #fff;
   font-family: "TT Hoves";
   font-size: 48px;
   font-style: normal;
