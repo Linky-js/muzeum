@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import RoundDiagram from "../ui/RoundDiagram.vue";
+import IconInfo from "../icons/IconInfo.vue";
 
 const props = defineProps({
   resultObj: Object,
@@ -30,19 +31,27 @@ const reccomendations = ref([
 const sortCategories = computed(() => {
   if (!categories.value) return [];
 
-  const colorOrder = {
-    "#00FF11": 1, // зеленый
-    "#FFAE00": 2, // оранжевый
-    "#FF0004": 3, // красный
-  };
-
   // Преобразуем объект в массив и сортируем
-  return Object.entries(categories.value).sort(([, a], [, b]) => {
-    const orderA = colorOrder[a.color] || 4;
-    const orderB = colorOrder[b.color] || 4;
-    return orderA - orderB;
-  });
+  return Object.entries(categories.value).sort(
+    ([, a], [, b]) => b.percent - a.percent
+  );
 });
+
+const formatColor = (percent) => {
+  if (percent >= 66.6 && percent <= 110) {
+    return "#00FF11"; 
+  }
+
+  if (percent >= 33.3 && percent <= 66.6) {
+    return "#FFAE00"; 
+  }
+
+  if ((percent >= 0 && percent <= 33.3) || percent >= 110.1) {
+    return "#FF0004"; 
+  }
+
+  return "#f1f1f1"; 
+};
 
 console.log("props.resultObj", props.resultObj);
 onMounted(() => {
@@ -79,7 +88,7 @@ onMounted(() => {
                 <RoundDiagram
                   :value="resultObj.totalSodium"
                   label="Критичное превышение"
-                  :percentage="180"
+                  :maxValue="resultObj.totalSodium * 4"
                   fill-color="#FF0004"
                 />
               </div>
@@ -97,17 +106,21 @@ onMounted(() => {
                 </p>
               </div>
               <div class="diagram-item__right">
-                <h4 class="diagram-item__num">{{ resultObj.totalCalories }}</h4>
-                <p class="diagram-item__info">Целевой диапазон</p>
+                <RoundDiagram
+                  :value="resultObj.totalCalories"
+                  label="Целевой диапазон"
+                  :maxValue="resultObj.totalCalories * 5"
+                  fill-color="#00FF11"
+                />
               </div>
             </div>
           </div>
           <div class="modal__recom">
             <div class="modal__recom-top">
-              <h4 class="modal__recom">
+              <h4 class="modal__recom-title">
                 Рекомендации для улучшения показателей
               </h4>
-              <div class="modal__recom-icon"></div>
+              <IconInfo opacity="1" />
             </div>
             <div class="modal__recom-items">
               <div
@@ -146,7 +159,7 @@ onMounted(() => {
               <div class="modal__item-dot">
                 <span
                   class="modal__item-color"
-                  :style="{ backgroundColor: item.color }"
+                  :style="{ backgroundColor: formatColor(item.percent) }"
                 ></span>
               </div>
             </div>
@@ -268,9 +281,54 @@ onMounted(() => {
   flex-direction: column;
   padding: 32px;
   gap: 32px;
-  height: 585px;
   background: rgba(255, 255, 255, 0.24);
   border-radius: 40px;
+}
+
+.modal__recom-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__recom-title {
+  font-family: "TT Hoves";
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.modal__recom-items {
+  display: grid;
+  gap: 8px;
+}
+
+.modal__recom-item {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  gap: 24px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+}
+
+.modal__recom-color {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 50%;
+}
+
+.modal__recom-text {
+  font-family: "TT Hoves";
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 140%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
 .modal__right {
@@ -342,6 +400,5 @@ onMounted(() => {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: #00ff11;
 }
 </style>
