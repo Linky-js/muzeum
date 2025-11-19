@@ -548,9 +548,9 @@ export default {
             oldname: "Ягоды/ломтики (1/2 стакана)",
             alteration: true,
             preview: "/products/subcat/subcat-8-3.png",
-            allowedSlots: [16],
+            allowedSlots: [7],
             images: {
-              16: "/products/yagodi_1.png",
+              7: "/products/yagodi_1.png",
             },
           },
         ],
@@ -615,8 +615,8 @@ export default {
             preview: "/products/subcat/subcat-9-5.png",
             allowedSlots: [14, 9],
             images: {
-              9: "/products/moloko2_right.png",
-              14: "/products/moloko1_left.png",
+              9: "/products/sok2_right.png",
+              14: "/products/sok2_left.png",
             },
           },
           {
@@ -627,8 +627,8 @@ export default {
             preview: "/products/subcat/subcat-9-6.png",
             allowedSlots: [9, 14],
             images: {
-              9: "/products/moloko2_right.png",
-              14: "/products/moloko1_left.png",
+              9: "/products/sok1_right.png",
+              14: "/products/sok1_left.png",
             },
           },
           {
@@ -639,8 +639,8 @@ export default {
             preview: "/products/subcat/subcat-9-7.png",
             allowedSlots: [9, 14],
             images: {
-              9: "/products/moloko2_right.png",
-              14: "/products/moloko1_left.png",
+              9: "/products/sok3_right.png",
+              14: "/products/sok3_left.png",
             },
           },
         ],
