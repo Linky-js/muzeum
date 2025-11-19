@@ -761,3 +761,28 @@ text.st23{
   position: relative;
   z-index: 1;
 }
+
+.custom-pagination {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-bullet {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  min-height: 8px;
+  background: #ffffff;
+  opacity: 0.2;
+  display: block;
+}
+
+.custom-bullet-active {
+  opacity: 1;
+}

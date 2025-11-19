@@ -4,7 +4,7 @@ import { useStore } from "vuex";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
 import IconInfo from "../icons/IconInfo.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Pagination, Navigation, FreeMode } from "swiper/modules";
 import products from "@/../public/datas/dash.json";
 
 // Import Swiper styles
@@ -194,7 +194,6 @@ const slotPositions = {
   17: { top: 39.5, left: 26, width: "295px", zIndex: 5 },
   18: { top: 39, left: 20, width: "251px" },
   19: { top: 50.4, left: 23.5, width: "285px", zIndex: 5 },
-
 };
 
 function slotStyle(slotId) {
@@ -276,7 +275,7 @@ const activeMealProducts = computed(() =>
   )
 );
 
-const modules = [Autoplay, Pagination, Navigation];
+const modules = [Autoplay, Pagination, Navigation, FreeMode];
 
 const closeActiveInfo = () => {
   if (!activeInfoBtn.value) return;
@@ -286,6 +285,15 @@ const closeActiveInfo = () => {
 const goResult = () => {
   isOpenModal.value = false;
   emit("goResult");
+};
+
+const arrowPrev = ref(null);
+const arrowNext = ref(null);
+const pagination = ref(null);
+const swiperInstance = ref(null);
+
+const onSwiper = (swiper) => {
+  swiperInstance.value = swiper;
 };
 
 const toggleModal = () => (isOpenModal.value = !isOpenModal.value);
@@ -496,27 +504,33 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
             </div>
             <div
               class="categories-list__subcat-wrapper"
+              :class="{ 'hidden-gradient': cat.subcategories.length <= 6 }"
               v-if="openCategory === cat.id"
             >
-              <!-- :autoplay="{
-                  delay: 3000,
-                  disableOnInteraction: false,
-                }" -->
               <swiper
                 :loop="true"
                 slides-per-view="auto"
                 :space-between="17"
-                :autoplay="{
-                  delay: 2000,
-                  disableOnInteraction: false,
+                :free-mode="{
+                  enabled: true,
+                  momentum: false,
+                  sticky: false,
                 }"
+                :autoplay="{
+                  delay: 0, // Минимальная задержка
+                  disableOnInteraction: true, // Не останавливать при взаимодействии
+                  pauseOnMouseEnter: true, // Не останавливать при наведении
+                }"
+                :speed="1000"
                 :pagination="{
-                  el: '.custom-pagination',
+                  el: pagination,
                   clickable: true,
+                  bulletClass: 'custom-bullet',
+                  bulletActiveClass: 'custom-bullet-active',
                 }"
                 :navigation="{
-                  nextEl: '.custom-next',
-                  prevEl: '.custom-prev',
+                  nextEl: arrowNext,
+                  prevEl: arrowPrev,
                 }"
                 :modules="modules"
                 @swiper="onSwiper"
@@ -563,14 +577,26 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
                     </h6>
                   </div>
                 </swiper-slide>
-                <div class="custom-prev custom-arrow">
-                  <div class="tint"></div>
-                </div>
-                <div class="custom-next custom-arrow">
-                  <div class="tint"></div>
-                </div>
-                <div class="custom-pagination"></div>
               </swiper>
+              <div
+                v-if="cat.subcategories.length > 6"
+                class="custom-prev custom-arrow"
+                ref="arrowPrev"
+              >
+                <div class="tint"></div>
+              </div>
+              <div
+                v-if="cat.subcategories.length > 6"
+                class="custom-next custom-arrow"
+                ref="arrowNext"
+              >
+                <div class="tint"></div>
+              </div>
+              <div
+                class="custom-pagination"
+                ref="pagination"
+                v-if="cat.subcategories.length > 6"
+              ></div>
             </div>
           </div>
         </div>
@@ -1043,6 +1069,34 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   height: 213px;
 }
 
+.categories-list__subcat-wrapper::before {
+  position: absolute;
+  content: "";
+  display: block;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(166, 166, 166, 0) 0%, #a6a6a6 80%);
+  width: 11%; /* или нужная вам ширина */
+  z-index: 2;
+}
+
+.categories-list__subcat-wrapper::after {
+  position: absolute;
+  content: "";
+  display: block;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #a6a6a6 20%, rgba(166, 166, 166, 0) 100%);
+  width: 11%; /* или нужная вам ширина */
+  z-index: 1;
+}
+.categories-list__subcat-wrapper.hidden-gradient::before,
+.categories-list__subcat-wrapper.hidden-gradient::after {
+  display: none;
+}
+
 .categories-list__subcat-wrapper {
   position: absolute;
   bottom: 0;
@@ -1053,6 +1107,8 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   border-radius: 38px;
   min-height: 250px;
   height: 250px;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
 }
 
 .categories-list__subcat-slide {
@@ -1114,50 +1170,6 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   letter-spacing: -0.02em;
   color: #ffffff;
 }
-
-/* Стили для пагинации */
-.custom-pagination {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-}
-
-.custom-pagination span.swiper-pagination-bullet {
-  width: 8px;
-  height: 8px;
-  min-width: 8px;
-  min-height: 8px;
-  background: #ffffff;
-  opacity: 0.2;
-  display: block;
-}
-
-.swiper-pagination-bullet-active {
-  opacity: 1;
-}
-
-/* Стили для навигации */
-.custom-prev,
-.custom-next {
-  color: #007bff;
-  width: 40px;
-  height: 40px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.custom-prev:after,
-.custom-next:after {
-  font-size: 16px;
-}
-
-/* здесь стили подкатегорий нужно дописать */
 
 .bottom-inputs {
   display: flex;
@@ -1395,7 +1407,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   border-radius: 50%;
   position: absolute;
   z-index: 10;
-  top: 38%;
+  top: 43%;
   transform: translateY(-50%);
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
@@ -1426,17 +1438,17 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 25px;
+  font-size: 19px;
   z-index: 1;
 }
 
 .custom-prev {
-  left: 0;
-  top: 20%;
+  left: 16px;
+  top: 27%;
   transform: scaleX(-1) translateY(50%);
 }
 .custom-next {
-  right: 0;
+  right: 16px;
 }
 
 .info {
