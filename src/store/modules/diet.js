@@ -34,7 +34,7 @@ const initialDay = () => ({
     breakfast: initialMeal(),
     lunch: initialMeal(),
     dinner: initialMeal(),
-    snack: initialMeal(),
+   
   },
   // флаг: пользователь изменял этот день отдельно (если true — не синхронизируем с day1)
   custom: false,
@@ -331,7 +331,6 @@ export default {
           {
             id: "kefir",
             name: "Кефир (обезжиренный)",
-            alteration: true,
             preview: "/products/subcat/subcat-4-1.png",
             allowedSlots: [10],
             images: {
@@ -566,7 +565,7 @@ export default {
             name: "Молоко",
             oldname: "Молоко (обезжиренное)",
             alteration: true,
-            oldCategory: "dairy",
+            oldCategory: "Обезжиренные/ низкожирные молочные",
             preview: "/products/subcat/subcat-9-1.png",
             allowedSlots: [14, 9],
             images: {
@@ -612,6 +611,7 @@ export default {
             name: "овощной сок",
             oldname: "Овощной сок (1/2 стакана)",
             alteration: true,
+            oldCategory: "Овощи",
             preview: "/products/subcat/subcat-9-5.png",
             allowedSlots: [14, 9],
             images: {
@@ -624,6 +624,7 @@ export default {
             name: "фруктовый сок",
             oldname: "100% сок (1/2 стакана)",
             alteration: true,
+            oldCategory: "Фрукты",
             preview: "/products/subcat/subcat-9-6.png",
             allowedSlots: [9, 14],
             images: {
@@ -636,6 +637,7 @@ export default {
             name: "подслащенные напитки",
             oldname: "Подслащённые напитки (1 стакан)",
             alteration: true,
+            oldCategory: "Сладости и добавленные сахара",
             preview: "/products/subcat/subcat-9-7.png",
             allowedSlots: [9, 14],
             images: {

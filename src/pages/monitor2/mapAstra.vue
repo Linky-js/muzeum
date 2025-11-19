@@ -22,10 +22,10 @@ bus.on('navigate', (region) => {
   curRegion.value = region
 })
 bus.on('sindrom', (sindrom) => {
-  console.log('sindrom', sindrom);
   currentVideo.value = sindrom.sindrom === 'xsn' ? '/video/xsn.webm' : sindrom.sindrom === 'xbp' ? '/video/xbp.webm' : null
-console.log('currentVideo', currentVideo.value);
-  
+  console.log('currentVideo', currentVideo.value);
+  targetregion.value = 'default'
+  curRegion.value = null 
 })
 const videoA = ref(null);
 const videoB = ref(null);
@@ -51,8 +51,8 @@ watch(currentVideo, (newSrc) => {
 
       activeLayer.value = "B";
     }, 50);
-  } 
-  
+  }
+
   // Если активен слой B → загружаем в A
   else {
     videoA_src.value = newSrc;
@@ -92,28 +92,13 @@ watch(currentVideo, (newSrc) => {
     <MapSceneAstraMonitor :targetregion="targetregion" :bg="true" @showmodal="isModalOpen = true" />
   </div>
   <RegionModalAstra v-if="curRegion" :show="isModalOpen" :region="curRegion?.region" />
+  <DefaultScreenAstra />
   <div class="video_sindrom">
-   <!-- Нижний слой -->
-  <video
-    ref="videoA"
-    :src="videoA_src"
-    autoplay
-    muted
-    loop
-    playsinline
-    class="video_layer"
-  ></video>
+    <!-- Нижний слой -->
+    <video ref="videoA" :src="videoA_src" autoplay muted loop playsinline class="video_layer"></video>
 
-  <!-- Верхний слой (переключаемый) -->
-  <video
-    ref="videoB"
-    :src="videoB_src"
-    autoplay
-    muted
-    loop
-    playsinline
-    class="video_layer layer_top"
-  ></video>
+    <!-- Верхний слой (переключаемый) -->
+    <video ref="videoB" :src="videoB_src" autoplay muted loop playsinline class="video_layer layer_top"></video>
   </div>
 </template>
 <style scoped>
@@ -153,7 +138,8 @@ watch(currentVideo, (newSrc) => {
   /* 125% */
   letter-spacing: 0.96px;
 }
-.video_sindrom{
+
+.video_sindrom {
   position: fixed;
   right: 0;
   top: 0;
@@ -169,11 +155,10 @@ watch(currentVideo, (newSrc) => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.6s ease; 
+  transition: opacity 0.6s ease;
 }
 
 .layer_top {
-  opacity: 0; 
+  opacity: 0;
 }
-
 </style>

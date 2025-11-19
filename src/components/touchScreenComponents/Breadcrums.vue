@@ -98,6 +98,10 @@ const props = defineProps({
   letter-spacing: -3%;
   text-align: left;
   opacity: 0.8;
+  max-width: 20.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .breadcrumbs__item-text.gray {
   opacity: 0.3;
