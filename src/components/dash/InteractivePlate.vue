@@ -22,6 +22,7 @@ const openCategory = ref(null);
 const canvasRef = ref(null);
 const plateArea = ref(null);
 const selectedSubcat = ref(null);
+const currentProducts = ref([]);
 const isOpenModal = ref(false);
 const activeInfoBtn = ref(null);
 const weight = ref("");
@@ -60,7 +61,7 @@ const isDayFullyFilled = (dayId) => {
   const day = getStoredDay(dayId);
   if (!day) return false;
   const meals = day.meals || {};
-  const req = ["breakfast", "lunch", "dinner", "snack"];
+  const req = ["breakfast", "lunch", "dinner"]; //, "snack"];
   return req.every((m) =>
     Object.values(meals[m].plate || {}).some((s) => s !== null)
   );
@@ -121,8 +122,8 @@ function toggleCategory(catId) {
 }
 function onSelectSubcategory(subcatId, sub) {
   console.log("sub", sub);
-  if (sub.alternation && sub.oldName) {
-    getProducts(sub.oldName);
+  if (sub.alteration && sub.oldname) {
+    getProducts(sub.oldname);
   } else {
     getProducts(sub.name);
   }
@@ -131,8 +132,10 @@ function onSelectSubcategory(subcatId, sub) {
   useNumpad.value = false;
 }
 const getProducts = async (name) => {
-  console.log("products", products[0]);
-};
+ 
+  currentProducts.value = products.filter((p) => p.subcategory === name);
+   console.log('products', name);
+}
 async function confirmWeight() {
   if (!weight.value || Number(weight.value) <= 0) {
     alert("Введите количество грамм!");
@@ -149,6 +152,7 @@ async function confirmWeight() {
   useNumpad.value = false;
   weight.value = "";
   selectedSubcat.value = null;
+  currentProducts.value = [];
 }
 
 /* --- Slots --- */
@@ -356,19 +360,14 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
             >
 
             <div class="btnInfo">
-              <svg
-                @click="onSlotClick(slotId)"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-              >
+              <svg @click="onSlotClick(slotId)" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                viewBox="0 0 20 20" fill="none">
                 <path
                   d="M5 2V0H15V2H20V4H18V19C18 19.5523 17.5523 20 17 20H3C2.44772 20 2 19.5523 2 19V4H0V2H5ZM4 4V18H16V4H4ZM7 7H9V15H7V7ZM11 7H13V15H11V7Z"
                   fill="black"
                 />
               </svg>
+
             </div>
           </div>
           <img
@@ -449,22 +448,15 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
               <h6 class="meal__title">Ужин</h6>
             </div>
 
-            <div
-              class="meal"
-              @click="selectMeal(d.id, 'snack')"
-              :class="{
-                active: currentMeal === 'snack' && currentDay === d.id,
-              }"
-            >
-              <img
-                :src="
-                  isMealFilledUI(d.id, 'snack')
-                    ? '/dash/days/full.png'
-                    : '/dash/days/empty.png'
-                "
-              />
+            <!-- <div class="meal" @click="selectMeal(d.id, 'snack')" :class="{
+              active: currentMeal === 'snack' && currentDay === d.id,
+            }">
+              <img :src="isMealFilledUI(d.id, 'snack')
+                ? '/dash/days/full.png'
+                : '/dash/days/empty.png'
+                " />
               <h6 class="meal__title">Перекус</h6>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -477,7 +469,12 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
           <h4 class="bottom-prompt__title">Подсказка</h4>
           <IconInfo class="bottom-prompt__icon" />
         </div>
-        <p class="bottom-prompt__text">
+        <div class="bottom-info__products">
+          <div class="product" v-for="(p, index) of currentProducts" :key="p.id">
+            {{ p.product }}{{ currentProducts.length > 1 &&  currentProducts.length - 1 !== index ? ', ' : '' }}
+          </div>
+        </div>
+        <p v-if="!currentProducts.length" class="bottom-prompt__text">
           В данном окне мы покажем перечень продуктов входящих в подкатегорию
         </p>
       </div>
@@ -681,18 +678,11 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
     <div v-if="isOpenModal" class="modal-backdrop" @click="toggleModal">
       <div class="modal" @click.stop>
         <div class="modal__close" @click="toggleModal">
-          <svg
-            width="26"
-            height="26"
-            viewBox="0 0 26 26"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="25.6" height="25.6" fill="white" />
             <path
               d="M12.7999 11.2915L18.0797 6.01172L19.5882 7.52021L14.3084 12.8L19.5882 18.0796L18.0797 19.5881L12.7999 14.3084L7.52022 19.5881L6.01172 18.0796L11.2915 12.8L6.01172 7.52021L7.52022 6.01172L12.7999 11.2915Z"
-              fill="black"
-            />
+              fill="black" />
           </svg>
         </div>
         <div class="modal__inner">
@@ -794,6 +784,10 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 
 .top-info__content-title::first-letter {
   text-transform: uppercase;
+}
+
+.top-info__content-weight {
+  white-space: nowrap;
 }
 
 .top-info__product {
@@ -977,6 +971,8 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   padding: 40px;
   background: rgba(0, 0, 0, 0.34);
   border-radius: 58px;
+  height: 100%;
+  max-height: 597px;
 }
 
 .bottom-prompt__top {
@@ -992,6 +988,19 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   line-height: 110%;
   letter-spacing: -0.02em;
   color: #ffffff;
+}
+.bottom-info__products{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: scroll;
+  margin-top: 30px;
+}
+.bottom-info__products::-webkit-scrollbar{
+  display: none;
+}
+.bottom-info__products .product{
+  color: #c2bfbf;
 }
 
 .bottom-prompt__text {
@@ -1397,6 +1406,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   color: #ffffff;
   margin-bottom: 50px;
 }
+
 .modal__btns {
   display: flex;
   align-items: center;
@@ -1419,6 +1429,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   letter-spacing: -0.02em;
   color: #1b1c21;
 }
+
 .modal__btn.ok {
   background: rgba(255, 255, 255, 0.5);
 }

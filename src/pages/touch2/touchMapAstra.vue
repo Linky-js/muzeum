@@ -61,7 +61,7 @@ const targetRegionId = ref('')
 const targetregion = ref({ id: '', name: '' })
 const unFocus = ref(false)
 
-const dataType = ref('xsn') // тип активного списка: 'xsn' или 'xbp'
+const dataType = ref('') // тип активного списка: 'xsn' или 'xbp'
 const dataAll = ref([]) // сырые данные
 const tree = ref([]) // иерархическая структура
 const currentLevel = ref('okrug') // текущий уровень (okrug / oblast / gorod / lpu)
@@ -340,10 +340,6 @@ const clearRegion = () => {
   setTimeout(() => { unFocus.value = false }, 100)
 }
 
-// --- при монтировании загружаем ХСН по умолчанию ---
-onMounted(() => {
-  loadData('xsn')
-})
 </script>
 
 
@@ -417,7 +413,7 @@ onMounted(() => {
           </div>
           <input @focus="regionUp = true" type="text" class="input_quiz" v-model="searchQuery"
             placeholder="Поиск по округу, региону, городу" />
-          <div class="custom_list-wrapper">
+          <div :class="{hidden: dataType === ''}" class="custom_list-wrapper">
             <div class="custom_list">
               <!-- если поиск пуст — item это node с children и т.д. -->
               <template v-if="!searchQuery.trim()">
@@ -608,6 +604,11 @@ onMounted(() => {
   background: linear-gradient(85deg, rgba(217, 217, 217, 0.10) 3.83%, rgba(115, 115, 115, 0.10) 99.95%);
   padding: 1.5rem;
   margin-top: 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+.custom_list-wrapper.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .custom_list {
