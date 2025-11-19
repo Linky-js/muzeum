@@ -6,7 +6,7 @@ import { ref } from "vue";
 import { useStore } from "vuex";
 
 const resultInfo = ref(null);
-const sentResult = ref(false)
+// const sentResult = ref(false)
 
 const store = useStore();
 
@@ -41,7 +41,7 @@ const goResult = () => {
 </script>
 
 <template>
-  <GetInfoUser v-if="!sentResult" @sentResult="sentResult" />
+  <!-- <GetInfoUser v-if="!sentResult" @sentResult="sentResult" /> -->
   <InteractivePlate @goResult="goResult" />
   <ResultPlate v-if="resultInfo" :result-obj="resultInfo" />
 </template>
