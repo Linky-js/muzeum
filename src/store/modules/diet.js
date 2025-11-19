@@ -615,8 +615,8 @@ export default {
             preview: "/products/subcat/subcat-9-5.png",
             allowedSlots: [14, 9],
             images: {
-              9: "/products/yaichnica1.png",
-              14: "/products/yaichnica1.png",
+              9: "/products/moloko2_right.png",
+              14: "/products/moloko1_left.png",
             },
           },
           {
@@ -627,8 +627,8 @@ export default {
             preview: "/products/subcat/subcat-9-6.png",
             allowedSlots: [9, 14],
             images: {
-              14: "/products/yaichnica1.png",
-              9: "/products/yaichnica1.png",
+              9: "/products/moloko2_right.png",
+              14: "/products/moloko1_left.png",
             },
           },
           {
@@ -639,8 +639,8 @@ export default {
             preview: "/products/subcat/subcat-9-7.png",
             allowedSlots: [9, 14],
             images: {
-              14: "/products/yaichnica1.png",
-              9: "/products/yaichnica1.png",
+              9: "/products/moloko2_right.png",
+              14: "/products/moloko1_left.png",
             },
           },
         ],

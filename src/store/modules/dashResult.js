@@ -49,9 +49,7 @@ export default {
           const weight = slot.weight ?? 0
 
           // Ищем субкатегорию в store.state.diet.categories
-          const { dashCategoryName, dashSubcatName } =
-            findDashCategoryData(categories, subcatId);
-
+          const { dashCategoryName, dashSubcatName } = findDashCategoryData(categories, subcatId);
           if (!dashSubcatName) continue
           // Ищем соответствующий продукт в dash.json
           const dashProduct = dashData.find((p) => p.subcategory === dashSubcatName)
@@ -93,6 +91,7 @@ export default {
 
 // Ищем подкатегорию
 function findDashCategoryData(categories, subcatId) {
+  console.log('categories', categories)
   for (const cat of categories) {
     for (const sub of cat.subcategories) {
       if (sub.id === subcatId) {
@@ -123,7 +122,6 @@ function normalizeDashCategories(cats) {
   }
 
   const out = {}
-
   for (const cat in cats) {
     const portions = cats[cat].portions
     const norm = DASH_LIMITS[cat] ?? 1
