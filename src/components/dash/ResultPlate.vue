@@ -41,18 +41,18 @@ const sortCategories = computed(() => {
 
 const formatColor = (percent) => {
   if (percent >= 66.6 && percent <= 110) {
-    return "#00FF11";
+    return "#00FF11"; 
   }
 
   if (percent >= 33.3 && percent <= 66.6) {
-    return "#FFAE00";
+    return "#FFAE00"; 
   }
 
   if ((percent >= 0 && percent <= 33.3) || percent >= 110.1) {
-    return "#FF0004";
+    return "#FF0004"; 
   }
 
-  return "#f1f1f1";
+  return "#f1f1f1"; 
 };
 
 console.log("props.resultObj", props.resultObj);
@@ -92,8 +92,12 @@ onMounted(() => {
                 </p>
               </div>
               <div class="diagram-item__right">
-                <RoundDiagram :value="resultObj.totalSodium" label="Критичное превышение"
-                  :maxValue="resultObj.totalSodium * 4" fill-color="#FF0004" />
+                <RoundDiagram
+                  :value="resultObj.totalSodium"
+                  label="Критичное превышение"
+                  :maxValue="resultObj.totalSodium * 4"
+                  fill-color="#FF0004"
+                />
               </div>
             </div>
             <div class="modal__diagrams-item diagram-item">
@@ -142,7 +146,10 @@ onMounted(() => {
                 <span class="line" :style="{ width: `${item.percent}%` }"></span>
               </div>
               <div class="modal__item-dot">
-                <span class="modal__item-color" :style="{ backgroundColor: formatColor(item.percent) }"></span>
+                <span
+                  class="modal__item-color"
+                  :style="{ backgroundColor: formatColor(item.percent) }"
+                ></span>
               </div>
             </div>
           </div>

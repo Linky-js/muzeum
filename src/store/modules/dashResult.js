@@ -98,6 +98,7 @@ export default {
 
 // Ищем подкатегорию
 function findDashCategoryData(categories, subcatId) {
+  console.log('categories', categories)
   for (const cat of categories) {
     for (const sub of cat.subcategories) {
       if (sub.id === subcatId) {
