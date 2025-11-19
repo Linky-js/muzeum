@@ -1,10 +1,12 @@
 <script setup>
 import InteractivePlate from "@/components/dash/InteractivePlate.vue";
+import GetInfoUser from "@/components/dash/GetInfoUser.vue";
 import ResultPlate from "@/components/dash/ResultPlate.vue";
 import { ref } from "vue";
 import { useStore } from "vuex";
 
 const resultInfo = ref(null);
+// const sentResult = ref(false)
 
 const store = useStore();
 
@@ -35,9 +37,11 @@ const goResult = () => {
   resultInfo.value = result;
   resultInfo.value.TDEE = TDEE;
 };
+
 </script>
 
 <template>
+  <!-- <GetInfoUser v-if="!sentResult" @sentResult="sentResult" /> -->
   <InteractivePlate @goResult="goResult" />
   <ResultPlate v-if="resultInfo" :result-obj="resultInfo" />
 </template>

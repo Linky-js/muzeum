@@ -521,7 +521,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
                   disableOnInteraction: true, // Не останавливать при взаимодействии
                   pauseOnMouseEnter: true, // Не останавливать при наведении
                 }"
-                :speed="1000"
+                :speed="1500"
                 :pagination="{
                   el: pagination,
                   clickable: true,
@@ -629,7 +629,8 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
                 selectedSubcat != '',
             }"
           >
-            {{ w }} г
+            <div class="tint"></div>
+            <span> {{ w }} г </span>
           </button>
         </div>
 
@@ -640,14 +641,19 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
             @click="numpadPress(n)"
             class="bottom-inputs__numpad-btn"
           >
-            {{ n }}
+            <div class="tint"></div>
+            <span>
+              {{ n }}
+            </span>
           </button>
 
           <button @click="numpadPress('<')" class="bottom-inputs__numpad-btn">
-            <
+            <div class="tint"></div>
+            <span> < </span>
           </button>
           <button @click="numpadPress('C')" class="bottom-inputs__numpad-btn">
-            С
+            <div class="tint"></div>
+            <span> С </span>
           </button>
         </div>
 
@@ -1277,13 +1283,54 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
     rgba(217, 217, 217, 0.1) 3.83%,
     rgba(115, 115, 115, 0.1) 99.95%
   );
-  border-radius: 66px;
+}
+
+.bottom-inputs__quick-btn,
+.bottom-inputs__numpad-btn {
+  border-radius: 16px;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  backdrop-filter: blur(10px);
+}
+
+.bottom-inputs__quick-btn::before,
+.bottom-inputs__numpad-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(
+    85.26deg,
+    rgb(255 255 255 / 83%) 3.83%,
+    rgb(255 255 255 / 68%) 99.95%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.bottom-inputs__quick-btn span,
+.bottom-inputs__numpad-btn span {
+  position: relative;
   font-family: "Manrope";
   font-weight: 600;
   font-size: 24.9214px;
   line-height: 37px;
   text-align: center;
   color: #ffffff;
+  z-index: 1;
+}
+
+.bottom-inputs__quick-btn .tint,
+.bottom-inputs__numpad-btn .tint {
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
 }
 
 .bottom-inputs__numpad-btn:nth-child(10) {
