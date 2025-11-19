@@ -2,7 +2,9 @@
 import { computed, onMounted, ref } from "vue";
 import RoundDiagram from "../ui/RoundDiagram.vue";
 import IconInfo from "../icons/IconInfo.vue";
+import { useStore } from "vuex";
 
+const store = useStore();
 const props = defineProps({
   resultObj: Object,
 });
@@ -39,18 +41,18 @@ const sortCategories = computed(() => {
 
 const formatColor = (percent) => {
   if (percent >= 66.6 && percent <= 110) {
-    return "#00FF11"; 
+    return "#00FF11";
   }
 
   if (percent >= 33.3 && percent <= 66.6) {
-    return "#FFAE00"; 
+    return "#FFAE00";
   }
 
   if ((percent >= 0 && percent <= 33.3) || percent >= 110.1) {
-    return "#FF0004"; 
+    return "#FF0004";
   }
 
-  return "#f1f1f1"; 
+  return "#f1f1f1";
 };
 
 console.log("props.resultObj", props.resultObj);
@@ -58,6 +60,11 @@ onMounted(() => {
   if (props.resultObj?.categories) {
     categories.value = { ...props.resultObj.categories };
   }
+  const porciesDash = {
+    'Зерновые': Math.round((props.resultObj.TDEE * 7) / 2000),
+  }
+  console.log('porciesDash', porciesDash);
+  
 });
 </script>
 
@@ -85,12 +92,8 @@ onMounted(() => {
                 </p>
               </div>
               <div class="diagram-item__right">
-                <RoundDiagram
-                  :value="resultObj.totalSodium"
-                  label="Критичное превышение"
-                  :maxValue="resultObj.totalSodium * 4"
-                  fill-color="#FF0004"
-                />
+                <RoundDiagram :value="resultObj.totalSodium" label="Критичное превышение"
+                  :maxValue="resultObj.totalSodium * 4" fill-color="#FF0004" />
               </div>
             </div>
             <div class="modal__diagrams-item diagram-item">
@@ -106,12 +109,8 @@ onMounted(() => {
                 </p>
               </div>
               <div class="diagram-item__right">
-                <RoundDiagram
-                  :value="resultObj.totalCalories"
-                  label="Целевой диапазон"
-                  :maxValue="resultObj.TDEE"
-                  fill-color="#00FF11"
-                />
+                <RoundDiagram :value="resultObj.totalCalories" label="Целевой диапазон" :maxValue="resultObj.TDEE"
+                  fill-color="#00FF11" />
               </div>
             </div>
           </div>
@@ -123,15 +122,8 @@ onMounted(() => {
               <IconInfo opacity="1" />
             </div>
             <div class="modal__recom-items">
-              <div
-                class="modal__recom-item"
-                v-for="item in reccomendations"
-                :key="item.title"
-              >
-                <div
-                  class="modal__recom-color"
-                  :style="{ backgroundColor: item.color }"
-                ></div>
+              <div class="modal__recom-item" v-for="item in reccomendations" :key="item.title">
+                <div class="modal__recom-color" :style="{ backgroundColor: item.color }"></div>
                 <h5 class="modal__recom-text">{{ item.title }}</h5>
               </div>
             </div>
@@ -140,27 +132,17 @@ onMounted(() => {
       </div>
       <div class="modal__right">
         <div class="modal__items" v-if="sortCategories">
-          <div
-            class="modal__item"
-            v-for="([name, item], key) in sortCategories"
-            :key="key"
-          >
+          <div class="modal__item" v-for="([name, item], key) in sortCategories" :key="key">
             <div class="modal__item-top">
               <h5 class="modal__item-title">{{ name }}</h5>
               <p class="modal__item-percent">{{ item.percent }}%</p>
             </div>
             <div class="modal__item-bottom">
               <div class="modal__item-line">
-                <span
-                  class="line"
-                  :style="{ width: `${item.percent}%` }"
-                ></span>
+                <span class="line" :style="{ width: `${item.percent}%` }"></span>
               </div>
               <div class="modal__item-dot">
-                <span
-                  class="modal__item-color"
-                  :style="{ backgroundColor: formatColor(item.percent) }"
-                ></span>
+                <span class="modal__item-color" :style="{ backgroundColor: formatColor(item.percent) }"></span>
               </div>
             </div>
           </div>
@@ -224,6 +206,7 @@ onMounted(() => {
   color: #ffffff;
   opacity: 0.5;
 }
+
 .modal__diagrams {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -343,12 +326,14 @@ onMounted(() => {
   display: grid;
   gap: 32px;
 }
+
 .modal__item-top {
   display: flex;
   justify-content: space-between;
   align-items: end;
   margin-bottom: 16px;
 }
+
 .modal__item-title {
   font-family: "TT Hoves";
   font-weight: 400;
@@ -358,6 +343,7 @@ onMounted(() => {
   color: #ffffff;
   opacity: 0.5;
 }
+
 .modal__item-percent {
   font-family: "TT Hoves";
   font-weight: 500;
@@ -366,11 +352,13 @@ onMounted(() => {
   letter-spacing: -0.02em;
   color: #ffffff;
 }
+
 .modal__item-bottom {
   display: grid;
   grid-template-columns: minmax(0, 833px) minmax(0, 64px);
   gap: 8px;
 }
+
 .modal__item-line {
   width: 100%;
   height: 64px;
@@ -379,6 +367,7 @@ onMounted(() => {
   overflow: hidden;
   position: relative;
 }
+
 .line {
   position: absolute;
   height: 100%;
@@ -387,6 +376,7 @@ onMounted(() => {
   border-radius: 46.3102px;
   background-color: #fff;
 }
+
 .modal__item-dot {
   width: 64px;
   height: 64px;
@@ -396,6 +386,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
 }
+
 .modal__item-color {
   width: 24px;
   height: 24px;
