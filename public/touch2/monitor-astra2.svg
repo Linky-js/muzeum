@@ -2,6 +2,9 @@
   id="map_00000129914331246453980060000012262271885246385071_" x="0px" y="0px" viewBox="0 0 12288 7218"
   style="enable-background:new 0 0 12288 7218;" xml:space="preserve" class="svgMap">
   <style type="text/css">
+  svg * {
+     transition: all 0.8s linear;
+  }
     .st0 {
       fill: none;
       stroke: #FFFFFF;
