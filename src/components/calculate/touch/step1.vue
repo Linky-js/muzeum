@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount  } from "vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
+import VirtualKeyboard from "@/components/ui/VirtualKeyboard.vue";
 
 const props = defineProps({
   person: Object,
@@ -9,8 +10,12 @@ const props = defineProps({
   view: String,
 });
 const regionUp = ref(false);
+const showKeyboard = ref(false);
 const ageUp = ref(false);
 const localRegionName = ref("");
+const activeInput = ref(null);
+const keyboardRef = ref(null);
+const quizRef = ref(null);
 
 const ages = [
   { id: 1, name: "от 0 до 10 лет" },
@@ -136,34 +141,67 @@ const regionsHints = computed(() => {
     r.name.toLowerCase().includes(props.person.region.name.toLowerCase())
   );
 });
+const activateKeyboard = (field) => {
+  activeInput.value = field;
+  showKeyboard.value = true;
+
+  if (field === "region") regionUp.value = true;
+  if (field === "age") ageUp.value = true;
+};
+const onKeyboardInput = (text) => {
+  if (activeInput.value === "region") {
+    props.person.region.name = text;
+  }
+
+  if (activeInput.value === "age") {
+    props.person.age = text.replace(/\D/g, ""); // только цифры
+  }
+};
+const handleClickOutside = (event) => {
+  const keyboard = keyboardRef.value?.$refs.keyboardEl;
+  const quiz = quizRef.value;
+  console.log('keyboard', keyboard);
+  
+  // Если клавиатура не открыта — ничего не делаем
+  if (!showKeyboard.value) return;
+
+  // Если клик внутри инпутов или внутри клавиатуры — игнорируем
+  if (
+    keyboard?.contains(event.target) ||
+    quiz?.contains(event.target.closest("input"))
+  ) {
+    return;
+  }
+
+  // Иначе — скрываем клавиатуру
+  showKeyboard.value = false;
+  activeInput.value = null;
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+
 </script>
 
 <template>
-  <div class="quiz-wrapper" :class="view">
+  <div ref="quizRef" class="quiz-wrapper" :class="view">
     <div class="quiz">
       <div class="question">
         <div class="label">Пол:</div>
         <div class="answers">
           <label class="answer">
             <div class="tint"></div>
-            <input
-              type="radio"
-              name="answer"
-              v-model="person.gender"
-              value="Мужчины"
-              id=""
-            />
+            <input type="radio" name="answer" v-model="person.gender" value="Мужчины" id="" />
             <span class="relative"> Мужской </span>
           </label>
           <label class="answer">
             <div class="tint"></div>
-            <input
-              type="radio"
-              name="answer"
-              v-model="person.gender"
-              value="Женщины"
-              id=""
-            />
+            <input type="radio" name="answer" v-model="person.gender" value="Женщины" id="" />
             <span class="relative"> Женский </span>
           </label>
         </div>
@@ -171,20 +209,11 @@ const regionsHints = computed(() => {
       <div class="question">
         <div class="label">Возраст:</div>
         <div class="input_wrap">
-          <input
-            type="number"
-            class="input_quiz relative"
-            v-model="person.age"
-            placeholder="Введите возраст"
-          />
-          <div v-show="ageUp" class="custom_list">
-            <div
-              v-for="value in ages"
-              :key="value.id"
-              @click="goAges(value)"
-              class="region"
-              :class="value.id == person.age.id ? 'active' : ''"
-            >
+          <input type="number" class="input_quiz relative" v-model="person.age" placeholder="Введите возраст"
+            @focus="activateKeyboard('age')" />
+          <div v-show="ageUp === 2" class="custom_list">
+            <div v-for="value in ages" :key="value.id" @click="goAges(value)" class="region"
+              :class="value.id == person.age.id ? 'active' : ''">
               {{ value.name }}
             </div>
           </div>
@@ -193,41 +222,29 @@ const regionsHints = computed(() => {
       <div class="question">
         <div class="label">Регион:</div>
         <div class="input_wrap">
-          <input
-            @focus="regionUp = true"
-            type="text"
-            class="input_quiz relative"
-            v-model="person.region.name"
-            placeholder="Выберите регион"
-          />
-          <IconArrow
-            class="input_wrap-arr"
-            :class="{ active: regionUp === true }"
-          />
+          <input @focus="regionUp = true; activateKeyboard('region')" type="text" class="input_quiz relative"
+            v-model="person.region.name" placeholder="Выберите регион" />
+          <IconArrow class="input_wrap-arr" :class="{ active: regionUp === true }" />
           <div v-show="regionUp && regionsHints.length" class="custom_list">
             <div class="custom_list-wrapper">
-              <div
-                v-for="value in regionsHints"
-                :key="value.id"
-                @click="goRegion(value)"
-                class="region relative"
-                :class="value.id === person.region.id ? 'active' : ''"
-              >
+              <div v-for="value in regionsHints" :key="value.id" @click="goRegion(value)" class="region relative"
+                :class="value.id === person.region.id ? 'active' : ''">
                 {{ value.name }}
               </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
-    <button
-      @click="goNextStep(step + 1)"
-      :disabled="person.age == '' || person.gender == '' || !person.region.name"
-      class="quiz__btn"
-    >
+    <button @click="goNextStep(step + 1)" :disabled="person.age == '' || person.gender == '' || !person.region.name"
+      class="quiz__btn">
       Дальше
     </button>
   </div>
+  <transition>
+    <VirtualKeyboard ref="keyboardRef" v-if="showKeyboard" @input="onKeyboardInput" />
+  </transition>
 </template>
 
 <style scoped>
@@ -235,6 +252,7 @@ const regionsHints = computed(() => {
   position: relative;
   z-index: 1;
 }
+
 .quiz {
   display: grid;
   gap: 64px;
@@ -242,6 +260,7 @@ const regionsHints = computed(() => {
   width: 100%;
   margin-bottom: 750px;
 }
+
 .question {
   display: flex;
   align-items: center;
@@ -257,12 +276,14 @@ const regionsHints = computed(() => {
   color: #ffffff;
   height: fit-content;
 }
+
 .answers {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   max-width: 510px;
 }
+
 .answer {
   width: 247px;
   height: 90px;
@@ -279,6 +300,7 @@ const regionsHints = computed(() => {
   backdrop-filter: blur(10px);
   border-radius: 100px;
 }
+
 .answer span {
   font-family: "Manrope";
   font-weight: 600;
@@ -316,9 +338,11 @@ const regionsHints = computed(() => {
   backdrop-filter: blur(10px);
   border-radius: 16px;
 }
+
 .input_wrap::before {
   border-radius: 16px;
 }
+
 .input_wrap-arr {
   position: absolute;
   top: 38px;
@@ -333,16 +357,15 @@ const regionsHints = computed(() => {
 .input_wrap-arr.active {
   opacity: 1;
 }
+
 .input_quiz {
   display: block;
   padding: 24px;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
   border-radius: 16px;
   font-variant-numeric: lining-nums tabular-nums stacked-fractions;
   font-feature-settings: "liga" off, "clig" off;
@@ -357,6 +380,7 @@ const regionsHints = computed(() => {
   opacity: 0;
   transition: all 0.3s ease-in-out;
 }
+
 .answer:has(input:checked) .tint {
   opacity: 1;
 }
@@ -381,18 +405,18 @@ const regionsHints = computed(() => {
   overflow-y: scroll;
   z-index: 1;
 }
+
 .custom_list-wrapper {
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
   position: relative;
 }
+
 .custom_list-wrapper::before {
   height: 100%;
   top: 0;
@@ -433,6 +457,7 @@ const regionsHints = computed(() => {
   background-color: #ffffff;
   color: #00040b;
 }
+
 .quiz__btn:disabled {
   background-color: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.4);
@@ -522,19 +547,20 @@ const regionsHints = computed(() => {
 .quiz-wrapper.mobile .input_wrap {
   width: 100%;
   height: 48px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
   border-radius: 16px;
 }
+
 .quiz-wrapper.mobile .answer::before {
   padding: 2px;
 }
+
 .quiz-wrapper.mobile .input_wrap::before {
   padding: 1px;
 }
+
 .quiz-wrapper.mobile .input_quiz {
   font-size: 16px;
   padding: 5px 16px;
@@ -544,6 +570,7 @@ const regionsHints = computed(() => {
 .quiz-wrapper.mobile .input_quiz::placeholder {
   font-size: 16px;
 }
+
 .quiz-wrapper.mobile .input_wrap-arr {
   top: 18px;
   right: 16px;
@@ -578,6 +605,7 @@ const regionsHints = computed(() => {
   font-size: 16px;
   padding: 15px;
 }
+
 @media screen and (max-width: 475px) {
   .quiz-wrapper {
     margin-top: 0 !important;
@@ -633,19 +661,20 @@ const regionsHints = computed(() => {
   .input_wrap {
     width: 100%;
     height: 48px;
-    background: linear-gradient(
-      85.26deg,
-      rgba(217, 217, 217, 0.1) 3.83%,
-      rgba(115, 115, 115, 0.1) 99.95%
-    );
+    background: linear-gradient(85.26deg,
+        rgba(217, 217, 217, 0.1) 3.83%,
+        rgba(115, 115, 115, 0.1) 99.95%);
     border-radius: 16px;
   }
+
   .answer::before {
     padding: 2px;
   }
+
   .input_wrap::before {
     padding: 1px;
   }
+
   .input_quiz {
     font-size: 16px;
     padding: 5px 16px;
@@ -655,6 +684,7 @@ const regionsHints = computed(() => {
   .input_quiz::placeholder {
     font-size: 16px;
   }
+
   .input_wrap-arr {
     top: 18px;
     right: 16px;

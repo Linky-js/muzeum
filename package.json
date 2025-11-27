@@ -18,6 +18,8 @@
     "gsap": "^3.13.0",
     "html2canvas": "^1.4.1",
     "interactjs": "^1.10.27",
+    "simple-keyboard": "^3.8.91",
+    "simple-keyboard-layouts": "^3.4.142",
     "svg-pan-zoom": "^3.6.2",
     "swiper": "^11.2.10",
     "three": "^0.179.1",

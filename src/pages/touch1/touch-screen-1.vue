@@ -23,6 +23,10 @@ const breadcrumbsList = ref([
     link: "/",
   },
 ]);
+bus.on("defaultScreen", (payload) => {
+    console.log('ALARMBELYAT defaultScreen');
+    
+})
 </script>
 <template>
 
