@@ -79,7 +79,7 @@ function touchSendVideo(chapter) {
         </div>
         <div class="content__btns-bottom">
           <GlassBtn
-            link="dashPageTest"
+            link="dashPageTouch"
             supname="Интерактив"
             name="Диета DASH"
             type-btn="toInfo"
