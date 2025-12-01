@@ -18,17 +18,16 @@ const bus = useBroadcastBus({
     debug: true,
 })
 initMasterSync(router, bus, '1')
-const video = "/bg.mp4";
 const breadcrumbsList = ref([
   {
     id: 0,
     title: "Главная",
-    link: "/",
+    link: "screen-1",
   },
   {
     id: 1,
     title: "Метаболический синдром",
-    link: "/touch-screen-3",
+    link: "screen-3",
   },
 ]);
 function touchSendVideo(chapter) {
@@ -88,7 +87,7 @@ function touchSendVideo(chapter) {
             class="animBtnBottom"
           />
           <GlassBtn
-            link="kms"
+            link="pharmacotherapy"
             supname="Информация"
             name="Фармакотерапия"
             type-btn="toInfo"

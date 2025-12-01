@@ -21,12 +21,22 @@ const routes = [
       {
         name: "metabolic-syndrome-touch",
         path: "screen-3",
-        component: () => import("@/pages/touch1/touch-screen-3.vue"),
+        component: () => import("@/pages/touch1/metabolic-syndrome-touch.vue"),
       },
       {
         name: "data-science",
         path: "screen-2",
-        component: () => import("@/pages/touch1/touch-screen-2.vue"),
+        component: () => import("@/pages/touch1/data-science.vue"),
+      },
+      {
+        name: "applications-of-ai",
+        path: "screen-4",
+        component: () => import("@/pages/touch1/applications-of-ai.vue"),
+      },
+      {
+        name: "pharmacotherapy",
+        path: "screen-5",
+        component: () => import("@/pages/touch1/pharmacotherapy.vue"),
       },
     ],
   },
@@ -99,16 +109,6 @@ const routes = [
     name: "monitor2-astrazeneca",
     path: "/monitor-astrazeneca",
     component: () => import("@/pages/monitor2/mapAstra.vue"),
-  },
-  {
-    name: "data-science",
-    path: "/touch-screen-2",
-    component: () => import("@/pages/touch1/touch-screen-2.vue"),
-  },
-  {
-    name: "applications-of-ai",
-    path: "/touch-screen-4",
-    component: () => import("@/pages/touch1/touch-screen-4.vue"),
   },
   {
     name: "Btns",
