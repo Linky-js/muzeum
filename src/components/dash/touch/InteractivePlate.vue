@@ -2,10 +2,22 @@
 import { ref, computed, onMounted, watch, nextTick, defineEmits } from "vue";
 import { useStore } from "vuex";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
-import IconInfo from "../icons/IconInfo.vue";
+import IconInfo from "@/components/icons/IconInfo.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination, Navigation, FreeMode } from "swiper/modules";
 import products from "@/../public/datas/dash.json";
+
+import { useBroadcastBus } from "@/composables/useBroadcastBus.js";
+import { initMasterSync } from "@/composables/syncRouterSimple.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const bus = useBroadcastBus({
+  role: "touch",
+  pairId: "1",
+  debug: true,
+});
+initMasterSync(router, bus, "1");
 
 // Import Swiper styles
 import "swiper/css";
@@ -70,11 +82,11 @@ const isDayFullyFilled = (dayId) => {
 const visibleDays = computed(() => {
   const out = [];
   out.push(days[0]);
-  for (let i = 2; i <= 7; i++) {
-    const prev = i - 1;
-    if (isDayFullyFilled(prev)) out.push(days[i - 1]);
-    else break;
-  }
+  // for (let i = 2; i <= 7; i++) {
+  //   const prev = i - 1;
+  //   if (isDayFullyFilled(prev)) out.push(days[i - 1]);
+  //   else break;
+  // }
   return out;
 });
 
@@ -94,14 +106,24 @@ watch(
   () => isDayFullyFilled(currentDay.value),
   (val) => {
     if (val) {
-      const next = currentDay.value + 1;
-      if (next <= 7 && visibleDays.value.some((d) => d.id === next)) {
-        currentDay.value = next;
-        currentMeal.value = "breakfast";
-      }
+      // const next = currentDay.value + 1;
+      // if (next <= 7 && visibleDays.value.some((d) => d.id === next)) {
+      //   currentMeal.value = "breakfast";
+      // }
     }
   }
 );
+watch(
+  () => currentMealState.value,
+  (val) => {
+    if (val) {
+      console.log('bus.send',currentMealState.value);
+      
+      bus.send('plate', JSON.parse(JSON.stringify(val)), { role: 'monitor', pairId: '1' })
+    }
+  },
+  { deep: true }
+)
 
 /* --- Вес --- */
 function applyQuickWeight(val) {
@@ -466,7 +488,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
     <div class="bottom-info">
       <div class="bottom-prompt">
         <div class="bottom-prompt__top">
-          <h4 class="bottom-prompt__title">Подсказка</h4>
+          <h4 class="bottom-prompt__title">Подсказка </h4>
           <IconInfo class="bottom-prompt__icon" />
         </div>
         <div class="bottom-info__products">

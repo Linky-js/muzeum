@@ -1,9 +1,22 @@
 <script setup>
-import InteractivePlate from "@/components/dash/InteractivePlate.vue";
-import GetInfoUser from "@/components/dash/GetInfoUser.vue";
-import ResultPlate from "@/components/dash/ResultPlate.vue";
+import InteractivePlate from "@/components/dash/touch/InteractivePlate.vue";
+import GetInfoUser from "@/components/dash/touch/GetInfoUser.vue";
+import ResultPlate from "@/components/dash/touch/ResultPlate.vue";
 import { ref } from "vue";
 import { useStore } from "vuex";
+import { useBroadcastBus } from "@/composables/useBroadcastBus.js";
+import { initMasterSync } from "@/composables/syncRouterSimple.js";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const bus = useBroadcastBus({
+  role: "touch",
+  pairId: "1",
+  debug: true,
+});
+initMasterSync(router, bus, "1");
+
+
 
 const resultInfo = ref(null);
 const sentResult = ref(false)
@@ -43,6 +56,7 @@ const goResult = () => {
 const changePerson = (event) => {
   person.value = event.value
   sentResult.value = true
+  bus.send('sentResult', {}, { role: 'monitor', pairId: '1' })
 }
 
 </script>
