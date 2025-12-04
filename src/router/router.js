@@ -188,6 +188,13 @@ const routes = [
     path: "/dashPageTest",
     component: () => import("@/pages/dashPageTest.vue"),
   },
+
+  // ИИ
+  {
+    name: "touch-ai",
+    path: "/touch-ai",
+    component: () => import("@/pages/touchAI/touch-ai.vue"),
+  },
 ];
 
 const router = createRouter({
