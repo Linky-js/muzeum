@@ -133,10 +133,12 @@ const toggleModal = () => {
   overflow: hidden;
   cursor: pointer;
   padding: 24px 32px;
-  background: rgba(0, 0, 0, 0.02);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
-  box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
-  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
   border-radius: 100px;
 }
 .answer span {
@@ -155,7 +157,7 @@ const toggleModal = () => {
   inset: 0;
   border-radius: inherit;
   padding: 3px;
-  background: linear-gradient(169deg, #646464 0%, #4c4c4c 86%, #ffffff 100%);
+  background: linear-gradient(291deg, #646464 0%, #4c4c4c 86%, #ffffff 100%);
   border-radius: 100px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -317,9 +319,20 @@ const toggleModal = () => {
   z-index: 1;
   position: absolute;
   inset: 0;
-  border-radius: 3rem;
+  border-radius: inherit;
   backdrop-filter: blur(10px);
   background: rgba(217, 217, 217, 0.4);
+}
+.tint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(286deg, #646464 0%, #4c4c4c 86%, #ffffff 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 
 .shine {
