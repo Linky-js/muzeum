@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   person: Object,
@@ -93,7 +93,7 @@ const toggleModal = () => {
   z-index: 1;
 }
 .quiz-wrapper {
-  width: 100%;
+  width: 1386px;
   margin-top: 457px;
 }
 .quiz {

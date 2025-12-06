@@ -120,31 +120,27 @@ const updateBreadcrumbs = (currentStep) => {
 
   const breadcrumbsConfig = {
     1: baseBreadcrumbs,
-    2: baseBreadcrumbs,
-    3: baseBreadcrumbs,
+    2: [
+      ...baseBreadcrumbs,
+      { id: 2, title: "Выбор ИИ", link: `${ROUTE_PATH}?step=2` },
+    ],
+    3: [
+      ...baseBreadcrumbs,
+      { id: 2, title: "Выбор ИИ", link: `${ROUTE_PATH}?step=2` },
+      { id: 3, title: "Отношение к ИИ", link: `${ROUTE_PATH}?step=3` },
+    ],
     4: [
       ...baseBreadcrumbs,
-      { id: 2, title: "Календарь дней", link: `${ROUTE_PATH}?step=4` },
+      { id: 2, title: "Выбор ИИ", link: `${ROUTE_PATH}?step=2` },
+      { id: 3, title: "Отношение к ИИ", link: `${ROUTE_PATH}?step=3` },
+      { id: 4, title: "Сферы применения", link: `${ROUTE_PATH}?step=4` },
     ],
     5: [
       ...baseBreadcrumbs,
-      { id: 2, title: "Календарь дней", link: `${ROUTE_PATH}?step=4` },
-      { id: 3, title: "Вывод", link: `${ROUTE_PATH}?step=5` },
-    ],
-    6: [
-      ...baseBreadcrumbs,
-      { id: 2, title: "Календарь дней", link: `${ROUTE_PATH}?step=4` },
-      { id: 3, title: "Вывод", link: `${ROUTE_PATH}?step=6` },
-    ],
-    7: [
-      ...baseBreadcrumbs,
-      { id: 2, title: "Календарь дней", link: `${ROUTE_PATH}?step=4` },
-      {
-        id: 3,
-        title: "Вывод",
-        link: `${ROUTE_PATH}?step=${person.value.diabet === "Нет" ? 5 : 6}`,
-      },
-      { id: 4, title: "Рекомендации", link: `${ROUTE_PATH}?step=7` },
+      { id: 2, title: "Выбор ИИ", link: `${ROUTE_PATH}?step=2` },
+      { id: 3, title: "Отношение к ИИ", link: `${ROUTE_PATH}?step=3` },
+      { id: 4, title: "Сферы применения", link: `${ROUTE_PATH}?step=4` },
+      { id: 5, title: "Вывод", link: `${ROUTE_PATH}?step=5` },
     ],
   };
 
@@ -154,22 +150,10 @@ const updateBreadcrumbs = (currentStep) => {
 const changeTitles = (step) => {
   const titles = {
     1: { title: "Расскажите о себе", subtitle: "" },
-    4: { title: "Календарь дней", subtitle: "" },
-    5: {
-      title:
-        "Для людей с подобным<br /> профилем риск развития<br /> диабета - низкий.",
-      subtitle: "",
-    },
-    6: { title: "Вывод", subtitle: "" },
-    7: {
-      title: "Практические советы для<br /> долгой и здоровой жизни",
-      subtitle: "",
-    },
-    default: {
-      title: "Калькулятор",
-      subtitle:
-        "Введите ваши данные для определения статистической продолжительности жизни на основе данных",
-    },
+    2: { title: "Выбор ИИ", subtitle: "" },
+    3: { title: "Ваше отношение к использованию ИИ в здравоохранении", subtitle: "" },
+    4: { title: "Какие сферы получат наибольшие выгоды от ИИ?", subtitle: "" },
+    5: { title: "Спасибо за участие!", subtitle: "Вот как отвечают другие посетители" },
   };
 
   const { title: newTitle, subtitle: newSubtitle } =
@@ -194,7 +178,7 @@ watch(
 // Инициализация при загрузке
 onMounted(() => {
   const urlStep = parseInt(route.query.step);
-  if (urlStep >= 1 && urlStep <= 7) {
+  if (urlStep >= 1 && urlStep <= 5) {
     step.value = urlStep;
   }
 
@@ -238,7 +222,6 @@ onMounted(() => {
       </div>
       <div
         class="content__inner"
-        :class="{ 'full-width': step === 4 || step === 5 }"
       >
         <Step1
           v-if="step === 1"
@@ -247,14 +230,14 @@ onMounted(() => {
           :step="step"
           :goNextStep="goNextStep"
         />
-        <!-- <Step2
+        <Step2
           v-if="step === 2"
           class="step2"
           :person="person"
           :step="step"
           :goNextStep="goNextStep"
         />
-        <Step3
+        <!-- <Step3
           v-if="step === 3"
           class="step3"
           :person="person"
@@ -415,17 +398,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 86.625rem;
-  width: 100%;
   height: 100%;
 }
 
-.full-width {
-  max-width: 100%;
-}
-
-.step3,
-.step2 {
+.step3 {
   margin-top: 6.25rem;
   height: 100%;
 }
