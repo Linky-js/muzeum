@@ -87,7 +87,7 @@ function touchSendVideo(chapter) {
             class="animBtnBottom"
           />
           <GlassBtn
-            link="pharmacotherapy"
+            link="touch1-pharmacotherapy"
             supname="Информация"
             name="Фармакотерапия"
             type-btn="toInfo"
