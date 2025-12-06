@@ -65,7 +65,8 @@ export default {
           const dashProduct = dashData.find((p) => p.subcategory === dashSubcatName)
 
           if (!dashProduct) continue
-
+          console.log(weight);
+          
           const coeff = weight / 100
 
           const portions = coeff * Number(dashProduct.porc100g)
@@ -123,7 +124,7 @@ function normalizeDashCategories(cats, TDEE) {
     'Нежирное мясо, птица и рыба': Math.round((TDEE * 2) / 2000),
     'Обезжиренные/ низкожирные молочные': Math.round((TDEE * 2.5) / 2000),
     'Жиры и масла': Math.round((TDEE * 2.5) / 2000),
-    'Сладости': Math.round((TDEE * 0.71) / 2000),
+    'Сладости и добавленные сахара': Math.round((TDEE * 0.71) / 2000),
     'Орехи, семена и бобовые': Math.round((TDEE * 0.64) / 2000),
   }
 
@@ -136,7 +137,7 @@ function normalizeDashCategories(cats, TDEE) {
 
     out[categoryName] = {
       portions,
-      percent: Math.min(Math.round((portions / norm) * 100), 150),
+      percent: Math.round((portions / norm) * 100),
     }
   }
 

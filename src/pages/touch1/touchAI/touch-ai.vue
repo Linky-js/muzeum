@@ -416,6 +416,7 @@ onMounted(() => {
   position: fixed;
   bottom: 10rem;
   right: 31.875rem;
+  z-index: 5;
 }
 
 .effect {
