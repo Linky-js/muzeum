@@ -13,4 +13,6 @@ export default {
     'touch-qr': { name: 'monitor-calculate' },
     'touch-calc': { name: 'monitor-calculate' },
     'dashPageTouch': { name: 'dashPageMonitor' },
+    'touch1-pharmacotherapy': { name: 'monitor1-pharmacotherapy' },
+
 }

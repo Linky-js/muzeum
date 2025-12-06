@@ -24,7 +24,8 @@ import "swiper/css/autoplay";
 const emit = defineEmits(["goResult"]);
 const store = useStore();
 
-const baseImgSrc = "/dash/stol/fon2.png";
+const baseImgSrc = "/dash/stol/fon3.png";
+const bg1 = "/dash/stol/bg1.png"
 
 const currentDay = ref(1);
 const currentMeal = ref("breakfast");
@@ -54,6 +55,10 @@ const currentMealState = ref(null)
 
 bus.on('plate', (plate) => {
   currentMealState.value = plate
+  console.log('plate', plate)
+})
+bus.on('activeMealProducts', (products) => {
+  activeMealProducts.value = products
 })
 
 const quickWeights = [50, 100, 150, 200, 250];
@@ -143,9 +148,9 @@ function onSelectSubcategory(subcatId, sub) {
   useNumpad.value = false;
 }
 const getProducts = async (name) => {
- 
+
   currentProducts.value = products.filter((p) => p.subcategory === name);
-   console.log('products', name);
+  console.log('products', name);
 }
 async function confirmWeight() {
   if (!weight.value || Number(weight.value) <= 0) {
@@ -238,12 +243,7 @@ function loadImage(src) {
 
 
 
-const activeMealProducts = computed(() =>
-  store.getters["diet/getActiveMealSimpleProducts"](
-    currentDay.value,
-    currentMeal.value
-  )
-);
+const activeMealProducts = ref([]);
 
 const modules = [Autoplay, Pagination, Navigation, FreeMode];
 
@@ -270,6 +270,27 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 
 <template>
   <div class="plate-wrapper" ref="plateArea">
+    <img :src="bg1" class="bg1">
+    <div class="monitor__info">
+      <div class="dash__head">
+        <h1>Диета DASH</h1>
+        <h4>Dietary Approaches to Stop Hypertension</h4>
+      </div>
+      <div class="dash_description">
+        <div class="text-dash bold">
+          Система питания, разработанная для снижения артериального давления и поддержания здоровья сердечно-сосудистой
+          системы.
+        </div>
+        <div class="text-dash">
+          Диета основана на сбалансированном употреблении овощей, фруктов, цельнозерновых продуктов, нежирного белка и
+          молочных продуктов с пониженным содержанием жира.
+        </div>
+        <div class="text-dash">
+          В рационе ограничивается соль, сахар и насыщенные жиры. Такой подход помогает не только нормализовать
+          давление, но и улучшить обмен веществ, снизить уровень холестерина и поддерживать здоровый вес.
+        </div>
+      </div>
+    </div>
     <div class="top-info" v-if="activeMealProducts.length !== 0">
       <div class="top-info__inner">
         <div class="top-info__top">
@@ -277,11 +298,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
           <p class="top-info__top-rigth">Граммы</p>
         </div>
         <div class="top-info__content">
-          <div
-            class="top-info__product"
-            v-for="product in activeMealProducts"
-            :key="product.slotId"
-          >
+          <div class="top-info__product" v-for="product in activeMealProducts" :key="product.slotId">
             <p class="top-info__content-title">
               {{ getNameCategory(product.subcatId) }}
             </p>
@@ -293,57 +310,37 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
     <div class="image">
       <img :src="baseImgSrc" class="layer plate-base" ref="baseImg" />
       <div class="mask-layer">
-        <div
-          v-for="slotId in [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-          ]"
-          :key="slotId"
-          class="slot"
-          :style="slotStyle(slotId)"
-        >
-          <div
-            v-if="currentMealState?.plate[slotId]"
-            class="info"
-            :style="slotForInfoStyle(slotId)"
-            :class="{
+        <div v-for="slotId in [
+          1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        ]" :key="slotId" class="slot" :style="slotStyle(slotId)">
+          <div v-if="currentMealState?.plate[slotId]" class="info" :style="slotForInfoStyle(slotId)" :class="{
+            active:
+              activeInfoBtn ===
+              currentMealState?.plate[slotId].subcatId +
+              '-' +
+              currentMealState?.plate[slotId].slot,
+          }" v-click-outside="closeActiveInfo">
+            <span class="text" :class="{
               active:
                 activeInfoBtn ===
                 currentMealState?.plate[slotId].subcatId +
-                  '-' +
-                  currentMealState?.plate[slotId].slot,
-            }"
-            v-click-outside="closeActiveInfo"
-          >
-            <span
-              class="text"
-              :class="{
-                active:
-                  activeInfoBtn ===
-                  currentMealState?.plate[slotId].subcatId +
-                    '-' +
-                    currentMealState?.plate[slotId].slot,
-              }"
-              >{{ getNameCategory(currentMealState?.plate[slotId].subcatId) }}
-              {{ currentMealState?.plate[slotId].weight }}г</span
-            >
+                '-' +
+                currentMealState?.plate[slotId].slot,
+            }">{{ getNameCategory(currentMealState?.plate[slotId].subcatId) }}
+              {{ currentMealState?.plate[slotId].weight }}г</span>
 
             <div class="btnInfo">
               <svg @click="onSlotClick(slotId)" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                 viewBox="0 0 20 20" fill="none">
                 <path
                   d="M5 2V0H15V2H20V4H18V19C18 19.5523 17.5523 20 17 20H3C2.44772 20 2 19.5523 2 19V4H0V2H5ZM4 4V18H16V4H4ZM7 7H9V15H7V7ZM11 7H13V15H11V7Z"
-                  fill="black"
-                />
+                  fill="black" />
               </svg>
 
             </div>
           </div>
-          <img
-            v-if="currentMealState?.plate[slotId]"
-            :src="currentMealState.plate[slotId].image"
-            class="product"
-            draggable="false"
-          />
+          <img v-if="currentMealState?.plate[slotId]" :src="currentMealState.plate[slotId].image" class="product"
+            draggable="false" />
         </div>
       </div>
     </div>
@@ -366,7 +363,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 }
 
 .image {
-  height: 2160px;
+  height: 1872px;
   width: 100%;
   position: relative;
 }
@@ -385,15 +382,14 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   right: 0;
   bottom: 0;
   pointer-events: none;
-  /* слоты перехватывают клики сами */
 }
 
 .top-info {
   position: fixed;
-  top: 60px;
-  right: 60px;
+  top: 417px;
+  right: 200px;
   padding: 32px;
-  width: 450px;
+  width: 857px;
   background: rgba(0, 0, 0, 0.34);
   border-radius: 38px;
   z-index: 5;
@@ -631,17 +627,20 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   letter-spacing: -0.02em;
   color: #ffffff;
 }
-.bottom-info__products{
+
+.bottom-info__products {
   display: flex;
   flex-direction: column;
   gap: 16px;
   overflow-y: scroll;
   margin-top: 30px;
 }
-.bottom-info__products::-webkit-scrollbar{
+
+.bottom-info__products::-webkit-scrollbar {
   display: none;
 }
-.bottom-info__products .product{
+
+.bottom-info__products .product {
   color: #c2bfbf;
 }
 
@@ -725,7 +724,8 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   top: 0;
   height: 100%;
   background: linear-gradient(90deg, rgba(166, 166, 166, 0) 0%, #a6a6a6 80%);
-  width: 11%; /* или нужная вам ширина */
+  width: 11%;
+  /* или нужная вам ширина */
   z-index: 2;
 }
 
@@ -737,9 +737,11 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   top: 0;
   height: 100%;
   background: linear-gradient(90deg, #a6a6a6 20%, rgba(166, 166, 166, 0) 100%);
-  width: 11%; /* или нужная вам ширина */
+  width: 11%;
+  /* или нужная вам ширина */
   z-index: 1;
 }
+
 .categories-list__subcat-wrapper.hidden-gradient::before,
 .categories-list__subcat-wrapper.hidden-gradient::after {
   display: none;
@@ -769,8 +771,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   gap: 8px;
 }
 
-.categories-list__subcat-slide.activeSubcat
-  .categories-list__subcat-img-wrapper {
+.categories-list__subcat-slide.activeSubcat .categories-list__subcat-img-wrapper {
   border: 4px solid #ffffff;
 }
 
@@ -859,11 +860,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   justify-content: center;
   align-items: center;
   height: 67px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
   border-radius: 16px;
   font-family: "Manrope";
   font-weight: 600;
@@ -920,11 +919,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   justify-content: center;
   align-items: center;
   height: 67px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
 }
 
 .bottom-inputs__quick-btn,
@@ -942,11 +939,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   inset: 0;
   border-radius: 16px;
   padding: 1px;
-  background: linear-gradient(
-    85.26deg,
-    rgb(255 255 255 / 83%) 3.83%,
-    rgb(255 255 255 / 68%) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgb(255 255 255 / 83%) 3.83%,
+      rgb(255 255 255 / 68%) 99.95%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -968,11 +963,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 .bottom-inputs__numpad-btn .tint {
   border-radius: 16px;
   backdrop-filter: blur(10px);
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
 }
 
 .bottom-inputs__numpad-btn:nth-child(10) {
@@ -1109,11 +1102,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   inset: 0;
   border-radius: 50%;
   padding: 1px;
-  background: linear-gradient(
-    85.26deg,
-    rgb(255 255 255 / 83%) 3.83%,
-    rgb(255 255 255 / 68%) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgb(255 255 255 / 83%) 3.83%,
+      rgb(255 255 255 / 68%) 99.95%);
   border-radius: 19px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -1136,6 +1127,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   top: 27%;
   transform: scaleX(-1) translateY(50%);
 }
+
 .custom-next {
   right: 16px;
 }
@@ -1214,10 +1206,71 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   inset: 0;
   border-radius: 3rem;
   backdrop-filter: blur(10px);
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
+}
+
+.text-dash {
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 120%;
+  letter-spacing: -0.03em;
+  color: #34373D;
+  max-width: 996px;
+}
+
+.text-dash.bold {
+  font-weight: 600;
+  font-size: 48px;
+}
+
+.monitor__info {
+  position: fixed;
+  top: 440px;
+  left: 200px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.dash__head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+}
+
+.dash__head h1 {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 170px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #34373D;
+}
+
+.dash__head h4 {
+  font-family: "TT Hoves", sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  color: #34373d;
+}
+.dash_description{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.bg1{
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  opacity: 1;
 }
 </style>
