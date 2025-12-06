@@ -197,6 +197,13 @@ const routes = [
     path: '/map',
     component: () => import('@/pages/mapRussia.vue'),
   },
+
+  // ИИ
+  {
+    name: "touch-ai",
+    path: "/touch-ai",
+    component: () => import("@/pages/touchAI/touch-ai.vue"),
+  },
 ]
 
 const router = createRouter({

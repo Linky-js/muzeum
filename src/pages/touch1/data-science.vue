@@ -74,7 +74,7 @@ const breadcrumbsList = ref([
       <div class="content__btns-bottom">
         <GlassBtn
           class="animBtnBottom"
-          link="kms"
+          link="touch-ai"
           supname="Интерактив"
           name="Что для вас ИИ?"
           type-btn="toInfo"
