@@ -1,186 +1,72 @@
 <script setup>
+import { ref } from "vue";
+
 const props = defineProps({
   person: Object,
   step: Number,
   goNextStep: Function,
 });
+
+const typesAi = ref([
+  {
+    id: 1,
+    name: "Золушка",
+    responsibilities:
+      "ИИ берет на себя рутинную работу<br> и освобождает ваше время",
+    img: "./ai/Cinderella.png",
+  },
+  {
+    id: 2,
+    name: "Стажер",
+    responsibilities: "ИИ требует надзора, но со<br> временем учится",
+    img: "./ai/Intern.png",
+  },
+  {
+    id: 3,
+    name: "Супермен",
+    responsibilities: "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+    img: "./ai/Superman.png",
+  },
+  {
+    id: 4,
+    name: "Шерлок Холмс",
+    responsibilities: "ИИ находит скрытые связи и<br> объясняет непонятное",
+    img: "./ai/Sherlock.png",
+  },
+  {
+    id: 5,
+    name: "Хрустальный шар",
+    responsibilities:
+      "ИИ мыслит иначе, чем человек,<br> и дает неожиданные прогнозы",
+    img: "./ai/Crystal.png",
+  },
+]);
 </script>
 
 <template>
   <div class="quiz-wrapper">
-    <div class="quiz">
-      <div class="question">
-        <div class="label">Рост:</div>
-        <div class="input_wrap">
-          <input
-            type="number"
-            class="input_quiz relative"
-            v-model="person.rost"
-            placeholder="См"
-          />
+    <div class="answers">
+      <label class="answer" v-for="ai in typesAi" :key="ai.id">
+        <input
+          type="radio"
+          name="ai"
+          v-model="person.ai"
+          :value="ai"
+          :id="ai.id"
+        />
+        <div class="answer__wrapper">
+          <div class="tint"></div>
+          <img class="answer__img" :src="ai.img" :alt="ai.name" />
         </div>
-      </div>
-      <div class="question">
-        <div class="label">Вес:</div>
-        <div class="input_wrap">
-          <input
-            type="number"
-            class="input_quiz relative"
-            v-model="person.ves"
-            placeholder="Кг"
-          />
+        <div class="answer__info">
+          <h4 class="answer__name">{{ ai.name }}</h4>
+          <p class="answer__text" v-html="ai.responsibilities"></p>
         </div>
-      </div>
-      <div v-if="person.gender == 'Мужчины'" class="question">
-        <div class="label">
-          Окружность талии: <br />
-          <small>Мужчина</small>
-        </div>
-        <div class="answers answersColumn">
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">&#60;94 см</span>
-            <input
-              type="radio"
-              name="taliya"
-              v-model="person.taliya"
-              value=" &#60;94 см"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">от 94 до &#60; 102 см</span>
-            <input
-              type="radio"
-              name="taliya"
-              v-model="person.taliya"
-              value="от 94 до &#60; 102 см"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">≥102 см</span>
-            <input
-              type="radio"
-              name="taliya"
-              v-model="person.taliya"
-              value="≥102 см"
-              id=""
-            />
-          </label>
-        </div>
-      </div>
-      <div v-if="person.gender == 'Женщины'" class="question">
-        <div class="label">
-          Окружность талии: <br />
-          <small>Женшина</small>
-        </div>
-        <div class="answers answersColumn">
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">&#60;80 см</span>
-            <input
-              type="radio"
-              name="taliya"
-              v-model="person.taliya"
-              value=" &#60;80 см"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">80-88 см</span>
-            <input
-              type="radio"
-              name="taliya"
-              v-model="person.taliya"
-              value="80-88 см"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">>88 см</span>
-            <input
-              type="radio"
-              name="taliya"
-              v-model="person.taliya"
-              value=">88 см"
-              id=""
-            />
-          </label>
-        </div>
-      </div>
-      <div class="question">
-        <div class="label">Уровень физической активности:</div>
-        <div class="answers answersColumn">
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">≥4 часа/неделю</span>
-            <input
-              type="radio"
-              name="fizActive"
-              value="≥4 часа/неделю"
-              v-model="person.fizActive"
-              id=""
-            />
-          </label>
-          <label class="answer"
-            >
-            <div class="tint"></div>
-            <span class="relative">&#60;4 часа в неделю</span>
-            <input
-              type="radio"
-              name="fizActive"
-              value="&#60;4 часа в неделю"
-              v-model="person.fizActive"
-              id=""
-            />
-          </label>
-        </div>
-      </div>
-      <div class="question">
-        <div class="label">
-          Ежедневное потребление <br />
-          фруктов,овощей, ягод
-        </div>
-        <div class="answers">
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Да</span>
-            <input
-              type="radio"
-              name="yagody"
-              value="Да"
-              v-model="person.yagody"
-              id=""
-            />
-          </label>
-          <label class="answer"
-            >
-            <div class="tint"></div>
-            <span class="relative">Нет</span>
-            <input
-              type="radio"
-              name="yagody"
-              value="Нет"
-              v-model="person.yagody"
-              id=""
-            />
-          </label>
-        </div>
-      </div>
+      </label>
     </div>
     <button
-      @click="goNextStep(3)"
-      :disabled="person.rost == '' ||
-        person.ves == '' ||
-        person.taliya == '' ||
-        person.fizActive == '' ||
-        person.yagody == ''
-      "
+      @click="goNextStep(step + 1)"
+      :disabled="!person.ai"
       class="quiz__btn"
     >
       Дальше
@@ -193,133 +79,75 @@ const props = defineProps({
   position: relative;
   z-index: 1;
 }
-
 .quiz-wrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-.quiz {
-  display: grid;
-  gap: 64px;
-  padding: 32px 0 64px;
-  width: 100%;
-  max-width: 1422px;
-  margin-bottom: 69px;
-}
-.question {
-  display: flex;
-  justify-content: space-between;
+  width: 3400px;
+  margin-top: 177px;
 }
 
-.label {
-  font-family: "TT Hoves";
-  font-weight: 500;
-  font-size: 40px;
-  line-height: 110%;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  height: fit-content;
-}
 .answers {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  max-width: 510px;
-  width: 100%;
+  grid-template-columns: repeat(5, 1fr);
 }
 .answer {
-  height: 90px;
-  width: 100%;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.answer input {
+  display: none;
+}
+.answer__wrapper {
+  width: 560px;
+  height: 721px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  padding: 24px 32px;
-  background: rgba(0, 0, 0, 0.02);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
-  box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
-  backdrop-filter: blur(10px);
-  border-radius: 100px;
 }
-.answer span {
-  font-family: "Manrope";
-  font-weight: 600;
-  font-size: 24.9214px;
-  line-height: 37px;
-  color: #ffffff;
-}
-
-.answersColumn {
-  grid-template-columns: repeat(1, 1fr);
-}
-
-.custom_list-wrapper::before,
-.input_wrap::before,
-.answer::before {
+.answer__wrapper::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 3px;
-  background: linear-gradient(169deg, #646464 0%, #4c4c4c 86%, #ffffff 100%);
-  border-radius: 100px;
+  padding: 1px;
+  background: linear-gradient(273deg, #646464 0%, #4c4c4c 86%, #ffffff 100%);
+  border-radius: 28px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+  z-index: 2;
+  opacity: 0;
 }
-
-.answer input {
-  display: none;
-}
-
-.input_wrap {
-  position: relative;
-  max-width: 510px;
-  width: 100%;
-  height: 90px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
-  box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-}
-.input_wrap::before {
-  border-radius: 16px;
-}
-.input_wrap-arr {
-  position: absolute;
-  top: 38px;
-  right: 33px;
-  rotate: -90deg;
-  width: 13px;
-  height: 21px;
-  opacity: 0.2;
-  transition: all 0.3s ease-in-out;
-}
-
-.input_wrap-arr.active {
-  opacity: 1;
-}
-.input_quiz {
-  display: block;
-  padding: 24px;
+.answer__img {
+  object-fit: contain;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
-  border-radius: 16px;
-  font-variant-numeric: lining-nums tabular-nums stacked-fractions;
-  font-feature-settings: "liga" off, "clig" off;
+  position: relative;
+  z-index: 1;
+}
+.answer__info {
+  display: grid;
+  gap: 16px;
+}
+.answer__name {
+  font-family: "TT Hoves";
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+.answer__text {
+  font-family: "TT Hoves";
   font-weight: 400;
   font-size: 32px;
   line-height: 110%;
   letter-spacing: -0.02em;
   color: #ffffff;
+  opacity: 0.5;
 }
 
 .answer .tint {
@@ -329,57 +157,10 @@ const props = defineProps({
 .answer:has(input:checked) .tint {
   opacity: 1;
 }
-
-.input_quiz::placeholder {
-  font-family: "TT Hoves";
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  opacity: 0.2;
+.answer:has(input:checked) .answer__wrapper::before{
+  opacity: 1;
 }
 
-.custom_list {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  border-radius: 16px;
-  width: 100%;
-  height: 520px;
-  overflow-y: scroll;
-  z-index: 1;
-}
-.custom_list-wrapper {
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
-  position: relative;
-}
-.custom_list-wrapper::before {
-  height: 100%;
-  top: 0;
-  bottom: 0;
-  border-radius: 16px;
-}
-
-.region {
-  padding: 15.2467px 20.329px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 15.2467px;
-  font-family: "TT Hoves";
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 110%;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-}
 .quiz__btn {
   margin-top: auto;
   display: flex;
@@ -396,153 +177,22 @@ const props = defineProps({
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .quiz__btn:disabled {
   background-color: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.4);
-}
-.effect {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  backdrop-filter: blur(3px);
-  filter: url(#glass-distortion);
-  overflow: hidden;
-  isolation: isolate;
-  border-radius: 3rem;
 }
 
 .tint {
   z-index: 1;
   position: absolute;
   inset: 0;
-  border-radius: 3rem;
+  border-radius: 28px;
   backdrop-filter: blur(10px);
   background: rgba(217, 217, 217, 0.4);
-}
-
-.shine {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  overflow: hidden;
-  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.1),
-    inset -1px -1px 1px 1px rgba(255, 255, 255, 0.1);
-  border-radius: 3rem;
-}
-
-
-@media screen and (max-width: 475px) {
-  .quiz-wrapper {
-    margin-top: 0 !important;
-    height: auto !important;
-    width: 100%;
-  }
-
-  .quiz {
-    gap: 0;
-    padding: 0;
-    max-width: 100%;
-    margin-bottom: 0;
-  }
-
-  .question {
-    flex-direction: column;
-    align-items: start;
-    gap: 16px;
-    padding: 24px 0;
-    border-bottom: 1px solid #31353c;
-  }
-
-  .question:first-child {
-    border-top: 1px solid #31353c;
-  }
-
-  .label {
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 110%;
-    letter-spacing: -0.02em;
-  }
-
-  .answers {
-    gap: 8px;
-    max-width: none;
-    width: 100%;
-  }
-
-  .answer {
-    padding: 24px 32px;
-    width: auto;
-    height: 48px;
-    border-radius: 109.09px;
-  }
-
-  .answer span {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 37px;
-  }
-
-  .input_wrap {
-    width: 100%;
-    height: 48px;
-    background: linear-gradient(
-      85.26deg,
-      rgba(217, 217, 217, 0.1) 3.83%,
-      rgba(115, 115, 115, 0.1) 99.95%
-    );
-    border-radius: 16px;
-  }
-  .answer::before {
-    padding: 2px;
-  }
-  .input_wrap::before {
-    padding: 1px;
-  }
-  .input_quiz {
-    font-size: 16px;
-    padding: 5px 16px;
-    padding-right: 40px;
-  }
-
-  .input_quiz::placeholder {
-    font-size: 16px;
-  }
-  .input_wrap-arr {
-    top: 18px;
-    right: 16px;
-    width: 15px;
-    height: 16px;
-  }
-
-  .quiz__btn {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    left: 16px;
-    max-width: none;
-    width: auto;
-    border-radius: 12px;
-    height: 48px;
-    font-size: 14px;
-  }
-
-    .quiz__btn:disabled {
-    background-color: #10131B;
-  }
-
-
-  .custom_list {
-    height: 350px;
-    bottom: 120%;
-    top: initial;
-    background-color: #010101d6;
-  }
-
-  .region{
-    font-size: 16px;
-    padding: 15px;
-  }
 }
 </style>
