@@ -503,7 +503,7 @@ export default {
           {
             id: 'sweet-pastries',
             name: 'кусок торта/пирожное',
-            oldname: 'Желейные/сорбет (1/2 стакана)',
+            oldname: 'Кондитерские изделия (100 г)',
             alteration: true,
             preview: '/products/subcat/subcat-7-3.png',
             allowedSlots: [12],

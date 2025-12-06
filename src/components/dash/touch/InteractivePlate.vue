@@ -144,7 +144,6 @@ function toggleCategory(catId) {
   openCategory.value = openCategory.value === catId ? null : catId;
 }
 function onSelectSubcategory(subcatId, sub) {
-  console.log("sub", sub);
   if (sub.alteration && sub.oldname) {
     getProducts(sub.oldname);
   } else {
@@ -180,7 +179,7 @@ async function confirmWeight() {
 
 /* --- Slots --- */
 function onSlotClick(slotId) {
-  
+
   if (!currentMealState.value) return;
   activeInfoBtn.value = false;
   if (currentMealState.value.plate[slotId]) {
@@ -339,7 +338,8 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
             </p>
             <p class="top-info__content-weight">
               <span>{{ product.weight }} г</span>
-              <svg @click="onSlotClick(product.slotId)" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg @click="onSlotClick(product.slotId)" width="40" height="40" viewBox="0 0 40 40" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
                 <rect width="40" height="40" rx="20" fill="white" fill-opacity="0.15" />
                 <path
                   d="M16 13.6V12H24V13.6H28V15.2H26.4V27.2C26.4 27.6418 26.0418 28 25.6 28H14.4C13.9582 28 13.6 27.6418 13.6 27.2V15.2H12V13.6H16ZM15.2 15.2V26.4H24.8V15.2H15.2ZM17.6 17.6H19.2V24H17.6V17.6ZM20.8 17.6H22.4V24H20.8V17.6Z"
@@ -447,10 +447,10 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 
     <!-- Subcategories -->
     <div class="bottom-info">
-      <div class="bottom-prompt" :class="{ active: currentProducts.length > 1 }">
+      <div class="bottom-prompt" :class="{ active: currentProducts.length > 0 }">
         <div class="bottom-prompt__top">
           <h4 class="bottom-prompt__title">Подсказка </h4>
-          <IconInfo :color="{ '#1b1c21': currentProducts.length > 1 }" :opacity="{ '1': currentProducts.length > 1 }"
+          <IconInfo :color="{ '#1b1c21': currentProducts.length > 0 }" :opacity="{ '1': currentProducts.length > 0 }"
             class="bottom-prompt__icon" />
         </div>
         <div class="bottom-info__products">
@@ -500,8 +500,10 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
                   <div class="categories-list__subcat" @click="onSelectSubcategory(sub.id, sub)">
                     <div class="categories-list__subcat-img-wrapper" :class="{ added: isInPlate(sub.id) }">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM15.4571 7.45711L9 13.9142L4.79289 9.7071L6.20711 8.2929L9 11.0858L14.0429 6.04289L15.4571 7.45711Z" fill="white" />
-</svg>
+                        <path
+                          d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM15.4571 7.45711L9 13.9142L4.79289 9.7071L6.20711 8.2929L9 11.0858L14.0429 6.04289L15.4571 7.45711Z"
+                          fill="white" />
+                      </svg>
                       <img class="categories-list__subcat-img" :src="sub.preview" :alt="sub.name" />
                     </div>
                     <h6 class="categories-list__subcat-title">
@@ -677,9 +679,11 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   display: grid;
   gap: 40px;
 }
-.top-info__content-title{
+
+.top-info__content-title {
   font-size: 32px;
 }
+
 .top-info__content-title::first-letter {
   text-transform: uppercase;
 }

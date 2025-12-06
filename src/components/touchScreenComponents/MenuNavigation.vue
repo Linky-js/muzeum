@@ -19,7 +19,7 @@ const props = defineProps({
       {
         id: 1,
         name: "Data Science",
-        link: "/touch-screen-2",
+        link: "/touch1/screen-2",
 
       },
     ]
