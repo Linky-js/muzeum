@@ -107,6 +107,7 @@ const typesAi = ref([
   align-items: center;
   position: relative;
 }
+
 .answer__wrapper::before {
   content: "";
   position: absolute;
@@ -120,7 +121,9 @@ const typesAi = ref([
   mask-composite: exclude;
   z-index: 2;
   opacity: 0;
+  transition: all 0.3s ease-in-out;
 }
+
 .answer__img {
   object-fit: contain;
   width: 100%;
@@ -157,7 +160,7 @@ const typesAi = ref([
 .answer:has(input:checked) .tint {
   opacity: 1;
 }
-.answer:has(input:checked) .answer__wrapper::before{
+.answer:has(input:checked) .answer__wrapper::before {
   opacity: 1;
 }
 
@@ -193,6 +196,20 @@ const typesAi = ref([
   inset: 0;
   border-radius: 28px;
   backdrop-filter: blur(10px);
-  background: rgba(217, 217, 217, 0.4);
+  background: rgba(217, 217, 217, 0.13);
+}
+.tint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(273deg, #ffffff3b 100%);
+  border-radius: 28px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 2;
+  transition: all 0.3s ease-in-out;
 }
 </style>

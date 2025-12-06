@@ -5,6 +5,10 @@ const props = defineProps({
     required: true,
   },
   view: String,
+  dotsInText: {
+    type: Boolean,
+    default: true
+  },
 });
 </script>
 
@@ -25,14 +29,14 @@ const props = defineProps({
             <span class="breadcrumbs__item-round gray"></span>
             <span class="breadcrumbs__item-line"></span>
           </span>
-          <span class="breadcrumbs__item-text gray">{{ item.title }}</span>
+          <span class="breadcrumbs__item-text gray" :class="{dots: dotsInText}">{{ item.title }}</span>
         </RouterLink>
         <div class="breadcrumbs__item-inner" v-else>
           <span class="breadcrumbs__item-top">
             <span class="breadcrumbs__item-round"></span>
             <span class="breadcrumbs__item-line gradient"></span>
           </span>
-          <span class="breadcrumbs__item-text">
+          <span class="breadcrumbs__item-text" :class="{dots: dotsInText}">
             {{ item.title }}
           </span>
         </div>
@@ -91,14 +95,18 @@ const props = defineProps({
 }
 .breadcrumbs__item-text {
   color: rgba(255, 255, 255, 1);
-  font-family: TT Hoves;
+  font-family: 'TT Hoves';
   font-size: 2.38rem;
   font-weight: 500;
   line-height: 2.88rem;
-  letter-spacing: -3%;
+  letter-spacing: -0.06em;
   text-align: left;
   opacity: 0.8;
   max-width: 20.25rem;
+
+  
+}
+.breadcrumbs__item-text.dots {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

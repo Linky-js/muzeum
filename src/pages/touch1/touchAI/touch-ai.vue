@@ -9,6 +9,7 @@ import IconArrow from "@/components/icons/IconArrow.vue";
 import Step1 from "@/components/ai/touch/step1.vue";
 import Step2 from "@/components/ai/touch/step2.vue";
 import Step3 from "@/components/ai/touch/step3.vue";
+import Step4 from "@/components/ai/touch/step4.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -19,7 +20,7 @@ const STEP_VALIDATION_RULES = {
   1: ["age", "gender"],
   2: ["ai"],
   3: ["attitude"],
-  3: ["sphere"],
+  4: ["sphere"],
 };
 
 const breadcrumbsList = ref([
@@ -92,7 +93,9 @@ const goToStep = (targetStep) => {
 
 // Упрощенная функция goNextStep
 const goNextStep = (nextStep) => {
+  console.log('nextStep', nextStep)
   if (!validateStepFields(nextStep - 1)) {
+    console.log('nextStep', nextStep)
     const errorMessages = {
       2: "Заполните поля Возраст и Пол",
       3: "Выберите ИИ",
@@ -151,8 +154,8 @@ const changeTitles = (step) => {
   const titles = {
     1: { title: "Расскажите о себе", subtitle: "" },
     2: { title: "Выбор ИИ", subtitle: "" },
-    3: { title: "Ваше отношение к использованию ИИ в здравоохранении", subtitle: "" },
-    4: { title: "Какие сферы получат наибольшие выгоды от ИИ?", subtitle: "" },
+    3: { title: "Ваше отношение<br> к использованию ИИ<br> в здравоохранении", subtitle: "" },
+    4: { title: "Какие сферы получат<br> наибольшие выгоды от ИИ?", subtitle: "" },
     5: { title: "Спасибо за участие!", subtitle: "Вот как отвечают другие посетители" },
   };
 
@@ -191,7 +194,7 @@ onMounted(() => {
 <template>
   <div class="wrapper-content">
     <div class="header">
-      <Breadcrums :list="breadcrumbsList" />
+      <Breadcrums :list="breadcrumbsList" :dots-in-text="false" />
       <div class="header__logo">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -237,16 +240,26 @@ onMounted(() => {
           :step="step"
           :goNextStep="goNextStep"
         />
-        <!-- <Step3
+        <Step3
           v-if="step === 3"
           class="step3"
           :person="person"
           :step="step"
           :goNextStep="goNextStep"
-        /> -->
+        />
+        <Step4
+          v-if="step === 4"
+          class="step4"
+          :person="person"
+          :step="step"
+          :goNextStep="goNextStep"
+        />
+        <div v-if="step === 5">
+          {{ person }}
+        </div>
       </div>
     </div>
-    <MenuNavigation v-if="step !== 4 && step !== 7" class="footer__btn" />
+    <MenuNavigation class="footer__btn" />
     <svg style="display: none">
       <filter
         id="glass-distortion"
@@ -398,16 +411,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
-}
-
-.step3 {
-  margin-top: 6.25rem;
-  height: 100%;
-}
-.step4 {
-  width: 100%;
-  margin-top: 375px;
   height: 100%;
 }
 

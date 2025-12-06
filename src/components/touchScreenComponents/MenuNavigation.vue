@@ -305,7 +305,7 @@ onUnmounted(() => {
   inset: 0;
   border-radius: inherit;
   padding: 3px;
-  background: linear-gradient(169deg, #2d3f6e 0%, #a4b3ff 86%, #6575ff 100%);
+  background: linear-gradient(287deg, #646464 0%, #4c4c4c 86%, #ffffff 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
