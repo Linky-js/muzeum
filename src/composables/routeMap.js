@@ -12,4 +12,7 @@ export default {
     'touch2-astrazeneca': { name: 'monitor2-astrazeneca' },
     'touch-qr': { name: 'monitor-calculate' },
     'touch-calc': { name: 'monitor-calculate' },
+    'dashPageTouch': { name: 'dashPageMonitor' },
+    'touch1-pharmacotherapy': { name: 'monitor1-pharmacotherapy' },
+
 }

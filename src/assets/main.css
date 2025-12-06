@@ -786,3 +786,6 @@ text.st23{
 .custom-bullet-active {
   opacity: 1;
 }
+.textPharm p:not(:last-child) {
+  margin-bottom: 20px;
+}

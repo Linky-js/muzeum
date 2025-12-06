@@ -151,7 +151,7 @@ function focusRegion(regionObject) {
         viewBoxParams = `${centerX - bbox.width / 2 - 2600} ${centerY - bbox.height / 2 - 2100} ${bbox.width + 7500} ${bbox.height + 3500}`;
         break;
       case 'Северо-Западный':
-        viewBoxParams = `${centerX - bbox.width / 2 - 5200} ${centerY - bbox.height / 2 - 2100} ${bbox.width + 15000} ${bbox.height + 5000}`;
+        viewBoxParams = `${centerX - bbox.width / 2 - 2200} ${centerY - bbox.height / 2 - 2100} ${bbox.width + 7500} ${bbox.height + 5000}`;
         break;
       case 'Северо-Кавказский':
         viewBoxParams = `${centerX - bbox.width / 2 - 1200} ${centerY - bbox.height / 2 - 1800} ${bbox.width + 3500} ${bbox.height + 3500}`;

@@ -2,10 +2,20 @@
 import { ref, computed, onMounted, watch, nextTick, defineEmits } from "vue";
 import { useStore } from "vuex";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
-import IconInfo from "../icons/IconInfo.vue";
+import IconInfo from "@/components/icons/IconInfo.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination, Navigation, FreeMode } from "swiper/modules";
 import products from "@/../public/datas/dash.json";
+
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMonitorSync } from '@/composables/syncRouterSimple.js'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+
+const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
+initMonitorSync(router, bus, '1')
+
 
 // Import Swiper styles
 import "swiper/css";
@@ -14,7 +24,8 @@ import "swiper/css/autoplay";
 const emit = defineEmits(["goResult"]);
 const store = useStore();
 
-const baseImgSrc = "/dash/stol/fon2.png";
+const baseImgSrc = "/dash/stol/fon3.png";
+const bg1 = "/dash/stol/bg1.png"
 
 const currentDay = ref(1);
 const currentMeal = ref("breakfast");
@@ -40,9 +51,15 @@ const days = [
 ];
 
 const categories = computed(() => store.state.diet.categories || []);
-const currentMealState = computed(() =>
-  store.getters["diet/getMeal"](currentDay.value, currentMeal.value)
-);
+const currentMealState = ref(null)
+
+bus.on('plate', (plate) => {
+  currentMealState.value = plate
+  console.log('plate', plate)
+})
+bus.on('activeMealProducts', (products) => {
+  activeMealProducts.value = products
+})
 
 const quickWeights = [50, 100, 150, 200, 250];
 
@@ -70,11 +87,11 @@ const isDayFullyFilled = (dayId) => {
 const visibleDays = computed(() => {
   const out = [];
   out.push(days[0]);
-  for (let i = 2; i <= 7; i++) {
-    const prev = i - 1;
-    if (isDayFullyFilled(prev)) out.push(days[i - 1]);
-    else break;
-  }
+  // for (let i = 2; i <= 7; i++) {
+  //   const prev = i - 1;
+  //   if (isDayFullyFilled(prev)) out.push(days[i - 1]);
+  //   else break;
+  // }
   return out;
 });
 
@@ -94,11 +111,10 @@ watch(
   () => isDayFullyFilled(currentDay.value),
   (val) => {
     if (val) {
-      const next = currentDay.value + 1;
-      if (next <= 7 && visibleDays.value.some((d) => d.id === next)) {
-        currentDay.value = next;
-        currentMeal.value = "breakfast";
-      }
+      // const next = currentDay.value + 1;
+      // if (next <= 7 && visibleDays.value.some((d) => d.id === next)) {
+      //   currentMeal.value = "breakfast";
+      // }
     }
   }
 );
@@ -132,9 +148,9 @@ function onSelectSubcategory(subcatId, sub) {
   useNumpad.value = false;
 }
 const getProducts = async (name) => {
- 
+
   currentProducts.value = products.filter((p) => p.subcategory === name);
-   console.log('products', name);
+  console.log('products', name);
 }
 async function confirmWeight() {
   if (!weight.value || Number(weight.value) <= 0) {
@@ -224,56 +240,10 @@ function loadImage(src) {
   });
 }
 
-async function saveAsImage() {
-  try {
-    const canvas = canvasRef.value;
-    const ctx = canvas.getContext("2d");
 
-    const base = await loadImage(baseImgSrc);
-    canvas.width = base.width;
-    canvas.height = base.height;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(base, 0, 0, canvas.width, canvas.height);
 
-    for (const slotId of [1, 2, 3, 4]) {
-      const product = currentMealState.value?.plate?.[slotId];
-      if (!product?.image) continue;
-      const img = await loadImage(product.image);
-      const p = slotPositions[slotId];
-      const x = Math.round((p.left / 100) * canvas.width - w / 2);
-      const y = Math.round((p.top / 100) * canvas.height - h / 2);
-      ctx.drawImage(img, x, y, w, h);
-    }
 
-    const link = document.createElement("a");
-    link.download = `plate_day${currentDay.value}_meal_${currentMeal.value}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  } catch (err) {
-    console.error(err);
-    alert("Ошибка сохранения");
-  }
-}
-
-function goActiveInfoBtn(posId, el) {
-  activeInfoBtn.value = posId;
-  el?.activateClickOutside?.();
-}
-function getNameCategory(id) {
-  const categoryArray = store.state.diet.categories;
-  for (const c of categoryArray) {
-    const found = c.subcategories.find((s) => s.id === id);
-    if (found) return found.name;
-  }
-  return null;
-}
-
-const activeMealProducts = computed(() =>
-  store.getters["diet/getActiveMealSimpleProducts"](
-    currentDay.value,
-    currentMeal.value
-  )
-);
+const activeMealProducts = ref([]);
 
 const modules = [Autoplay, Pagination, Navigation, FreeMode];
 
@@ -286,22 +256,41 @@ const goResult = () => {
   isOpenModal.value = false;
   emit("goResult");
 };
+function getNameCategory(id) {
+  const categoryArray = store.state.diet.categories;
+  for (const c of categoryArray) {
+    const found = c.subcategories.find((s) => s.id === id);
+    if (found) return found.name;
+  }
+  return null;
+}
 
-const arrowPrev = ref(null);
-const arrowNext = ref(null);
-const pagination = ref(null);
-const swiperInstance = ref(null);
-
-const onSwiper = (swiper) => {
-  swiperInstance.value = swiper;
-};
-
-const toggleModal = () => (isOpenModal.value = !isOpenModal.value);
 onMounted(() => store.commit("diet/INIT_DAY", 1));
 </script>
 
 <template>
   <div class="plate-wrapper" ref="plateArea">
+    <img :src="bg1" class="bg1">
+    <div class="monitor__info">
+      <div class="dash__head">
+        <h1>Диета DASH</h1>
+        <h4>Dietary Approaches to Stop Hypertension</h4>
+      </div>
+      <div class="dash_description">
+        <div class="text-dash bold">
+          Система питания, разработанная для снижения артериального давления и поддержания здоровья сердечно-сосудистой
+          системы.
+        </div>
+        <div class="text-dash">
+          Диета основана на сбалансированном употреблении овощей, фруктов, цельнозерновых продуктов, нежирного белка и
+          молочных продуктов с пониженным содержанием жира.
+        </div>
+        <div class="text-dash">
+          В рационе ограничивается соль, сахар и насыщенные жиры. Такой подход помогает не только нормализовать
+          давление, но и улучшить обмен веществ, снизить уровень холестерина и поддерживать здоровый вес.
+        </div>
+      </div>
+    </div>
     <div class="top-info" v-if="activeMealProducts.length !== 0">
       <div class="top-info__inner">
         <div class="top-info__top">
@@ -309,11 +298,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
           <p class="top-info__top-rigth">Граммы</p>
         </div>
         <div class="top-info__content">
-          <div
-            class="top-info__product"
-            v-for="product in activeMealProducts"
-            :key="product.slotId"
-          >
+          <div class="top-info__product" v-for="product in activeMealProducts" :key="product.slotId">
             <p class="top-info__content-title">
               {{ getNameCategory(product.subcatId) }}
             </p>
@@ -325,393 +310,47 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
     <div class="image">
       <img :src="baseImgSrc" class="layer plate-base" ref="baseImg" />
       <div class="mask-layer">
-        <div
-          v-for="slotId in [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-          ]"
-          :key="slotId"
-          class="slot"
-          :style="slotStyle(slotId)"
-        >
-          <div
-            v-if="currentMealState?.plate[slotId]"
-            class="info"
-            :style="slotForInfoStyle(slotId)"
-            :class="{
+        <div v-for="slotId in [
+          1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        ]" :key="slotId" class="slot" :style="slotStyle(slotId)">
+          <div v-if="currentMealState?.plate[slotId]" class="info" :style="slotForInfoStyle(slotId)" :class="{
+            active:
+              activeInfoBtn ===
+              currentMealState?.plate[slotId].subcatId +
+              '-' +
+              currentMealState?.plate[slotId].slot,
+          }" v-click-outside="closeActiveInfo">
+            <span class="text" :class="{
               active:
                 activeInfoBtn ===
                 currentMealState?.plate[slotId].subcatId +
-                  '-' +
-                  currentMealState?.plate[slotId].slot,
-            }"
-            v-click-outside="closeActiveInfo"
-          >
-            <span
-              class="text"
-              :class="{
-                active:
-                  activeInfoBtn ===
-                  currentMealState?.plate[slotId].subcatId +
-                    '-' +
-                    currentMealState?.plate[slotId].slot,
-              }"
-              >{{ getNameCategory(currentMealState?.plate[slotId].subcatId) }}
-              {{ currentMealState?.plate[slotId].weight }}г</span
-            >
+                '-' +
+                currentMealState?.plate[slotId].slot,
+            }">{{ getNameCategory(currentMealState?.plate[slotId].subcatId) }}
+              {{ currentMealState?.plate[slotId].weight }}г</span>
 
             <div class="btnInfo">
               <svg @click="onSlotClick(slotId)" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                 viewBox="0 0 20 20" fill="none">
                 <path
                   d="M5 2V0H15V2H20V4H18V19C18 19.5523 17.5523 20 17 20H3C2.44772 20 2 19.5523 2 19V4H0V2H5ZM4 4V18H16V4H4ZM7 7H9V15H7V7ZM11 7H13V15H11V7Z"
-                  fill="black"
-                />
+                  fill="black" />
               </svg>
 
             </div>
           </div>
-          <img
-            v-if="currentMealState?.plate[slotId]"
-            :src="currentMealState.plate[slotId].image"
-            class="product"
-            draggable="false"
-          />
+          <img v-if="currentMealState?.plate[slotId]" :src="currentMealState.plate[slotId].image" class="product"
+            draggable="false" />
         </div>
       </div>
     </div>
-
-    <!-- ✅ Updated days UI -->
-    <div
-      class="controls days-controls"
-      :class="{ many_days: visibleDays.length > 1 }"
-    >
-      <div class="days">
-        <h2 class="days__title" v-if="visibleDays.length > 1">Дни недели</h2>
-        <div
-          v-for="d in visibleDays"
-          :key="d.id"
-          class="day"
-          :class="{ active: currentDay === d.id }"
-        >
-          <h4 class="day__title">
-            {{ d.smallName }}
-          </h4>
-          <div class="meals">
-            <div
-              class="meal"
-              @click="selectMeal(d.id, 'breakfast')"
-              :class="{
-                active: currentMeal === 'breakfast' && currentDay === d.id,
-              }"
-            >
-              <img
-                :src="
-                  isMealFilledUI(d.id, 'breakfast')
-                    ? '/dash/days/full.png'
-                    : '/dash/days/empty.png'
-                "
-              />
-              <h6 class="meal__title">Завтрак</h6>
-            </div>
-
-            <div
-              class="meal"
-              @click="selectMeal(d.id, 'lunch')"
-              :class="{
-                active: currentMeal === 'lunch' && currentDay === d.id,
-              }"
-            >
-              <img
-                :src="
-                  isMealFilledUI(d.id, 'lunch')
-                    ? '/dash/days/full.png'
-                    : '/dash/days/empty.png'
-                "
-              />
-              <h6 class="meal__title">Обед</h6>
-            </div>
-
-            <div
-              class="meal"
-              @click="selectMeal(d.id, 'dinner')"
-              :class="{
-                active: currentMeal === 'dinner' && currentDay === d.id,
-              }"
-            >
-              <img
-                :src="
-                  isMealFilledUI(d.id, 'dinner')
-                    ? '/dash/days/full.png'
-                    : '/dash/days/empty.png'
-                "
-              />
-              <h6 class="meal__title">Ужин</h6>
-            </div>
-
-            <!-- <div class="meal" @click="selectMeal(d.id, 'snack')" :class="{
-              active: currentMeal === 'snack' && currentDay === d.id,
-            }">
-              <img :src="isMealFilledUI(d.id, 'snack')
-                ? '/dash/days/full.png'
-                : '/dash/days/empty.png'
-                " />
-              <h6 class="meal__title">Перекус</h6>
-            </div> -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Subcategories -->
-    <div class="bottom-info">
-      <div class="bottom-prompt">
-        <div class="bottom-prompt__top">
-          <h4 class="bottom-prompt__title">Подсказка</h4>
-          <IconInfo class="bottom-prompt__icon" />
-        </div>
-        <div class="bottom-info__products">
-          <div class="product" v-for="(p, index) of currentProducts" :key="p.id">
-            {{ p.product }}{{ currentProducts.length > 1 &&  currentProducts.length - 1 !== index ? ', ' : '' }}
-          </div>
-        </div>
-        <p v-if="!currentProducts.length" class="bottom-prompt__text">
-          В данном окне мы покажем перечень продуктов входящих в подкатегорию
-        </p>
-      </div>
-      <div class="controls categories-list">
-        <h4 class="categories-list__title">
-          Выберите категорию и подкатегорию продуктов
-        </h4>
-        <div class="categories-list__cats-wrapper">
-          <div
-            v-for="cat in categories"
-            :key="cat.id"
-            class="categories-list__cats"
-          >
-            <div
-              class="categories-list__cat"
-              @click="toggleCategory(cat.id)"
-              :class="{ active: openCategory === cat.id }"
-            >
-              <img
-                class="categories-list__cat-img"
-                :src="cat.img"
-                :alt="cat.id"
-              />
-              <h6 class="categories-list__cat-title">
-                {{ cat.name }}
-              </h6>
-            </div>
-            <div
-              class="categories-list__subcat-wrapper"
-              :class="{ 'hidden-gradient': cat.subcategories.length <= 6 }"
-              v-if="openCategory === cat.id"
-            >
-              <swiper
-                :loop="true"
-                slides-per-view="auto"
-                :space-between="17"
-                :free-mode="{
-                  enabled: true,
-                  momentum: false,
-                  sticky: false,
-                }"
-                :autoplay="{
-                  delay: 0, // Минимальная задержка
-                  disableOnInteraction: true, // Не останавливать при взаимодействии
-                  pauseOnMouseEnter: true, // Не останавливать при наведении
-                }"
-                :speed="1500"
-                :pagination="{
-                  el: pagination,
-                  clickable: true,
-                  bulletClass: 'custom-bullet',
-                  bulletActiveClass: 'custom-bullet-active',
-                }"
-                :navigation="{
-                  nextEl: arrowNext,
-                  prevEl: arrowPrev,
-                }"
-                :modules="modules"
-                @swiper="onSwiper"
-                @slideChange="onSlideChange"
-                class="categories-list__subcat-swiper"
-              >
-                <swiper-slide
-                  v-for="sub in cat.subcategories"
-                  :key="sub.id"
-                  class="categories-list__subcat-slide"
-                  :class="{ activeSubcat: selectedSubcat === sub.id }"
-                >
-                  <div
-                    class="categories-list__subcat"
-                    @click="onSelectSubcategory(sub.id, sub)"
-                  >
-                    <div
-                      class="categories-list__subcat-img-wrapper"
-                      :class="{ added: isInPlate(sub.id) }"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        class="bi bi-check2-circle"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"
-                        />
-                        <path
-                          d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"
-                        />
-                      </svg>
-                      <img
-                        class="categories-list__subcat-img"
-                        :src="sub.preview"
-                        :alt="sub.name"
-                      />
-                    </div>
-                    <h6 class="categories-list__subcat-title">
-                      {{ sub.name }}
-                    </h6>
-                  </div>
-                </swiper-slide>
-              </swiper>
-              <div
-                v-if="cat.subcategories.length > 6"
-                class="custom-prev custom-arrow"
-                ref="arrowPrev"
-              >
-                <div class="tint"></div>
-              </div>
-              <div
-                v-if="cat.subcategories.length > 6"
-                class="custom-next custom-arrow"
-                ref="arrowNext"
-              >
-                <div class="tint"></div>
-              </div>
-              <div
-                class="custom-pagination"
-                ref="pagination"
-                v-if="cat.subcategories.length > 6"
-              ></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="bottom-inputs"
-        :class="{
-          active:
-            selectedSubcat && selectedSubcat !== 'all' && selectedSubcat != '',
-        }"
-      >
-        <input
-          ref="weightInputRef"
-          class="weight-input bottom-inputs__inp"
-          v-model="weight"
-          @focus="useNumpad = true"
-          placeholder="г"
-        />
-
-        <div v-if="!useNumpad" class="quick-btns bottom-inputs__quick">
-          <button
-            v-for="w in quickWeights"
-            :key="w"
-            @click="applyQuickWeight(w)"
-            class="bottom-inputs__quick-btn"
-            :class="{
-              active:
-                selectedSubcat &&
-                selectedSubcat !== 'all' &&
-                selectedSubcat != '',
-            }"
-          >
-            <div class="tint"></div>
-            <span> {{ w }} г </span>
-          </button>
-        </div>
-
-        <div v-else class="numpad bottom-inputs__numpad">
-          <button
-            v-for="n in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']"
-            :key="n"
-            @click="numpadPress(n)"
-            class="bottom-inputs__numpad-btn"
-          >
-            <div class="tint"></div>
-            <span>
-              {{ n }}
-            </span>
-          </button>
-
-          <button @click="numpadPress('<')" class="bottom-inputs__numpad-btn">
-            <div class="tint"></div>
-            <span> < </span>
-          </button>
-          <button @click="numpadPress('C')" class="bottom-inputs__numpad-btn">
-            <div class="tint"></div>
-            <span> С </span>
-          </button>
-        </div>
-
-        <button
-          v-if="!useNumpad"
-          class="bottom-inputs__btn"
-          @click="toggleModal"
-        >
-          Рассчитать
-        </button>
-        <button
-          v-if="useNumpad"
-          class="bottom-inputs__btn-numpad"
-          @click="confirmWeight"
-        >
-          ок
-        </button>
-      </div>
-    </div>
-
-    <!-- Weight Modal -->
-    <div v-if="isOpenModal" class="modal-backdrop" @click="toggleModal">
-      <div class="modal" @click.stop>
-        <div class="modal__close" @click="toggleModal">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="25.6" height="25.6" fill="white" />
-            <path
-              d="M12.7999 11.2915L18.0797 6.01172L19.5882 7.52021L14.3084 12.8L19.5882 18.0796L18.0797 19.5881L12.7999 14.3084L7.52022 19.5881L6.01172 18.0796L11.2915 12.8L6.01172 7.52021L7.52022 6.01172L12.7999 11.2915Z"
-              fill="black" />
-          </svg>
-        </div>
-        <div class="modal__inner">
-          <h3 class="modal__title">
-            Вы уверены, что хотите рассчитать созданный прием пищи или хотите
-            добавить еще продуктов?
-          </h3>
-          <div class="modal__btns">
-            <button class="modal__btn cancel" @click="toggleModal">
-              Добавить
-            </button>
-            <button class="modal__btn ok" @click="goResult">Рассчитать</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 
-    <div class="controls save-control">
-      <button class="btn-save" @click="saveAsImage">💾 Сохранить PNG</button>
-    </div> -->
-    <MenuNavigation class="footer__btn" on-page="dash" />
-    <canvas ref="canvasRef" class="hidden"></canvas>
   </div>
 </template>
 
 <style scoped>
 .plate-wrapper {
   position: relative;
-  width: 3840px;
+  width: 100%;
   /* уменьшенная для dev */
   height: 2160px;
   overflow: hidden;
@@ -724,7 +363,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 }
 
 .image {
-  height: 2160px;
+  height: 1872px;
   width: 100%;
   position: relative;
 }
@@ -743,15 +382,14 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   right: 0;
   bottom: 0;
   pointer-events: none;
-  /* слоты перехватывают клики сами */
 }
 
 .top-info {
   position: fixed;
-  top: 60px;
-  right: 60px;
+  top: 417px;
+  right: 200px;
   padding: 32px;
-  width: 450px;
+  width: 857px;
   background: rgba(0, 0, 0, 0.34);
   border-radius: 38px;
   z-index: 5;
@@ -989,17 +627,20 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   letter-spacing: -0.02em;
   color: #ffffff;
 }
-.bottom-info__products{
+
+.bottom-info__products {
   display: flex;
   flex-direction: column;
   gap: 16px;
   overflow-y: scroll;
   margin-top: 30px;
 }
-.bottom-info__products::-webkit-scrollbar{
+
+.bottom-info__products::-webkit-scrollbar {
   display: none;
 }
-.bottom-info__products .product{
+
+.bottom-info__products .product {
   color: #c2bfbf;
 }
 
@@ -1083,7 +724,8 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   top: 0;
   height: 100%;
   background: linear-gradient(90deg, rgba(166, 166, 166, 0) 0%, #a6a6a6 80%);
-  width: 11%; /* или нужная вам ширина */
+  width: 11%;
+  /* или нужная вам ширина */
   z-index: 2;
 }
 
@@ -1095,9 +737,11 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   top: 0;
   height: 100%;
   background: linear-gradient(90deg, #a6a6a6 20%, rgba(166, 166, 166, 0) 100%);
-  width: 11%; /* или нужная вам ширина */
+  width: 11%;
+  /* или нужная вам ширина */
   z-index: 1;
 }
+
 .categories-list__subcat-wrapper.hidden-gradient::before,
 .categories-list__subcat-wrapper.hidden-gradient::after {
   display: none;
@@ -1127,8 +771,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   gap: 8px;
 }
 
-.categories-list__subcat-slide.activeSubcat
-  .categories-list__subcat-img-wrapper {
+.categories-list__subcat-slide.activeSubcat .categories-list__subcat-img-wrapper {
   border: 4px solid #ffffff;
 }
 
@@ -1217,11 +860,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   justify-content: center;
   align-items: center;
   height: 67px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
   border-radius: 16px;
   font-family: "Manrope";
   font-weight: 600;
@@ -1278,11 +919,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   justify-content: center;
   align-items: center;
   height: 67px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
 }
 
 .bottom-inputs__quick-btn,
@@ -1300,11 +939,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   inset: 0;
   border-radius: 16px;
   padding: 1px;
-  background: linear-gradient(
-    85.26deg,
-    rgb(255 255 255 / 83%) 3.83%,
-    rgb(255 255 255 / 68%) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgb(255 255 255 / 83%) 3.83%,
+      rgb(255 255 255 / 68%) 99.95%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -1326,11 +963,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 .bottom-inputs__numpad-btn .tint {
   border-radius: 16px;
   backdrop-filter: blur(10px);
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
 }
 
 .bottom-inputs__numpad-btn:nth-child(10) {
@@ -1467,11 +1102,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   inset: 0;
   border-radius: 50%;
   padding: 1px;
-  background: linear-gradient(
-    85.26deg,
-    rgb(255 255 255 / 83%) 3.83%,
-    rgb(255 255 255 / 68%) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgb(255 255 255 / 83%) 3.83%,
+      rgb(255 255 255 / 68%) 99.95%);
   border-radius: 19px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -1494,6 +1127,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   top: 27%;
   transform: scaleX(-1) translateY(50%);
 }
+
 .custom-next {
   right: 16px;
 }
@@ -1572,10 +1206,71 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   inset: 0;
   border-radius: 3rem;
   backdrop-filter: blur(10px);
-  background: linear-gradient(
-    85.26deg,
-    rgba(217, 217, 217, 0.1) 3.83%,
-    rgba(115, 115, 115, 0.1) 99.95%
-  );
+  background: linear-gradient(85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%);
+}
+
+.text-dash {
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 120%;
+  letter-spacing: -0.03em;
+  color: #34373D;
+  max-width: 996px;
+}
+
+.text-dash.bold {
+  font-weight: 600;
+  font-size: 48px;
+}
+
+.monitor__info {
+  position: fixed;
+  top: 440px;
+  left: 200px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.dash__head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+}
+
+.dash__head h1 {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 170px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #34373D;
+}
+
+.dash__head h4 {
+  font-family: "TT Hoves", sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  color: #34373d;
+}
+.dash_description{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.bg1{
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  opacity: 1;
 }
 </style>

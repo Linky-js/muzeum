@@ -4,9 +4,20 @@ import GlassBtn from "@/components/touchScreenComponents/GlassBtn.vue";
 import { ref } from "vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
-import { useRouter } from 'vue-router'
+import { useBroadcastBus } from "@/composables/useBroadcastBus.js";
+import { initMasterSync } from "@/composables/syncRouterSimple.js";
+import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
+const bus = useBroadcastBus({
+  role: "touch",
+  pairId: "1",
+  debug: true,
+});
+initMasterSync(router, bus, "1");
+const sendByMonitor = (name) => {
+  bus.send('pharmacotherapy', name, { role: 'monitor', pairId: '1' });
+}
 
 const breadcrumbsList = ref([
   {
@@ -22,7 +33,7 @@ const breadcrumbsList = ref([
   {
     id: 2,
     title: "Фармакотерапия",
-    link: "screen-5",
+    link: "touch1-pharmacotherapy",
   },
 ]);
 </script>
@@ -58,14 +69,14 @@ const breadcrumbsList = ref([
     </div>
     <div class="content__btns">
       <div class="content__btns-top">
-        <GlassBtn link="kms" class="animBtnBottom" name="AZD2693" />
-        <GlassBtn link="kms" class="animBtnBottom" name="AZD0780" />
-        <GlassBtn link="kms" class="animBtnBottom" name="AZD5004" />
-        <GlassBtn link="kms" class="animBtnBottom" name="AZD6234" />
-        <GlassBtn link="kms" class="animBtnBottom" name="Баксдростат" />
-        <GlassBtn link="kms" class="animBtnBottom" name="Балцинренон / Дапаглифлозин" />
-        <GlassBtn link="kms" class="animBtnBottom" supname="Комбинация" name="Зиботентан / Дапаглифлозин" />
-        <GlassBtn link="kms" class="animBtnBottom" supname="Комбинация" name="Баксдростат / Дапаглифлозин" />
+        <GlassBtn @click="sendByMonitor('AZD6234')"  class="animBtnBottom" name="AZD6234" />
+        <GlassBtn @click="sendByMonitor('AZD2389')"  class="animBtnBottom" name="AZD2389" />
+        <GlassBtn @click="sendByMonitor('Баксдростат')"  class="animBtnBottom" name="Баксдростат" />
+        <GlassBtn @click="sendByMonitor('Ларопровстат (AZD0780)')"  class="animBtnBottom" name="Ларопровстат (AZD0780)" />
+        <GlassBtn @click="sendByMonitor('Балцинренон / Дапаглифлозин')"  class="animBtnBottom" name="Балцинренон / Дапаглифлозин" />
+        <GlassBtn @click="sendByMonitor('AZD 9550+AZD 6234 AZD-9550')"  class="animBtnBottom" supname="Комбинация" name="AZD 9550+AZD 6234 AZD-9550" />
+        <GlassBtn @click="sendByMonitor('Зиботентан / Дапаглифлозин')"  class="animBtnBottom" supname="Комбинация" name="Зиботентан / Дапаглифлозин" />
+        <GlassBtn @click="sendByMonitor('Баксдростат / Дапаглифлозин')"  class="animBtnBottom" supname="Комбинация" name="Баксдростат / Дапаглифлозин" />
       </div>
     </div>
   </div>

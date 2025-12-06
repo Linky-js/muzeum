@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import RoundDiagram from "../ui/RoundDiagram.vue";
-import IconInfo from "../icons/IconInfo.vue";
+import RoundDiagram from "@/components/ui/RoundDiagram.vue";
+import IconInfo from "@/components/icons/IconInfo.vue";
 import { useStore } from "vuex";
 
 const store = useStore();
