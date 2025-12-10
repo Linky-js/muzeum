@@ -205,7 +205,7 @@ watch((person), (newPerson) =>{
 <style scoped>
 .relative{
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 .modal-backdrop {
   position: fixed;
@@ -291,13 +291,15 @@ watch((person), (newPerson) =>{
   cursor: pointer;
   padding: 24px 32px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
-  backdrop-filter: blur(10px);
   border-radius: 100px;
-  background: linear-gradient(
+  /* backdrop-filter: blur(10px); */
+  /* background: linear-gradient(
     85.26deg,
     rgba(255, 255, 255, 0.06) 3.83%,
     rgba(255, 255, 255, 0.06) 99.95%
-  );
+  ); */
+background: linear-gradient(85.26deg, rgba(217, 217, 217, 0.1) 3.83%, rgba(115, 115, 115, 0.1) 99.95%);
+
 }
 .answer:has(input:checked){
   background: linear-gradient(
@@ -320,11 +322,7 @@ watch((person), (newPerson) =>{
 }
 .answer .tint {
   border-radius: 100px;
-  background: linear-gradient(
-    85.26deg,
-    rgba(255, 255, 255, 0.15) 3.83%,
-    rgba(255, 255, 255, 0.15) 99.95%
-  );
+  background: linear-gradient(179deg, rgba(255, 255, 255, 0.15) 3.83%, rgb(255 255 255 / 28%) 99.95%);
 }
 
 .input_wrap {
@@ -404,11 +402,16 @@ watch((person), (newPerson) =>{
     rgb(255 255 255 / 83%) 40.83%,
     rgb(255 255 255 / 68%) 99.95%
   );
-  border-radius: 16px;
+  border-radius: inherit;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 }
+
+.answer::before {
+padding: 2px;
+}
+
 
 .modal__btn {
   display: flex;
@@ -455,6 +458,7 @@ watch((person), (newPerson) =>{
     rgba(115, 115, 115, 0.1) 99.95%
   );
   position: relative;
+  z-index: 2;
 }
 .custom_list-wrapper::before {
   height: 100%;

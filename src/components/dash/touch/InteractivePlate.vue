@@ -200,7 +200,7 @@ const slotPositions = {
   6: { top: 39.3, left: 38.6, width: "222px", zIndex: 2 },
   7: { top: 12.4, left: 35.4, width: "390px", zIndex: 3 },
   8: { top: 39.4, left: 62, width: "282px" },
-  9: { top: 30, left: 64.1, width: "13%", zIndex: 5 },
+  9: { top: 30, left: 64.1, width: "13%" },
   10: { top: 28, left: 39.6, width: "379px" },
   11: { top: 49.4, left: 72.5, width: "575px", zIndex: 2 },
   12: { top: 50.5, left: 30.5, width: "340px", zIndex: 4 },

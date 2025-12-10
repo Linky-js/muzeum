@@ -185,31 +185,33 @@ function onSlotClick(slotId) {
 }
 
 const slotPositions = {
-  1: { top: 29.5, left: 45.1, width: "380px" },
-  2: { top: 29.5, left: 54.5, width: "375px" },
-  3: { top: 44.9, left: 54.5, width: "360px" },
-  4: { top: 45.2, left: 45.4, width: "380px" },
-  5: { top: 49, left: 60.4, width: "344px" },
-  6: { top: 39.3, left: 38.6, width: "222px", zIndex: 2 },
-  7: { top: 12.4, left: 35.4, width: "390px", zIndex: 3 },
-  8: { top: 39.4, left: 62, width: "282px" },
-  9: { top: 30, left: 64.1, width: "13%", zIndex: 5 },
-  10: { top: 28, left: 39.6, width: "379px" },
-  11: { top: 49.4, left: 72.5, width: "575px", zIndex: 2 },
-  12: { top: 50.5, left: 30.5, width: "340px", zIndex: 4 },
-  13: { top: 28.5, left: 73.4, width: "16%" },
+  1: { top: 39.5, left: 46.1, width: "436px" },
+  2: { top: 39.5, left: 53.5, width: "424px" },
+  3: { top: 60.4, left: 53.5, width: "416px" },
+  4: { top: 60.4, left: 46.4, width: "440px" },
+  5: { top: 66, left: 58.1, width: "386px" },
+  6: { top: 50.3, left: 41, width: "254px", zIndex: 2 },
+  7: { top: 17.4, left: 39.4, width: "392px", zIndex: 3 },
+  8: { top: 53.4, left: 59.5, width: "300px", zIndex: 6 },
+  9: { top: 40, left: 61.1, width: "10.5%" },
+  10: { top: 37, left: 41.9, width: "430px" },
+  11: { top: 64.4, left: 68, width: "685px", zIndex: 2 },
+  12: { top: 66, left: 34.5, width: "434px", zIndex: 4 },
+  13: { top: 37.5, left: 68.4, width: "13%" },
   14: {
-    top: 37,
+    top: 50,
     left: 50,
-    width: "68.7%",
+    width: "53.7%",
     zIndex: "initial",
     info: { top: 22, left: 25 },
   },
-  15: { top: 14.2, left: 52.8, width: "27%" },
-  16: { top: 40.4, left: 32.5, width: "260px", zIndex: 3 },
-  17: { top: 39.5, left: 26, width: "295px", zIndex: 5 },
-  18: { top: 39, left: 20, width: "251px" },
-  19: { top: 50.4, left: 23.5, width: "285px", zIndex: 5 },
+  15: { top: 18.6, left: 52.2, width: "22%" },
+  16: { top: 51.4, left: 35.5, width: "290px", zIndex: 3 },
+  17: { top: 50.3, left: 30.5, width: "328px", zIndex: 5 },
+  18: { top: 49.5, left: 26, width: "288px" },
+  19: { top: 66.4, left: 28.5, width: "342px", zIndex: 5 },
+
+
 };
 
 function slotStyle(slotId) {
