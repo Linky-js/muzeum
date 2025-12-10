@@ -7,7 +7,7 @@ const router = useRouter()
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
-const VIDEO_BG_SRC = '/video.mp4'
+const VIDEO_BG_SRC = '/video/ai/bg_ii.webm'
 
 const offVideo = ref(null)
 const currentVideo = ref(VIDEO_BG_SRC)

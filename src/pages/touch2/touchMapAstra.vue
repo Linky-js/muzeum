@@ -40,7 +40,7 @@ const breadcrumbsList = computed(() => {
     })
   }
 
-  
+
 
   return list
 })
@@ -209,8 +209,8 @@ function sumPatients(node) {
 // --- открытие следующего уровня ---
 const openItem = async (item, el) => {
   let newItem = {}
-  
-  
+
+
   if (item.type === 'okrug') {
     currentRegion.value = item
     newItem = {
@@ -218,7 +218,7 @@ const openItem = async (item, el) => {
       patients: sumPatients(item),
       type: 'okrug',
     }
-    
+
 
   } else if (item.type === 'oblast') {
     newItem = {
@@ -227,7 +227,7 @@ const openItem = async (item, el) => {
     newItem.oblast = item.name
     newItem.type = 'oblast'
     newItem.patients = sumPatients(item)
-    
+
 
   } else if (item.type === 'gorod') {
     newItem = {
@@ -236,7 +236,7 @@ const openItem = async (item, el) => {
     newItem.gorod = item.name
     newItem.type = 'gorod'
     newItem.patients = sumPatients(item)
-   
+
   } else if (item.type === 'lpu') {
     newItem = {
       ...JSON.parse(JSON.stringify(currentRegion.value)),
@@ -361,11 +361,12 @@ const clearRegion = () => {
     <div class="content relative">
       <div class="content__top">
         <h1 class="content__title animBtn">
-          {{ currentRegion?.type === 'okrug' ? currentRegion?.okrug : currentRegion?.type === 'oblast' ? currentRegion?.oblast : currentRegion?.type === 'gorod' ? currentRegion?.gorod : currentRegion?.type === 'lpu' ? currentRegion?.gorod : 'AstraZeneca' }}
+          {{ currentRegion?.type === 'okrug' ? currentRegion?.okrug : currentRegion?.type === 'oblast' ?
+            currentRegion?.oblast : currentRegion?.type === 'gorod' ? currentRegion?.gorod : currentRegion?.type === 'lpu'
+              ? currentRegion?.gorod : 'AstraZeneca' }}
         </h1>
-        <p :class="{show: !currentRegion}" class="content__subtitle animBtn">
-          Масштаб исследований Хронической болезни почек
-          и хронической Сердечной недостаточности по регионам России
+        <p :class="{ show: !currentRegion }" class="content__subtitle animBtn">
+          Масштаб исследований "ПРИОРИТЕТ ХСН" и "ПРИОРИТЕТ-ХБП" <br> по регионам России.
         </p>
       </div>
     </div>
@@ -413,7 +414,16 @@ const clearRegion = () => {
           </div>
           <input @focus="regionUp = true" type="text" class="input_quiz" v-model="searchQuery"
             placeholder="Поиск по округу, региону, городу" />
-          <div :class="{hidden: dataType === ''}" class="custom_list-wrapper">
+          <div :class="{ hidden: dataType === '' }" class="custom_list-wrapper">
+            <div class="stopBanner">
+              <svg width="133" height="133" viewBox="0 0 133 133" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M66.5 59.8502L41.0083 85.3418L33.25 77.5835L66.5 44.3335L99.75 77.5835L91.9917 85.3418L66.5 59.8502Z"
+                  fill="#FEF7FF" />
+              </svg>
+              ВЫБЕРИТЕ НАПРАВЛЕНИЕ
+              ИССЛЕДОВАНИЯ
+            </div>
             <div class="custom_list">
               <!-- если поиск пуст — item это node с children и т.д. -->
               <template v-if="!searchQuery.trim()">
@@ -461,7 +471,8 @@ const clearRegion = () => {
   visibility: hidden;
   max-width: 1383px;
 }
-.content__subtitle.show{
+
+.content__subtitle.show {
   visibility: visible;
 }
 
@@ -605,10 +616,35 @@ const clearRegion = () => {
   padding: 1.5rem;
   margin-top: 1.5rem;
   transition: all 0.3s ease-in-out;
+  position: relative;
 }
-.custom_list-wrapper.hidden {
+
+.stopBanner {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 110%;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: #fff;
   opacity: 0;
-  pointer-events: none;
+  visibility: hidden;
+  justify-content: center;
+}
+
+.hidden .stopBanner {
+  opacity: 1;
+  visibility: visible;
 }
 
 .custom_list {

@@ -12,12 +12,12 @@ import { initMasterSync } from "@/composables/syncRouterSimple.js";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-// const bus = useBroadcastBus({
-//   role: "touch",
-//   pairId: "1",
-//   debug: true,
-// });
-// initMasterSync(router, bus, "1");
+const bus = useBroadcastBus({
+  role: "touch",
+  pairId: "1",
+  debug: false,
+});
+initMasterSync(router, bus, "1");
 
 const breadcrumbsList = ref([
   {
