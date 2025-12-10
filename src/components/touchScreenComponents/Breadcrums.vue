@@ -9,6 +9,10 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
+  logo: {
+    type: Boolean,
+    default: true
+  }
 });
 </script>
 

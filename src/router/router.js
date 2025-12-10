@@ -67,6 +67,16 @@ const routes = [
         path: "screen-3",
         component: () => import("@/pages/monitor1/monitor-screen-3.vue"),
       },
+      {
+        name: "monitor1-screen-2",
+        path: "screen-2",
+        component: () => import("@/pages/monitor1/monitor-screen-2.vue"),
+      },
+      {
+        name: "monitor1-screen-4",
+        path: "screen-4",
+        component: () => import("@/pages/monitor1/monitor-screen-4.vue"),
+      },
     ],
   },
   {
@@ -114,11 +124,7 @@ const routes = [
         component: () => import("@/pages/monitor2/monitor-screen-1.vue"),
       },
 
-      {
-        name: "metabolic-syndrome-monitor",
-        path: "screen-3",
-        component: () => import("@/pages/monitor1/monitor-screen-3.vue"),
-      },
+      
     ],
   },
   {

@@ -1,6 +1,8 @@
 export default {
     
     'touch1-screen-1': { name: 'monitor1-screen-1' },
+    'data-science': { name: 'monitor1-screen-2' },
+    'applications-of-ai': { name: 'monitor1-screen-4' },
     'metabolic-syndrome-touch': { name: 'metabolic-syndrome-monitor' },
     'touch-home': { name: 'monitor-home' },
     'kms': { name: 'kms-m' },
@@ -14,5 +16,5 @@ export default {
     'touch-calc': { name: 'monitor-calculate' },
     'dashPageTouch': { name: 'dashPageMonitor' },
     'touch1-pharmacotherapy': { name: 'monitor1-pharmacotherapy' },
-
+    
 }
