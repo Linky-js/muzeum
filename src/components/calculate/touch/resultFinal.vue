@@ -84,7 +84,7 @@ const video = "/video.mp4";
         </div>
       </div>
       <div class="final__item row-2 glass">
-        <div class="tint"></div>
+        <img class="_img" src="@/assets/img/calculate-final-4.png" alt="" />
         <div class="final__item-inner">
           <div class="final__item-top">
             <IconFinal7 />
@@ -180,6 +180,17 @@ const video = "/video.mp4";
     rgba(217, 217, 217, 0.1) 3.83%,
     rgba(115, 115, 115, 0.1) 99.95%
   );
+}
+.tint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(286deg, #646464 0%, #4c4c4c 86%, #ffffff 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 
 ._img {

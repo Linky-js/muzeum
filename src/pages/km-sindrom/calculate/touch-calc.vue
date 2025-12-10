@@ -159,7 +159,7 @@ const changeTitles = (step) => {
     7: { title: "Практические советы для<br /> долгой и здоровой жизни", subtitle: "" },
     default: { 
       title: "Калькулятор", 
-      subtitle: "Введите ваши данные для определения статистической продолжительности жизни на основе данных" 
+      subtitle: "Введите ваши данные для определения статистической<br /> продолжительности жизни на основе данных" 
     }
   };
 
@@ -415,8 +415,7 @@ onMounted(() => {
 }
 
 .step3,
-.step2,
-.step1 {
+.step2 {
   margin-top: 6.25rem;
   height: 100%;
 }
@@ -431,6 +430,7 @@ onMounted(() => {
   position: fixed;
   bottom: 10rem;
   right: 31.875rem;
+ z-index: 5;
 }
 
 .effect {

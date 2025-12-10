@@ -296,9 +296,9 @@ onBeforeUnmount(() => {
   width: 1511px;
   height: 1156px;
   background: linear-gradient(
-    85.26deg,
-    rgb(217 217 217 / 2%) 3.83%,
-    rgb(222 173 35 / 10%) 99.95%
+    49deg,
+    rgb(255 255 255 / 7%) 3.83%,
+    rgb(229 223 207 / 24%) 99.95%
   );
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
   box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
