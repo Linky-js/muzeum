@@ -315,32 +315,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
         <div v-for="slotId in [
           1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
         ]" :key="slotId" class="slot" :style="slotStyle(slotId)">
-          <div v-if="currentMealState?.plate[slotId]" class="info" :style="slotForInfoStyle(slotId)" :class="{
-            active:
-              activeInfoBtn ===
-              currentMealState?.plate[slotId].subcatId +
-              '-' +
-              currentMealState?.plate[slotId].slot,
-          }" v-click-outside="closeActiveInfo">
-            <span class="text" :class="{
-              active:
-                activeInfoBtn ===
-                currentMealState?.plate[slotId].subcatId +
-                '-' +
-                currentMealState?.plate[slotId].slot,
-            }">{{ getNameCategory(currentMealState?.plate[slotId].subcatId) }}
-              {{ currentMealState?.plate[slotId].weight }}г</span>
-
-            <div class="btnInfo">
-              <svg @click="onSlotClick(slotId)" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M5 2V0H15V2H20V4H18V19C18 19.5523 17.5523 20 17 20H3C2.44772 20 2 19.5523 2 19V4H0V2H5ZM4 4V18H16V4H4ZM7 7H9V15H7V7ZM11 7H13V15H11V7Z"
-                  fill="black" />
-              </svg>
-
-            </div>
-          </div>
+          
           <img v-if="currentMealState?.plate[slotId]" :src="currentMealState.plate[slotId].image" class="product"
             draggable="false" />
         </div>

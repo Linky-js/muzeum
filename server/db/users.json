@@ -1,0 +1,44 @@
+[
+  {
+    "id": "c9479b62-c03b-4c1d-a395-2cc448fb2134",
+    "timestamp": 1765557302279,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "cb89e10a-6f81-4982-9ecd-3f5a4a17c41e",
+    "timestamp": 1765557733093,
+    "age": 32,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 1,
+      "name": "Золушка",
+      "responsibilities": "ИИ берет на себя рутинную работу<br> и освобождает ваше время",
+      "img": "./ai/Cinderella.png",
+      "video": "/video/heroes/zolushka_loop.webm"
+    },
+    "attitude": {
+      "name": "Отрицательное",
+      "icon": {
+        "__hmrId": "ed6e0927",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNegative.vue"
+      }
+    },
+    "sphere": "Точная диагностика"
+  }
+]

@@ -286,8 +286,8 @@ const farm_zhir = "/video/farm/farm_zhir.webm"
 const groupSvg = "/group.svg"
 </script>
 <template>
-  <div class="page">
-    <video :src="bg" autoplay loop muted playsinline class="bg"></video>
+  <div class=" page">
+    <video  :src="bg" autoplay loop muted playsinline class="bg animVideo"></video>
     <div class="group-wrapper">
       <img class="group" :src="groupSvg" alt="">
       <div class="videos">

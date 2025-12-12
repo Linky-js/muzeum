@@ -1,11 +1,25 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from 'vue-router'
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMasterSync } from '@/composables/syncRouterSimple.js'
+
+const router = useRouter()
+
+const bus = useBroadcastBus({
+  role: 'touch',
+  pairId: '1',
+  debug: false,
+})
+initMasterSync(router, bus, '1')
 
 const props = defineProps({
   person: Object,
   step: Number,
   goNextStep: Function,
 });
+
+
 
 const typesAi = ref([
   {
@@ -14,24 +28,28 @@ const typesAi = ref([
     responsibilities:
       "ИИ берет на себя рутинную работу<br> и освобождает ваше время",
     img: "./ai/Cinderella.png",
+    video: '/video/heroes/zolushka_loop.webm'
   },
   {
     id: 2,
     name: "Стажер",
     responsibilities: "ИИ требует надзора, но со<br> временем учится",
     img: "./ai/Intern.png",
+    video: '/video/heroes/stasher_loop.webm'
   },
   {
     id: 3,
     name: "Супермен",
     responsibilities: "ИИ делает человеческие задачи<br> быстрее и эффективнее",
     img: "./ai/Superman.png",
+    video: '/video/heroes/super_loop.webm'
   },
   {
     id: 4,
     name: "Шерлок Холмс",
     responsibilities: "ИИ находит скрытые связи и<br> объясняет непонятное",
     img: "./ai/Sherlock.png",
+    video: '/video/heroes/sherlok_loop.webm'
   },
   {
     id: 5,
@@ -39,21 +57,21 @@ const typesAi = ref([
     responsibilities:
       "ИИ мыслит иначе, чем человек,<br> и дает неожиданные прогнозы",
     img: "./ai/Crystal.png",
+    video: '/video/heroes/mag_loop.webm'
   },
 ]);
+const addPerson = () => {
+  console.log(props.person);
+  let ai = props.person.ai
+  bus.send('currentHero', { hero: JSON.parse(JSON.stringify(ai)) })
+}
 </script>
 
 <template>
   <div class="quiz-wrapper">
     <div class="answers">
       <label class="answer" v-for="ai in typesAi" :key="ai.id">
-        <input
-          type="radio"
-          name="ai"
-          v-model="person.ai"
-          :value="ai"
-          :id="ai.id"
-        />
+        <input type="radio" name="ai" v-model="person.ai" @change="addPerson" :value="ai" :id="ai.id" />
         <div class="answer__wrapper">
           <div class="tint"></div>
           <img class="answer__img" :src="ai.img" :alt="ai.name" />
@@ -64,11 +82,7 @@ const typesAi = ref([
         </div>
       </label>
     </div>
-    <button
-      @click="goNextStep(step + 1)"
-      :disabled="!person.ai"
-      class="quiz__btn"
-    >
+    <button @click="goNextStep(step + 1)" :disabled="!person.ai" class="quiz__btn">
       Дальше
     </button>
   </div>
@@ -79,6 +93,7 @@ const typesAi = ref([
   position: relative;
   z-index: 1;
 }
+
 .quiz-wrapper {
   width: 3400px;
   margin-top: 177px;
@@ -88,15 +103,18 @@ const typesAi = ref([
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
+
 .answer {
   padding: 60px;
   display: flex;
   flex-direction: column;
   gap: 32px;
 }
+
 .answer input {
   display: none;
 }
+
 .answer__wrapper {
   width: 560px;
   height: 721px;
@@ -131,10 +149,12 @@ const typesAi = ref([
   position: relative;
   z-index: 1;
 }
+
 .answer__info {
   display: grid;
   gap: 16px;
 }
+
 .answer__name {
   font-family: "TT Hoves";
   font-weight: 600;
@@ -143,6 +163,7 @@ const typesAi = ref([
   letter-spacing: -0.02em;
   color: #ffffff;
 }
+
 .answer__text {
   font-family: "TT Hoves";
   font-weight: 400;
@@ -157,9 +178,11 @@ const typesAi = ref([
   opacity: 0;
   transition: all 0.3s ease-in-out;
 }
+
 .answer:has(input:checked) .tint {
   opacity: 1;
 }
+
 .answer:has(input:checked) .answer__wrapper::before {
   opacity: 1;
 }
@@ -185,6 +208,7 @@ const typesAi = ref([
   left: 50%;
   transform: translateX(-50%);
 }
+
 .quiz__btn:disabled {
   background-color: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.4);
@@ -198,6 +222,7 @@ const typesAi = ref([
   backdrop-filter: blur(10px);
   background: rgba(217, 217, 217, 0.13);
 }
+
 .tint::before {
   content: "";
   position: absolute;

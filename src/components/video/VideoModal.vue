@@ -1,8 +1,10 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, defineEmits } from 'vue'
 import { useBroadcastBus } from '@/composables/useBroadcastBus'
 import { initMasterSync } from '@/composables/syncRouterSimple'
 import { useRouter } from 'vue-router'
+
+const emit = defineEmits(['close'])
 
 const props = defineProps({
   title: String,
@@ -11,7 +13,10 @@ const props = defineProps({
     type: Number,
     default: 0
   },
-  markers: Array,
+  markers: {
+    type: Array,
+    default: () => []
+  },
   currentVideo: String
 })
 
@@ -27,6 +32,16 @@ function togglePlay() {
   bus.send('video_control', {
     action: isPlaying.value ? 'play' : 'pause'
   })
+}
+function nextMarker() {
+  console.log(props.markers);
+  
+  const marker = props.markers.find(m => m > currentTime.value)
+  if (marker) {
+    console.log('marker',marker);
+    
+    seekToMarker(marker)
+  }
 }
 
 function toggleMute() {
@@ -75,6 +90,10 @@ watch(() => props.currentVideo, () => {
 onMounted(() => {
   bus.send('currentVideo', { video: props.currentVideo })
 })
+const closeWidjet = () => {
+  bus.send('currentVideo', { video: '/video.mp4' })
+  emit('close')
+}
 </script>
 
 <template>
@@ -85,7 +104,7 @@ onMounted(() => {
         <div class="title">{{ title }}</div>
         <div class="descriptionVideo">{{ description }}</div>
       </div>
-      <div class="close">
+      <div @click="closeWidjet()" class="close">
         <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M8.48528 6.59971L15.085 0L16.9706 1.88561L10.3709 8.48531L16.9706 15.0849L15.085 16.9705L8.48528 10.3709L1.88563 16.9705L0 15.0849L6.59968 8.48531L0 1.88561L1.88563 0L8.48528 6.59971Z"
@@ -127,7 +146,7 @@ onMounted(() => {
             fill="white" />
         </svg>
       </div>
-      <div class="btnAudio nextTick" @click="togglePlay">
+      <div class="btnAudio nextTick" :class="{disabled: markers.length === 0 || currentTime >= markers[markers.length - 1]}" @click="nextMarker()">
         <svg width="21" height="25" viewBox="0 0 21 25" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M17.1875 11.4583L1.21453 0.809734C0.855625 0.570406 0.370625 0.667406 0.131248 1.02642C0.0456238 1.15475 0 1.30555 0 1.45978V23.5402C0 23.9717 0.349844 24.3214 0.78125 24.3214C0.935469 24.3214 1.08625 24.2758 1.21453 24.1903L17.1875 13.5417V23.4375C17.1875 24.3005 17.8871 25 18.75 25C19.6129 25 20.3125 24.3005 20.3125 23.4375V1.5625C20.3125 0.699562 19.6129 0 18.75 0C17.8871 0 17.1875 0.699562 17.1875 1.5625V11.4583Z"
@@ -239,12 +258,16 @@ onMounted(() => {
 .btnAudio:active {
   background: rgba(255, 255, 255, 0.25);
 }
+.btnAudio.disabled{
+  pointer-events: none;
+  opacity: 0.2;
+}
 
 .marker {
   position: absolute;
   top: 50%;
   left: 0;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   width: 24px;
   height: 24px;
   background: #fff;
