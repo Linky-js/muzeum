@@ -50,6 +50,11 @@ const routes = [
     path: "/touch-ai",
     component: () => import("@/pages/touch1/touchAI/touch-ai.vue"),
   },
+  {
+    name: "monitor-ai",
+    path: "/monitor-ai",
+    component: () => import("@/pages/monitor1/monitorAI/monitor-ai.vue"),
+  },
 
   {
     name: "monitor1-home",

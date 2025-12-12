@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="contentMonitor">
+  <div class="animVideo contentMonitor">
     <!-- основное видео -->
     <video 
       ref="currentVideoRef"

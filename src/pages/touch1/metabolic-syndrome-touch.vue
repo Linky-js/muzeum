@@ -152,7 +152,7 @@ function getMarkersByChapter(chapter) {
     </div>
   </div>
   <MenuNavigation class="footer__btn" />
-  <VideoModal v-if="widjetShow" :title="titleVideo" :description="descriptionVideo" :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
+  <VideoModal v-if="widjetShow" @close="widjetShow = false" :title="titleVideo" :description="descriptionVideo" :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
 
 </template>
 <style scoped>

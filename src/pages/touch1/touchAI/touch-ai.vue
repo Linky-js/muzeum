@@ -14,6 +14,15 @@ import Step4 from "@/components/ai/touch/step4.vue";
 const router = useRouter();
 const route = useRoute();
 
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMasterSync } from '@/composables/syncRouterSimple.js'
+
+const bus = useBroadcastBus({
+  role: 'touch',
+  pairId: '1',
+  debug: true,
+})
+initMasterSync(router, bus, '1')
 // Константы для переиспользования
 const ROUTE_PATH = "/touch-ai";
 const STEP_VALIDATION_RULES = {
@@ -38,6 +47,9 @@ const person = ref({
   attitude: "",
   sphere: ""
 });
+watch(() => person.value, (newPerson) => {
+  bus.send('currentHeroGlobal', { hero: JSON.parse(JSON.stringify(newPerson))} )
+}, { deep: true })
 
 // Универсальная функция для перехода по шагам
 const navigateToStep = (targetStep, updateUrl = true) => {
@@ -90,9 +102,36 @@ const goToStep = (targetStep) => {
 
   navigateToStep(targetStep);
 };
+async function saveUserResult(result) {
+  // Создаём уникальный ключ для этого результата
+  // Используем сочетание пола, сферы и ИИ (очень устойчиво для твоего квиза)
+  const key = `quiz_result_${result.gender}_${result.sphere}_${result.ai.id}`;
+
+  // Если такой ключ уже есть — выходим
+  if (localStorage.getItem(key)) {
+    console.log('Результат уже отправлен ранее. Повтор не сохраняем.');
+    return;
+  }
+
+  // Если записи нет — отправляем на сервер
+  try {
+    await fetch('http://127.0.0.1:3001/api/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(result)
+    });
+
+    // Ставим метку, что запись уже отправлялась
+    localStorage.setItem(key, '1');
+  } catch (err) {
+    console.error('Ошибка сохранения:', err);
+  }
+}
 
 // Упрощенная функция goNextStep
-const goNextStep = (nextStep) => {
+const goNextStep = async (nextStep) => {
   console.log('nextStep', nextStep)
   if (!validateStepFields(nextStep - 1)) {
     console.log('nextStep', nextStep)
@@ -105,8 +144,13 @@ const goNextStep = (nextStep) => {
     toast.error(errorMessages[nextStep] || "Заполните необходимые поля");
     return;
   }
+  if (nextStep === 5 ) {
+    await saveUserResult(person.value)
+  }
+  bus.send('step', { step: nextStep })
 
   navigateToStep(nextStep);
+  
 };
 
 const checkStep = () => {
@@ -165,6 +209,10 @@ const changeTitles = (step) => {
   subtitle.value = newSubtitle;
 };
 
+
+const goBack = () => {
+  router.back();
+}
 // Обработка изменения параметров URL
 watch(
   () => route.query.step,
@@ -180,6 +228,11 @@ watch(
 
 // Инициализация при загрузке
 onMounted(() => {
+  Object.keys(localStorage).forEach(key => {
+    if (key.startsWith('quiz_result_')) {
+      localStorage.removeItem(key)
+    }
+  })
   const urlStep = parseInt(route.query.step);
   if (urlStep >= 1 && urlStep <= 5) {
     step.value = urlStep;
@@ -217,7 +270,7 @@ onMounted(() => {
     <div class="content relative">
       <div class="content__top">
         <h1 class="content__title animBtn" v-html="title"></h1>
-        <div @click="$router.back()" class="to-back">
+        <div @click="goBack()" class="to-back">
           <IconArrow class="to-back__icon" />
           <span class="to-back__text">Назад</span>
         </div>

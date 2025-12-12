@@ -139,7 +139,7 @@ function getDurationByChapter(chapter) {
       </div>
     </div>
   </div>
-  <VideoModal v-if="widjetShow" :title="titleVideo" :description="descriptionVideo" :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
+  <VideoModal v-if="widjetShow" @close="widjetShow = false" :title="titleVideo" :description="descriptionVideo" :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
   <MenuNavigation class="footer__btn" />
   <svg style="display: none">
     <filter
