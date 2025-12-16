@@ -1,15 +1,66 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+
+import VirtualKeyboard from "@/components/ui/VirtualKeyboard.vue";
+
 const props = defineProps({
   person: Object,
   step: Number,
   goNextStep: Function,
 });
+
+const showKeyboard = ref(false);
+const activeInput = ref(null);
+const keyboardRef = ref(null);
+const quizRef = ref(null);
+
+const activateKeyboard = (field) => {
+  activeInput.value = field;
+  showKeyboard.value = true;
+};
+const onKeyboardInput = (text) => {
+  if (activeInput.value === "rost") {
+    props.person.rost = text.replace(/\D/g, "");
+  }
+
+  if (activeInput.value === "ves") {
+    props.person.ves = text.replace(/\D/g, ""); // только цифры
+  }
+};
+const handleClickOutside = (event) => {
+  const keyboard = keyboardRef.value?.$refs.keyboardEl;
+  const quiz = quizRef.value;
+  console.log("keyboard", keyboard);
+
+  // Если клавиатура не открыта — ничего не делаем
+  if (!showKeyboard.value) return;
+
+  // Если клик внутри инпутов или внутри клавиатуры — игнорируем
+  if (
+    keyboard?.contains(event.target) ||
+    quiz?.contains(event.target.closest("input"))
+  ) {
+    return;
+  }
+
+  // Иначе — скрываем клавиатуру
+  showKeyboard.value = false;
+  activeInput.value = null;
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <template>
-  <div class="quiz-wrapper">
+  <div ref="quizRef" class="quiz-wrapper">
     <div class="quiz">
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Рост:</div>
         <div class="input_wrap">
           <input
@@ -17,10 +68,11 @@ const props = defineProps({
             class="input_quiz relative"
             v-model="person.rost"
             placeholder="См"
+            @focus="activateKeyboard('rost')"
           />
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Вес:</div>
         <div class="input_wrap">
           <input
@@ -28,10 +80,11 @@ const props = defineProps({
             class="input_quiz relative"
             v-model="person.ves"
             placeholder="Кг"
+            @focus="activateKeyboard('ves')"
           />
         </div>
       </div>
-      <div v-if="person.gender == 'Мужчины'" class="question">
+      <div v-if="person.gender == 'Мужчины'" class="question animBtnBottom">
         <div class="label">
           Окружность талии: <br />
           <small>Мужчина</small>
@@ -72,7 +125,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div v-if="person.gender == 'Женщины'" class="question">
+      <div v-if="person.gender == 'Женщины'" class="question animBtnBottom">
         <div class="label">
           Окружность талии: <br />
           <small>Женшина</small>
@@ -113,7 +166,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Уровень физической активности:</div>
         <div class="answers answersColumn">
           <label class="answer">
@@ -127,8 +180,7 @@ const props = defineProps({
               id=""
             />
           </label>
-          <label class="answer"
-            >
+          <label class="answer">
             <div class="tint"></div>
             <span class="relative">&#60;4 часа в неделю</span>
             <input
@@ -141,7 +193,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">
           Ежедневное потребление <br />
           фруктов,овощей, ягод
@@ -158,8 +210,7 @@ const props = defineProps({
               id=""
             />
           </label>
-          <label class="answer"
-            >
+          <label class="answer">
             <div class="tint"></div>
             <span class="relative">Нет</span>
             <input
@@ -175,16 +226,24 @@ const props = defineProps({
     </div>
     <button
       @click="goNextStep(3)"
-      :disabled="person.rost == '' ||
+      :disabled="
+        person.rost == '' ||
         person.ves == '' ||
         person.taliya == '' ||
         person.fizActive == '' ||
         person.yagody == ''
       "
-      class="quiz__btn"
+      class="quiz__btn animBtnBottom"
     >
       Дальше
     </button>
+  <transition>
+    <VirtualKeyboard
+      ref="keyboardRef"
+      v-if="showKeyboard"
+      @input="onKeyboardInput"
+    />
+  </transition>
   </div>
 </template>
 
@@ -240,7 +299,11 @@ const props = defineProps({
   padding: 24px 32px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
   backdrop-filter: blur(10px);
-  background: linear-gradient(85.26deg, rgba(217, 217, 217, 0.1) 3.83%, rgba(115, 115, 115, 0.1) 99.95%);
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
   border-radius: 100px;
 }
 .answer span {
@@ -442,7 +505,6 @@ const props = defineProps({
   mask-composite: exclude;
 }
 
-
 @media screen and (max-width: 475px) {
   .quiz-wrapper {
     margin-top: 0 !important;
@@ -539,10 +601,9 @@ const props = defineProps({
     font-size: 14px;
   }
 
-    .quiz__btn:disabled {
-    background-color: #10131B;
+  .quiz__btn:disabled {
+    background-color: #10131b;
   }
-
 
   .custom_list {
     height: 350px;
@@ -551,7 +612,7 @@ const props = defineProps({
     background-color: #010101d6;
   }
 
-  .region{
+  .region {
     font-size: 16px;
     padding: 15px;
   }

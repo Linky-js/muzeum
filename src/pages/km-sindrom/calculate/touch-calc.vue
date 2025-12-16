@@ -214,12 +214,12 @@ onMounted(() => {
   <div class="content relative">
     <div class="content__top">
       <h1 class="content__title animBtn" v-html="title"></h1>
-      <div @click="$router.push('touch-qr')" class="to-back">
+      <div @click="$router.back()" class="to-back">
         <IconArrow class="to-back__icon" />
         <span class="to-back__text">Назад</span>
       </div>
       <p
-        class="content__subtitle"
+        class="content__subtitle animBtn"
         v-if="subtitle"
         v-html="subtitle"
       ></p>
@@ -364,6 +364,7 @@ onMounted(() => {
   letter-spacing: -0.03em;
   color: #ffffff;
   text-align: center;
+  opacity: 0;
 }
 
 .content__subtitle {
