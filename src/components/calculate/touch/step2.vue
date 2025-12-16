@@ -13,13 +13,19 @@ const showKeyboard = ref(false);
 const activeInput = ref(null);
 const keyboardRef = ref(null);
 const quizRef = ref(null);
+const keyboardText = ref('');
 
 const activateKeyboard = (field) => {
-  activeInput.value = null;
   activeInput.value = field;
   showKeyboard.value = true;
+  
+  if (field === 'rost') keyboardText.value = props.person.rost;
+  else if (field === 'ves') keyboardText.value = props.person.ves;
+  else keyboardText.value = '';
 };
 const onKeyboardInput = (text) => {
+  keyboardText.value = text;
+
   if (activeInput.value === "rost") {
     props.person.rost = text.replace(/\D/g, "");
   }
@@ -242,6 +248,7 @@ onBeforeUnmount(() => {
     <VirtualKeyboard
       ref="keyboardRef"
       v-if="showKeyboard"
+      v-model="keyboardText"
       @input="onKeyboardInput"
     />
   </transition>

@@ -69,13 +69,19 @@ const showKeyboard = ref(false);
 const activeInput = ref(null);
 const keyboardRef = ref(null);
 const quizRef = ref(null);
+const keyboardText = ref('');
 
 const activateKeyboard = (field) => {
-  activeInput.value = null;
   activeInput.value = field;
   showKeyboard.value = true;
+  
+  if (field === 'age') keyboardText.value = person.value.age;
+  else if (field === 'rost') keyboardText.value = person.value.rost;
+  else if (field === 'ves') keyboardText.value = person.value.ves;
+  else keyboardText.value = '';
 };
 const onKeyboardInput = (text) => {
+  keyboardText.value = text;
   if (activeInput.value === "age") {
     person.value.age = text.replace(/\D/g, "");
   }
@@ -268,6 +274,7 @@ watch(
         <VirtualKeyboard
           ref="keyboardRef"
           v-if="showKeyboard"
+          v-model="keyboardText"
           @input="onKeyboardInput"
         />
       </transition>
