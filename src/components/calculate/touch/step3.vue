@@ -9,7 +9,7 @@ const props = defineProps({
 <template>
   <div class="quiz-wrapper">
     <div class="quiz">
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">
           Наличие артериальной <br />
           гипертензии:
@@ -39,7 +39,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">
           Повышение уровня сахара в <br />
           анамнезе:
@@ -69,7 +69,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Наличие сахарного диабета:</div>
         <div class="answers">
           <label class="answer">
@@ -96,7 +96,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">
           Прием препаратов, снижающих <br />
           артериальное давление
@@ -126,7 +126,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">
           Семейный анамнез сахарного <br />
           диабета.
@@ -177,7 +177,7 @@ const props = defineProps({
         person.priem == '' ||
         person.diabetFamily == ''
       "
-      class="quiz__btn"
+      class="quiz__btn animBtnBottom"
     >
       Рассчитать
     </button>

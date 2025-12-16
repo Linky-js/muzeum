@@ -9,7 +9,7 @@ const props = defineProps({
 <template>
   <div class="quiz-wrapper">
     <div class="quiz">
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Рост:</div>
         <div class="input_wrap">
           <input
@@ -20,7 +20,7 @@ const props = defineProps({
           />
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Вес:</div>
         <div class="input_wrap">
           <input
@@ -31,7 +31,7 @@ const props = defineProps({
           />
         </div>
       </div>
-      <div v-if="person.gender == 'Мужчины'" class="question">
+      <div v-if="person.gender == 'Мужчины'" class="question animBtnBottom">
         <div class="label">
           Окружность талии: <br />
           <small>Мужчина</small>
@@ -72,7 +72,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div v-if="person.gender == 'Женщины'" class="question">
+      <div v-if="person.gender == 'Женщины'" class="question animBtnBottom">
         <div class="label">
           Окружность талии: <br />
           <small>Женшина</small>
@@ -113,7 +113,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Уровень физической активности:</div>
         <div class="answers answersColumn">
           <label class="answer">
@@ -141,7 +141,7 @@ const props = defineProps({
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">
           Ежедневное потребление <br />
           фруктов,овощей, ягод
@@ -181,7 +181,7 @@ const props = defineProps({
         person.fizActive == '' ||
         person.yagody == ''
       "
-      class="quiz__btn"
+      class="quiz__btn animBtnBottom"
     >
       Дальше
     </button>

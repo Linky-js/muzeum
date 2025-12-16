@@ -60,13 +60,13 @@ onMounted(() => {
       </p>
     </div>
     <div class="content__inner">
-      <div class="content__qr">
+      <div class="content__qr animBtnBottom">
         <div class="tint"></div>
         <div class="qr-code relative">
           <img :src="qrCodeUrl" alt="QR Code" />
         </div>
       </div>
-      <button @click="goNext" class="content__btn">Дальше</button>
+      <button @click="goNext" class="content__btn animBtnBottom">Дальше</button>
     </div>
   </div>
 
