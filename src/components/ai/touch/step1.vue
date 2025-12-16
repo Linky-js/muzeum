@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+
+import VirtualKeyboard from "@/components/ui/VirtualKeyboard.vue";
 
 const props = defineProps({
   person: Object,
@@ -16,10 +18,61 @@ const toggleModal = () => {
   if (isAgreeCoockie.value) return;
   isOpenModal.value = !isOpenModal.value;
 };
+
+const openModalForInput = () => {
+  if (!isAgreeCoockie.value) {
+    toggleModal();
+  } else {
+    activateKeyboard("age");
+  }
+};
+
+const showKeyboard = ref(false);
+const activeInput = ref(null);
+const keyboardRef = ref(null);
+const quizRef = ref(null);
+
+const activateKeyboard = (field) => {
+  activeInput.value = field;
+  showKeyboard.value = true;
+};
+const onKeyboardInput = (text) => {
+  if (activeInput.value === "age") {
+    props.person.age = text.replace(/\D/g, "");
+  }
+};
+const handleClickOutside = (event) => {
+  const keyboard = keyboardRef.value?.$refs.keyboardEl;
+  const quiz = quizRef.value;
+  console.log("keyboard", keyboard);
+
+  // Если клавиатура не открыта — ничего не делаем
+  if (!showKeyboard.value) return;
+
+  // Если клик внутри инпутов или внутри клавиатуры — игнорируем
+  if (
+    keyboard?.contains(event.target) ||
+    quiz?.contains(event.target.closest("input"))
+  ) {
+    return;
+  }
+
+  // Иначе — скрываем клавиатуру
+  showKeyboard.value = false;
+  activeInput.value = null;
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <template>
-  <div class="quiz-wrapper">
+  <div ref="quizRef" class="quiz-wrapper">
     <div class="quiz">
       <div class="question">
         <div class="label">Пол:</div>
@@ -58,7 +111,7 @@ const toggleModal = () => {
             class="input_quiz relative"
             v-model="person.age"
             placeholder="Введите возраст"
-            @focus="toggleModal"
+            @focus="openModalForInput"
           />
         </div>
       </div>
@@ -70,6 +123,13 @@ const toggleModal = () => {
     >
       Дальше
     </button>
+    <transition>
+      <VirtualKeyboard
+        ref="keyboardRef"
+        v-if="showKeyboard"
+        @input="onKeyboardInput"
+      />
+    </transition>
   </div>
   <div v-if="isOpenModal" class="modal-backdrop" @click="toggleModal">
     <div class="modal" @click.stop>

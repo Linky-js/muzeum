@@ -9,7 +9,7 @@ const breadcrumbsList = ref([
   {
     id: 0,
     title: "Главная",
-    link: "/",
+    link: "/touch1/screen-1",
   },
 ]);
 
@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="header">
-    <Breadcrums :list="breadcrumbsList" />
+    <Breadcrums :list="breadcrumbsList" :first-link="true" />
     <div class="header__logo">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -252,6 +252,8 @@ onMounted(() => {
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  position: absolute;
+  bottom: 0;
 }
 
 .footer__btn {

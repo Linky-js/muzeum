@@ -4,6 +4,10 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  firstLink: {
+    type: Boolean,
+    default: false
+  },
   view: String,
   dotsInText: {
     type: Boolean,
@@ -24,6 +28,17 @@ const props = defineProps({
           class="breadcrumbs__item-inner"
           :to="item.link"
           v-if="index !== list.length - 1 && typeof item.link === 'string'"
+        >
+          <span class="breadcrumbs__item-top">
+            <span class="breadcrumbs__item-round gray"></span>
+            <span class="breadcrumbs__item-line"></span>
+          </span>
+          <span class="breadcrumbs__item-text gray" :class="{dots: dotsInText}">{{ item.title }}</span>
+        </RouterLink>
+        <RouterLink
+          class="breadcrumbs__item-inner"
+          :to="item.link"
+          v-else-if="firstLink"
         >
           <span class="breadcrumbs__item-top">
             <span class="breadcrumbs__item-round gray"></span>

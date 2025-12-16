@@ -1,9 +1,17 @@
 <script setup>
-import { defineEmits, ref, watch, computed } from "vue";
+import {
+  defineEmits,
+  ref,
+  watch,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
+import VirtualKeyboard from "@/components/ui/VirtualKeyboard.vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
 
 const emit = defineEmits(["changePerson"]);
-const activeUp = ref(false)
+const activeUp = ref(false);
 const person = ref({
   age: "",
   gender: "",
@@ -13,38 +21,38 @@ const person = ref({
     id: null,
     name: "",
   },
-  cel:  "",
+  cel: "",
 });
 const activeVersion = ref([
   {
     id: 1.2,
-    name: 'Сидячий образ жизни'
+    name: "Сидячий образ жизни",
   },
   {
     id: 1.375,
-    name: 'Легкая активность'
+    name: "Легкая активность",
   },
   {
     id: 1.55,
-    name: 'Умеренная активность'
+    name: "Умеренная активность",
   },
   {
     id: 1.725,
-    name: 'Высокая активность'
+    name: "Высокая активность",
   },
   {
     id: 1.9,
-    name: 'Очень высокая'
+    name: "Очень высокая",
   },
 ]);
 const isDisabledBtn = computed(() => {
   return (
-    person.value.gender === '' ||
-    person.value.age === '' ||
-    person.value.ves === '' ||
-    person.value.rost === '' ||
-    person.value.active.id  === null ||
-    person.value.cel === ''
+    person.value.gender === "" ||
+    person.value.age === "" ||
+    person.value.ves === "" ||
+    person.value.rost === "" ||
+    person.value.active.id === null ||
+    person.value.cel === ""
   );
 });
 
@@ -57,9 +65,63 @@ const pushInfo = () => {
   emit("changePerson", person);
 };
 
-watch((person), (newPerson) =>{
-  console.log('newPerson', newPerson)
-}, { deep: true })
+const showKeyboard = ref(false);
+const activeInput = ref(null);
+const keyboardRef = ref(null);
+const quizRef = ref(null);
+
+const activateKeyboard = (field) => {
+  activeInput.value = field;
+  showKeyboard.value = true;
+};
+const onKeyboardInput = (text) => {
+  if (activeInput.value === "age") {
+    person.value.age = text.replace(/\D/g, "");
+  }
+  if (activeInput.value === "rost") {
+    person.value.rost = text.replace(/\D/g, "");
+  }
+
+  if (activeInput.value === "ves") {
+    person.value.ves = text.replace(/\D/g, ""); // только цифры
+  }
+};
+const handleClickOutside = (event) => {
+  const keyboard = keyboardRef.value?.$refs.keyboardEl;
+  const quiz = quizRef.value;
+  console.log("keyboard", keyboard);
+
+  // Если клавиатура не открыта — ничего не делаем
+  if (!showKeyboard.value) return;
+
+  // Если клик внутри инпутов или внутри клавиатуры — игнорируем
+  if (
+    keyboard?.contains(event.target) ||
+    quiz?.contains(event.target.closest("input"))
+  ) {
+    return;
+  }
+
+  // Иначе — скрываем клавиатуру
+  showKeyboard.value = false;
+  activeInput.value = null;
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+
+watch(
+  person,
+  (newPerson) => {
+    console.log("newPerson", newPerson);
+  },
+  { deep: true }
+);
 </script>
 
 <template>
@@ -69,7 +131,7 @@ watch((person), (newPerson) =>{
       <p class="modal__subtitle">
         Введите ваши данные для определения персональных норм
       </p>
-      <div class="modal__elems">
+      <div class="modal__elems" ref="quizRef">
         <div class="question">
           <h4 class="question__title">Пол:</h4>
           <div class="answers">
@@ -105,6 +167,7 @@ watch((person), (newPerson) =>{
               class="input_quiz relative"
               v-model="person.age"
               placeholder="Введите возраст"
+              @focus="activateKeyboard('age')"
             />
           </div>
         </div>
@@ -116,6 +179,7 @@ watch((person), (newPerson) =>{
               class="input_quiz relative"
               v-model="person.ves"
               placeholder="Введите вес"
+              @focus="activateKeyboard('ves')"
             />
           </div>
         </div>
@@ -127,6 +191,7 @@ watch((person), (newPerson) =>{
               class="input_quiz relative"
               v-model="person.rost"
               placeholder="Введите рост"
+              @focus="activateKeyboard('rost')"
             />
           </div>
         </div>
@@ -198,12 +263,19 @@ watch((person), (newPerson) =>{
       <button class="modal__btn" @click="pushInfo" :disabled="isDisabledBtn">
         Принять
       </button>
+      <transition>
+        <VirtualKeyboard
+          ref="keyboardRef"
+          v-if="showKeyboard"
+          @input="onKeyboardInput"
+        />
+      </transition>
     </div>
   </div>
 </template>
 
 <style scoped>
-.relative{
+.relative {
   position: relative;
   z-index: 2;
 }
@@ -298,10 +370,13 @@ watch((person), (newPerson) =>{
     rgba(255, 255, 255, 0.06) 3.83%,
     rgba(255, 255, 255, 0.06) 99.95%
   ); */
-background: linear-gradient(85.26deg, rgba(217, 217, 217, 0.1) 3.83%, rgba(115, 115, 115, 0.1) 99.95%);
-
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
 }
-.answer:has(input:checked){
+.answer:has(input:checked) {
   background: linear-gradient(
     85.26deg,
     rgba(255, 255, 255, 0.25) 3.83%,
@@ -322,7 +397,11 @@ background: linear-gradient(85.26deg, rgba(217, 217, 217, 0.1) 3.83%, rgba(115, 
 }
 .answer .tint {
   border-radius: 100px;
-  background: linear-gradient(179deg, rgba(255, 255, 255, 0.15) 3.83%, rgb(255 255 255 / 28%) 99.95%);
+  background: linear-gradient(
+    179deg,
+    rgba(255, 255, 255, 0.15) 3.83%,
+    rgb(255 255 255 / 28%) 99.95%
+  );
 }
 
 .input_wrap {
@@ -409,9 +488,8 @@ background: linear-gradient(85.26deg, rgba(217, 217, 217, 0.1) 3.83%, rgba(115, 
 }
 
 .answer::before {
-padding: 2px;
+  padding: 2px;
 }
-
 
 .modal__btn {
   display: flex;
@@ -435,7 +513,6 @@ padding: 2px;
   font-family: "TT Hoves";
   color: rgba(255, 255, 255, 0.4);
 }
-
 
 .custom_list {
   position: absolute;
