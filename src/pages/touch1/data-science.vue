@@ -81,7 +81,7 @@ const breadcrumbsList = ref([
           :icon="IconCursor"
           icon-wrapper-color="pink"
         />
-        <GlassBtn
+        <!-- <GlassBtn
           class="animBtnBottom"
           link="kms"
           supname="Видео"
@@ -98,7 +98,7 @@ const breadcrumbsList = ref([
           type-btn="toInfo"
           :icon="IconPlay"
           icon-wrapper-color="transparent"
-        />
+        /> -->
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@ const router = useRouter()
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
-const VIDEO_BG_SRC = '/video/ai/bg_ii.webm'
+const VIDEO_BG_SRC = '/video/monitors/Data_Science.webm'
 
 
 </script>
@@ -18,7 +18,7 @@ const VIDEO_BG_SRC = '/video/ai/bg_ii.webm'
     <video 
       ref="currentVideoRef"
       key="main"
-      class="video-layer"
+      class="video-layer animVideo"
       :src="VIDEO_BG_SRC"
       autoplay 
       muted 

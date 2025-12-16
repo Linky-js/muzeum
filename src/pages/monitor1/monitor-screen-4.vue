@@ -7,7 +7,7 @@ const router = useRouter()
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
-const VIDEO_BG_SRC = '/video/ai/bg_ii.webm'
+const VIDEO_BG_SRC = '/video/monitors/ai.webm'
 
 const offVideo = ref(null)
 const currentVideo = ref(VIDEO_BG_SRC)
@@ -111,7 +111,7 @@ onBeforeUnmount(() => {
     <video 
       ref="currentVideoRef"
       key="main"
-      class="video-layer"
+      class="video-layer animVideo"
       :src="currentVideo"
       autoplay 
       muted 
@@ -144,6 +144,7 @@ onBeforeUnmount(() => {
 .contentMonitor{
   position: relative;
   overflow: hidden;
+  display: flex;
 }
 video {
   width: 100%;
@@ -152,10 +153,12 @@ video {
 }
 .video-layer {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  
   height: 100%;
-  object-fit: cover;
+  object-fit: inherit;
+  width: auto;
 }
 
 /* Плавный fade + blur */

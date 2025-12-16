@@ -6,6 +6,17 @@ import IconArrow from "@/components/icons/IconArrow.vue";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
 import VideoModal from "@/components/video/VideoModal.vue";
 
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMasterSync } from '@/composables/syncRouterSimple.js'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const bus = useBroadcastBus({
+  role: 'touch',
+  pairId: '1',
+  debug: false,
+})
+initMasterSync(router, bus, '1')
 const widjetShow = ref(false)
 
 const currentVideo = ref(VIDEO_BG_SRC)

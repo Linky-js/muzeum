@@ -1,14 +1,5 @@
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-const route = useRoute();
 
-import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
-import { initMasterSync } from '@/composables/syncRouterSimple.js'
-
-const router = useRouter();
-
-const bus = useBroadcastBus({ role: 'touch', pairId: '1', debug: false })
-initMasterSync(router, bus, '1')
 </script>
 <template>
   <div class="wrapper-content">
@@ -27,12 +18,10 @@ initMasterSync(router, bus, '1')
   position: relative;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(
-    23.51deg,
-    #000000 -4.02%,
-    #030e22 117.07%,
-    #000000 171.71%
-  );
+  background: linear-gradient(23.51deg,
+      #000000 -4.02%,
+      #030e22 117.07%,
+      #000000 171.71%);
 }
 
 .bg {

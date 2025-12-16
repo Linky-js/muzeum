@@ -8,16 +8,16 @@ const router = useRouter()
 const bus = useBroadcastBus({
   role: 'monitor',
   pairId: '1',
-  debug: true,
+  debug: false,
 })
 initMonitorSync(router, bus, '1')
 
 bus.on('navigate', (payload) => {
   if (!payload || !payload.route) return
-  router.push(payload.route).catch(()=>{})
+  router.push(payload.route).catch(() => { })
 })
 
 bus.on('defaultScreen', () => {
-  router.push({ name: 'monitor-home' }).catch(()=>{})
+  router.push({ name: 'monitor-home' }).catch(() => { })
 })
 </script>

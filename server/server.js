@@ -13,11 +13,17 @@ app.use(express.json())
 // Путь к базе
 const DB_FILE = path.join(__dirname, 'db', 'users.json')
 
-// CORS
+// CORS middleware — добавляем обработку OPTIONS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+
+  // Если это preflight-запрос — сразу ответить 200
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200)
+  }
+
   next()
 })
 
@@ -51,7 +57,7 @@ app.get('/api/statistics/attitude', (req, res) => {
   }
 
   const counts = {}
-  db.forEach(item => {
+  db.forEach((item) => {
     const att = item.attitude?.name || 'Неизвестно'
     counts[att] = (counts[att] || 0) + 1
   })
@@ -65,4 +71,49 @@ app.get('/api/statistics/attitude', (req, res) => {
 
   res.json(percentages)
 })
+app.get('/api/statistics/sphere', (req, res) => {
+  const db = JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'))
+
+  if (db.length === 0) {
+    return res.json({})
+  }
+
+  const counts = {}
+  db.forEach((item) => {
+    const sphere = item.sphere || 'Неизвестно'
+    counts[sphere] = (counts[sphere] || 0) + 1
+  })
+
+  // Считаем проценты
+  const total = db.length
+  const percentages = {}
+  for (const key in counts) {
+    percentages[key] = Math.round((counts[key] / total) * 100)
+  }
+
+  res.json(percentages)
+})
+app.get('/api/statistics/hero', (req, res) => {
+  const db = JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'))
+
+  if (db.length === 0) {
+    return res.json({})
+  }
+
+  const counts = {}
+  db.forEach((item) => {
+    const hero = item.ai.name || 'Неизвестно'
+    counts[hero] = (counts[hero] || 0) + 1
+  })
+
+  // Считаем проценты
+  const total = db.length
+  const percentages = {}
+  for (const key in counts) {
+    percentages[key] = Math.round((counts[key] / total) * 100)
+  }
+
+  res.json(percentages)
+})
+
 app.listen(3001, () => console.log('DB server running on :3001'))

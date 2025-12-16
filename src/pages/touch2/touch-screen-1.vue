@@ -11,9 +11,9 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const bus = useBroadcastBus({
-    role: 'touch',
-    pairId: '2',
-    debug: true,
+  role: 'touch',
+  pairId: '2',
+  debug: false,
 })
 initMasterSync(router, bus, '2')
 const breadcrumbsList = ref([
@@ -27,9 +27,9 @@ const breadcrumbsList = ref([
 <template>
 
   <div class="header">
-    <Breadcrums :list="breadcrumbsList"  />
+    <Breadcrums :list="breadcrumbsList" />
     <div class="header__logo">
-      
+
     </div>
   </div>
   <div class="content relative">
@@ -38,38 +38,17 @@ const breadcrumbsList = ref([
     </div>
     <div class="content__btns">
       <div class="content__btns-top ">
-       <GlassBtn
-            link="touch2-screen-regions"
-            supname="Интерактив"
-            name="Региональные практики"
-            type-btn="toInfo"
-            :icon="IconCursor"
-            icon-wrapper-color="pink"
-            class="animBtnBottom"
-          />
-        <GlassBtn
-            link="touch2-astrazeneca"
-            supname="Интерактив"
-            name="Приоритет - Эпидемиология"
-            type-btn="toInfo"
-            :icon="IconCursor"
-            icon-wrapper-color="pink"
-            class="animBtnBottom"
-          />
-          <GlassBtn
-            link="kms"
-            supname="Интерактив"
-            name="Карта факторов риска"
-            type-btn="toInfo"
-            :icon="IconCursor"
-            icon-wrapper-color="pink"
-            class="animBtnBottom"
-          />
+        <GlassBtn link="touch2-screen-regions" supname="Интерактив" name="Региональные практики" type-btn="toInfo"
+          :icon="IconCursor" icon-wrapper-color="pink" class="animBtnBottom" />
+        <GlassBtn link="touch2-astrazeneca" supname="Интерактив" name="Приоритет - Эпидемиология" type-btn="toInfo"
+          :icon="IconCursor" icon-wrapper-color="pink" class="animBtnBottom" />
+        <GlassBtn link="kms" supname="Интерактив" name="Карта факторов риска" type-btn="toInfo" :icon="IconCursor"
+          icon-wrapper-color="pink" class="animBtnBottom" />
       </div>
-      
+
     </div>
   </div>
-  
+
   <svg style="display: none">
     <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox">
       <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" seed="5" result="turbulence">
@@ -95,8 +74,6 @@ const breadcrumbsList = ref([
   </svg>
 </template>
 <style scoped>
-
-
 .relative {
   position: relative;
 }

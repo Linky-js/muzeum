@@ -15,7 +15,7 @@ const router = useRouter();
 const bus = useBroadcastBus({
   role: "touch",
   pairId: "1",
-  debug: true,
+  debug: false,
 });
 initMasterSync(router, bus, "1");
 
@@ -1109,7 +1109,8 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   letter-spacing: -0.02em;
   color: #ffffff;
 }
-.right-info{
+
+.right-info {
   height: 602px;
   display: flex;
   flex-direction: column;
@@ -1130,6 +1131,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   transform: translate(-50%, -50%);
   opacity: 0;
   visibility: hidden;
+  z-index: 55;
 }
 
 .bottom-inputs.active {
@@ -1503,6 +1505,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   position: fixed;
   bottom: 60px;
   right: 60px;
+  z-index: 999;
 }
 
 .tint {

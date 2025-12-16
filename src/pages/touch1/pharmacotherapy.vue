@@ -12,13 +12,16 @@ const router = useRouter();
 const bus = useBroadcastBus({
   role: "touch",
   pairId: "1",
-  debug: true,
+  debug: false,
 });
 initMasterSync(router, bus, "1");
 const sendByMonitor = (name) => {
   bus.send('pharmacotherapy', name, { role: 'monitor', pairId: '1' });
 }
-
+bus.on('defaultScreen', (payload) => {
+  console.log('defaultScreen');
+  router.push('/touch1/screen-1')
+})
 const breadcrumbsList = ref([
   {
     id: 0,

@@ -169,7 +169,7 @@ onUnmounted(() => {
   bottom: 0;
   left: 50%;
   border-radius: 3rem;
-  transform: translateY(-9rem) translateX(-50%);
+  transform: translateY(-9rem) translateX(-88%);
   padding: 3rem;
 }
 
