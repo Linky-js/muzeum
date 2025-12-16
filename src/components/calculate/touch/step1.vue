@@ -191,8 +191,8 @@ onBeforeUnmount(() => {
 <template>
   <div ref="quizRef" class="quiz-wrapper" :class="view">
     <div class="quiz">
-      <div class="question">
-        <div class="label">Пол:</div>
+      <div class="question animBtnBottom">
+        <div class="label ">Пол:</div>
         <div class="answers">
           <label class="answer">
             <div class="tint"></div>
@@ -206,7 +206,7 @@ onBeforeUnmount(() => {
           </label>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Возраст:</div>
         <div class="input_wrap">
           <input type="number" class="input_quiz relative" v-model="person.age" placeholder="Введите возраст"
@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </div>
-      <div class="question">
+      <div class="question animBtnBottom">
         <div class="label">Регион:</div>
         <div class="input_wrap">
           <input @focus="regionUp = true; activateKeyboard('region')" type="text" class="input_quiz relative"
@@ -238,7 +238,7 @@ onBeforeUnmount(() => {
 
     </div>
     <button @click="goNextStep(step + 1)" :disabled="person.age == '' || person.gender == '' || !person.region.name"
-      class="quiz__btn">
+      class="quiz__btn animBtnBottom">
       Дальше
     </button>
   </div>

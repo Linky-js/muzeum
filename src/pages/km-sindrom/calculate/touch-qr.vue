@@ -17,7 +17,7 @@ const breadcrumbsList = ref([
   {
     id: 0,
     title: "Главная",
-    link: "/",
+    link: "/touch1/screen-1",
   },
 ]);
 
@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="header">
-    <Breadcrums :list="breadcrumbsList" />
+    <Breadcrums :list="breadcrumbsList" :first-link="true" />
     <div class="header__logo">
       <svg xmlns="http://www.w3.org/2000/svg" width="237" height="60" viewBox="0 0 237 60" fill="none">
         <path
@@ -60,13 +60,13 @@ onMounted(() => {
       </p>
     </div>
     <div class="content__inner">
-      <div class="content__qr">
+      <div class="content__qr animBtnBottom">
         <div class="tint"></div>
         <div class="qr-code relative">
           <img :src="qrCodeUrl" alt="QR Code" />
         </div>
       </div>
-      <button @click="goNext" class="content__btn">Дальше</button>
+      <button @click="goNext" class="content__btn animBtnBottom">Дальше</button>
     </div>
   </div>
 
@@ -212,6 +212,8 @@ onMounted(() => {
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  position: absolute;
+  bottom: 0;
 }
 
 .footer__btn {
