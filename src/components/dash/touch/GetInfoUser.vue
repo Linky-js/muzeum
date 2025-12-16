@@ -71,6 +71,7 @@ const keyboardRef = ref(null);
 const quizRef = ref(null);
 
 const activateKeyboard = (field) => {
+  activeInput.value = null;
   activeInput.value = field;
   showKeyboard.value = true;
 };
@@ -89,7 +90,7 @@ const onKeyboardInput = (text) => {
 const handleClickOutside = (event) => {
   const keyboard = keyboardRef.value?.$refs.keyboardEl;
   const quiz = quizRef.value;
-  console.log("keyboard", keyboard);
+  // console.log("keyboard", keyboard);
 
   // Если клавиатура не открыта — ничего не делаем
   if (!showKeyboard.value) return;

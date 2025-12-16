@@ -142,6 +142,7 @@ const regionsHints = computed(() => {
   );
 });
 const activateKeyboard = (field) => {
+  activeInput.value = null;
   activeInput.value = field;
   showKeyboard.value = true;
 
