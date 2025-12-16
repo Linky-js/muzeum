@@ -1,22 +1,49 @@
-const CACHE_NAME = 'map-cache-v1';
-const URLS_TO_CACHE = ['/map_zoom_1.webp'];
+const CACHE_NAME = 'museum-assets-v1'
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE))
-  );
-});
+const ASSET_EXTENSIONS = [
+  '.mp4',
+  '.webm',
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.webp',
+  '.svg',
+]
+
+self.addEventListener('install', () => {
+  self.skipWaiting()
+})
+
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim())
+})
 
 self.addEventListener('fetch', event => {
-  if (event.request.url.endsWith('map_zoom_1.webp')) {
-    event.respondWith(
-      caches.match(event.request).then(response =>
-        response || fetch(event.request).then(res => {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-          return res;
-        })
-      )
-    );
+  const { request } = event
+
+  if (
+    request.method === 'GET' &&
+    ASSET_EXTENSIONS.some(ext => request.url.includes(ext))
+  ) {
+    event.respondWith(cacheFirst(request))
   }
-});
+})
+
+async function cacheFirst(request) {
+  const cache = await caches.open(CACHE_NAME)
+  const cached = await cache.match(request)
+
+  if (cached) {
+    return cached
+  }
+
+  const response = await fetch(request)
+
+  // ❗ ВАЖНО: кешируем ТОЛЬКО 200 OK
+  if (response.ok && response.status === 200) {
+    cache.put(request, response.clone())
+  }
+
+  return response
+}
+

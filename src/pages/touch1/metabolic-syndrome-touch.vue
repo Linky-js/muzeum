@@ -20,7 +20,7 @@ const descriptionVideo = ref('')
 const durationVideo = ref(0)
 const markersVideo = ref([])
 
-const VIDEO_BG_SRC = '/video.mp4'
+const VIDEO_BG_SRC = '/video/monitors/metabol_sindrom.webm'
 const OZHIRENIE = '/video/ms/ozhirenie.webm'
 const ARTERIA = '/video/ms/arterya.webm'
 const DISLIPIDEMIA = '/video/ms/dislipidemia.webm'
@@ -36,6 +36,10 @@ const bus = useBroadcastBus({
   debug: false,
 })
 initMasterSync(router, bus, '1')
+bus.on("defaultScreen", (payload) => {
+  router.push('/touch1/screen-1')
+
+})
 const breadcrumbsList = ref([
   {
     id: 0,
@@ -123,7 +127,7 @@ function getMarkersByChapter(chapter) {
   </div>
   <div class="content relative">
     <div class="content__top">
-      <h1 class="content__title animBtn">Метаболический синдром</h1>
+      <h1 class="content__title animBtn">Метаболический синдром </h1>
       <div @click="$router.back()" class="to-back">
         <IconArrow class="to-back__icon" />
         <span class="to-back__text">Назад</span>
@@ -152,7 +156,8 @@ function getMarkersByChapter(chapter) {
     </div>
   </div>
   <MenuNavigation class="footer__btn" />
-  <VideoModal v-if="widjetShow" @close="widjetShow = false" :title="titleVideo" :description="descriptionVideo" :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
+  <VideoModal v-if="widjetShow" @close="widjetShow = false" :title="titleVideo" :description="descriptionVideo"
+    :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
 
 </template>
 <style scoped>

@@ -7,7 +7,7 @@ const router = useRouter()
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
-const VIDEO_BG_SRC = '/video.mp4'
+const VIDEO_BG_SRC = '/video/monitors/metabol_sindrom.webm'
 
 const offVideo = ref(null)
 const currentVideo = ref(VIDEO_BG_SRC)
@@ -20,7 +20,7 @@ const nextVideoRef = ref(null)
 
 function handleVideoControl(cmd) {
   console.log(cmd);
-  
+
   const video = currentVideoRef.value
   if (!video) return
 
@@ -49,7 +49,7 @@ function handleVideoControl(cmd) {
 bus.on('currentVideo', handleVideoCommand)
 function handleVideoCommand(chapter) {
   console.log('chapter', chapter);
-  
+
   const newSrc = chapter.video
   if (newSrc === currentVideo.value) return
 
@@ -108,28 +108,13 @@ onBeforeUnmount(() => {
 <template>
   <div class="animVideo contentMonitor">
     <!-- основное видео -->
-    <video 
-      ref="currentVideoRef"
-      key="main"
-      class="video-layer"
-      :src="currentVideo"
-      autoplay 
-      muted 
-      :loop="currentVideo === VIDEO_BG_SRC" 
-      playsinline>
+    <video ref="currentVideoRef" key="main" class="video-layer" :src="currentVideo" autoplay muted
+      :loop="currentVideo === VIDEO_BG_SRC" playsinline>
     </video>
 
     <!-- следующее видео поверх (только если идёт переход) -->
     <transition name="fade-blur">
-      <video 
-        v-if="nextVideo"
-        ref="nextVideoRef"
-        key="next"
-        class="video-layer"
-        :src="nextVideo"
-        autoplay 
-        muted 
-        loop 
+      <video v-if="nextVideo" ref="nextVideoRef" key="next" class="video-layer" :src="nextVideo" autoplay muted loop
         playsinline>
       </video>
     </transition>
@@ -141,18 +126,21 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.contentMonitor{
+.contentMonitor {
   position: relative;
   overflow: hidden;
 }
+
 video {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .video-layer {
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -163,6 +151,7 @@ video {
 .fade-blur-leave-active {
   transition: opacity 0.8s ease, filter 0.8s ease;
 }
+
 .fade-blur-enter-from,
 .fade-blur-leave-to {
   opacity: 0;

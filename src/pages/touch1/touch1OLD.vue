@@ -11,7 +11,7 @@ const router = useRouter();
 const bus = useBroadcastBus({
   role: "touch",
   pairId: "1",
-  debug: true,
+  debug: false,
 });
 initMasterSync(router, bus, "1");
 
@@ -247,6 +247,7 @@ function goToKms() {
   border-radius: 3rem;
   white-space: nowrap;
 }
+
 .blur {
   backdrop-filter: blur(px);
 }
@@ -428,70 +429,71 @@ video {
   object-position: left bottom;
   z-index: 0;
 }
+
 .testBtn {
   /* Frame 25 */
 
-box-sizing: border-box;
+  box-sizing: border-box;
 
-/* Auto layout */
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
-padding: 24px 64px;
-gap: 157px;
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 64px;
+  gap: 157px;
 
-width: 922px;
-height: 182px;
+  width: 922px;
+  height: 182px;
 
-background: linear-gradient(85.26deg, rgba(217, 217, 217, 0.1) 3.83%, rgba(115, 115, 115, 0.1) 99.95%);
-/* Glass */
-border-radius: 48px;
+  background: linear-gradient(85.26deg, rgba(217, 217, 217, 0.1) 3.83%, rgba(115, 115, 115, 0.1) 99.95%);
+  /* Glass */
+  border-radius: 48px;
 
-/* Inside auto layout */
-flex: none;
-order: 1;
-flex-grow: 0;
-
-
-/* Data Science */
-
-margin: 0 auto;
-width: 232px;
-height: 44px;
-
-font-family: 'TT Hoves';
-font-style: normal;
-font-weight: 500;
-font-size: 40px;
-line-height: 110%;
-/* identical to box height, or 44px */
-letter-spacing: -0.02em;
-
-/* White */
-color: #FFFFFF;
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  flex-grow: 0;
 
 
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 0;
+  /* Data Science */
+
+  margin: 0 auto;
+  width: 232px;
+  height: 44px;
+
+  font-family: 'TT Hoves';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 110%;
+  /* identical to box height, or 44px */
+  letter-spacing: -0.02em;
+
+  /* White */
+  color: #FFFFFF;
 
 
-/* chrome_fXG8NDZdWN 1 */
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
 
-margin: 0 auto;
-width: 165px;
-height: 110px;
 
-background: url(chrome_WZpagJPfyt.png);
-mix-blend-mode: screen;
-border-radius: 0px;
+  /* chrome_fXG8NDZdWN 1 */
 
-/* Inside auto layout */
-flex: none;
-order: 1;
-flex-grow: 0;
+  margin: 0 auto;
+  width: 165px;
+  height: 110px;
+
+  background: url(chrome_WZpagJPfyt.png);
+  mix-blend-mode: screen;
+  border-radius: 0px;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  flex-grow: 0;
 
 }
 </style>

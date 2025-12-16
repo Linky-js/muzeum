@@ -9,7 +9,7 @@ const router = useRouter()
 const bus = useBroadcastBus({
   role: 'touch',
   pairId: '1',
-  debug: true,
+  debug: false,
 })
 initMasterSync(router, bus, '1')
 const muteBtn = ref(null)

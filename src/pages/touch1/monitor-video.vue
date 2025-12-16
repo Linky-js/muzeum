@@ -5,7 +5,7 @@ import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMonitorSync } from '@/composables/syncRouterSimple.js'
 
 const router = useRouter()
-const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: true })
+const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
 const videoEl = ref(null)
@@ -27,7 +27,7 @@ async function safePlay(retries = 3) {
   if (!videoEl.value) return
   for (let i = 0; i < retries; i++) {
     console.log('safePlay', i);
-    
+
     try {
       await videoEl.value.play()
       return
@@ -86,7 +86,7 @@ onMounted(async () => {
     videoEl.value.muted = false // снимаем флаг после инициализации
     videoEl.value.volume = 1
     console.log('videoEl.value', videoEl.value.volume);
-    
+
   }
   offListener = bus.on('videoCommand', handleVideoCommand)
 })
@@ -98,13 +98,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="home">
-    <video
-      ref="videoEl"
-      preload="auto"
-      playsinline
-      controls
-      style="width: 100%; height: auto"
-    ></video>
+    <video ref="videoEl" preload="auto" playsinline controls style="width: 100%; height: auto"></video>
   </div>
 </template>
 
@@ -113,6 +107,7 @@ onBeforeUnmount(() => {
   height: 100%;
   width: 100%;
 }
+
 video {
   width: 100%;
   height: 100%;

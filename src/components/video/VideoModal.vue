@@ -91,7 +91,7 @@ onMounted(() => {
   bus.send('currentVideo', { video: props.currentVideo })
 })
 const closeWidjet = () => {
-  bus.send('currentVideo', { video: '/video.mp4' })
+  bus.send('currentVideo', { video: '/video/monitors/metabol_sindrom.webm' })
   emit('close')
 }
 </script>

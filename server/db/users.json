@@ -40,5 +40,509 @@
       }
     },
     "sphere": "Точная диагностика"
+  },
+  {
+    "id": "91243fee-1b4b-4ed6-b01d-ef07a63b2558",
+    "timestamp": 1765559564345,
+    "age": 564,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 2,
+      "name": "Стажер",
+      "responsibilities": "ИИ требует надзора, но со<br> временем учится",
+      "img": "./ai/Intern.png",
+      "video": "/video/heroes/stasher_loop.webm"
+    },
+    "attitude": {
+      "name": "Затрудняюсь",
+      "icon": {
+        "__hmrId": "dd2a8385",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileQuestion.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "ff9b52d1-b429-466e-85aa-7b4aea7a650d",
+    "timestamp": 1765559781580,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "d499f00a-0ba2-4209-afa5-6e7e937105a3",
+    "timestamp": 1765615210800,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "0b40311b-cd64-40c7-b64a-d4fd3542abed",
+    "timestamp": 1765615564920,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Затрудняюсь",
+      "icon": {
+        "__hmrId": "dd2a8385",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileQuestion.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "6cf725ec-4f7e-4b0d-ae43-73d3b0ac26ed",
+    "timestamp": 1765615582515,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 2,
+      "name": "Стажер",
+      "responsibilities": "ИИ требует надзора, но со<br> временем учится",
+      "img": "./ai/Intern.png",
+      "video": "/video/heroes/stasher_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "bb5e6861-36e7-4867-81ee-3c42a68404f9",
+    "timestamp": 1765615770181,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "719a664d-460d-45c4-9f77-86f3703adf3e",
+    "timestamp": 1765616389710,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 5,
+      "name": "Хрустальный шар",
+      "responsibilities": "ИИ мыслит иначе, чем человек,<br> и дает неожиданные прогнозы",
+      "img": "./ai/Crystal.png",
+      "video": "/video/heroes/mag_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Образование"
+  },
+  {
+    "id": "bebdf567-d7e7-40f3-8c70-781efd8db430",
+    "timestamp": 1765616853950,
+    "age": 54,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 1,
+      "name": "Золушка",
+      "responsibilities": "ИИ берет на себя рутинную работу<br> и освобождает ваше время",
+      "img": "./ai/Cinderella.png",
+      "video": "/video/heroes/zolushka_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Общественное здравоохранение"
+  },
+  {
+    "id": "8e196b3e-d69d-493a-95de-08dda40caaf1",
+    "timestamp": 1765617136572,
+    "age": 64,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 4,
+      "name": "Шерлок Холмс",
+      "responsibilities": "ИИ находит скрытые связи и<br> объясняет непонятное",
+      "img": "./ai/Sherlock.png",
+      "video": "/video/heroes/sherlok_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "f52c37f3-e163-4b7e-be84-2798a3f575c3",
+    "timestamp": 1765622676113,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "069d5fc9-afbd-40e7-bb90-5110b711f903",
+    "timestamp": 1765622859073,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "042b3ba4-ac32-49a2-ba7a-74d1d6cd6595",
+    "timestamp": 1765623144389,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Общественное здравоохранение"
+  },
+  {
+    "id": "25917b68-c05c-4f15-9d33-53d7ed785fcc",
+    "timestamp": 1765623186380,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "22866001-c452-4c97-9a70-22efb09b996d",
+    "timestamp": 1765623659609,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "36b33e93-357a-45c3-ada3-4d10c0ae53db",
+    "timestamp": 1765623701693,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 4,
+      "name": "Шерлок Холмс",
+      "responsibilities": "ИИ находит скрытые связи и<br> объясняет непонятное",
+      "img": "./ai/Sherlock.png",
+      "video": "/video/heroes/sherlok_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Образование"
+  },
+  {
+    "id": "cf416f77-4022-4eaa-91dd-cc90ac8addde",
+    "timestamp": 1765623799777,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 1,
+      "name": "Золушка",
+      "responsibilities": "ИИ берет на себя рутинную работу<br> и освобождает ваше время",
+      "img": "./ai/Cinderella.png",
+      "video": "/video/heroes/zolushka_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Точная диагностика"
+  },
+  {
+    "id": "07dd6b18-a5b1-4ac4-a735-c533f6c4286d",
+    "timestamp": 1765623857132,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 5,
+      "name": "Хрустальный шар",
+      "responsibilities": "ИИ мыслит иначе, чем человек,<br> и дает неожиданные прогнозы",
+      "img": "./ai/Crystal.png",
+      "video": "/video/heroes/mag_loop.webm"
+    },
+    "attitude": {
+      "name": "Затрудняюсь",
+      "icon": {
+        "__hmrId": "dd2a8385",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileQuestion.vue"
+      }
+    },
+    "sphere": "Образование"
+  },
+  {
+    "id": "73c5a13d-7bc9-4601-a4cc-bf6b7edc3c86",
+    "timestamp": 1765624049536,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 5,
+      "name": "Хрустальный шар",
+      "responsibilities": "ИИ мыслит иначе, чем человек,<br> и дает неожиданные прогнозы",
+      "img": "./ai/Crystal.png",
+      "video": "/video/heroes/mag_loop.webm"
+    },
+    "attitude": {
+      "name": "Затрудняюсь",
+      "icon": {
+        "__hmrId": "dd2a8385",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileQuestion.vue"
+      }
+    },
+    "sphere": "Точная диагностика"
+  },
+  {
+    "id": "44a17cd0-5803-47f8-8871-a75205ef1461",
+    "timestamp": 1765624395679,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 5,
+      "name": "Хрустальный шар",
+      "responsibilities": "ИИ мыслит иначе, чем человек,<br> и дает неожиданные прогнозы",
+      "img": "./ai/Crystal.png",
+      "video": "/video/heroes/mag_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "5f9f8bac-a28b-4082-a89c-b6fde347f09e",
+    "timestamp": 1765624438818,
+    "age": 98,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 2,
+      "name": "Стажер",
+      "responsibilities": "ИИ требует надзора, но со<br> временем учится",
+      "img": "./ai/Intern.png",
+      "video": "/video/heroes/stasher_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "1964a137-f4bd-47ca-b3f2-9464b86cea59",
+    "timestamp": 1765632206547,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 2,
+      "name": "Стажер",
+      "responsibilities": "ИИ требует надзора, но со<br> временем учится",
+      "img": "./ai/Intern.png",
+      "video": "/video/heroes/stasher_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "1b23b01b-848b-4607-a65e-2e8326b4700b",
+    "timestamp": 1765632326709,
+    "age": 45,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 4,
+      "name": "Шерлок Холмс",
+      "responsibilities": "ИИ находит скрытые связи и<br> объясняет непонятное",
+      "img": "./ai/Sherlock.png",
+      "video": "/video/heroes/sherlok_loop.webm"
+    },
+    "attitude": {
+      "name": "Затрудняюсь",
+      "icon": {
+        "__hmrId": "dd2a8385",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileQuestion.vue"
+      }
+    },
+    "sphere": "Общественное здравоохранение"
+  },
+  {
+    "id": "f459864d-3e16-44da-a985-8de9dd1bbb11",
+    "timestamp": 1765632488439,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Образование"
+  },
+  {
+    "id": "c6bb36d3-8242-4619-bdb9-a55106b5c11d",
+    "timestamp": 1765786087382,
+    "age": 65,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Затрудняюсь",
+      "icon": {
+        "__hmrId": "dd2a8385",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileQuestion.vue"
+      }
+    },
+    "sphere": "Образование"
   }
 ]

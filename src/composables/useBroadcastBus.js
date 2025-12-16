@@ -1,8 +1,7 @@
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 
 // ——— Утилиты ———
-const uuid = () =>
-  `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
+const uuid = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
 const now = () => Date.now()
 
 /**
@@ -31,7 +30,7 @@ export function useBroadcastBus(userOptions = {}) {
     ackTimeoutMs: userOptions.ackTimeoutMs || 1500,
     maxRetries: userOptions.maxRetries || 2,
     filterSelf: userOptions.filterSelf ?? true,
-    idleTimeoutMs: userOptions.idleTimeoutMs || 60000,
+    idleTimeoutMs: userOptions.idleTimeoutMs || 360000,
     getState: typeof userOptions.getState === 'function' ? userOptions.getState : null,
     onState: typeof userOptions.onState === 'function' ? userOptions.onState : null,
   }
@@ -49,6 +48,18 @@ export function useBroadcastBus(userOptions = {}) {
   let hbTimer = null
   let idleTimer = null
   let lastActivity = now() // для варианта, если решишь проверять через heartbeat
+
+  const USER_EVENTS = [
+    'touchstart',
+    'touchmove',
+    'touchend',
+    'mousedown',
+    'mousemove',
+    'wheel',
+    'pointerdown',
+    'pointermove',
+    'keydown',
+  ]
 
   const log = (label, ...args) => {
     if (options.debug) {
@@ -111,12 +122,15 @@ export function useBroadcastBus(userOptions = {}) {
 
   // idle через таймер (можно заменить на проверку через heartbeat при желании)
   const resetIdleTimer = () => {
+    if (options.role !== 'touch') return
+
     lastActivity = now()
     if (!options.idleTimeoutMs) return
+
     if (idleTimer) clearTimeout(idleTimer)
+
     idleTimer = setTimeout(() => {
       log('idle timeout → defaultScreen')
-      // отправляем defaultScreen всей паре
       send('defaultScreen', null, { pairId: options.pairId })
     }, options.idleTimeoutMs)
   }
@@ -307,16 +321,33 @@ export function useBroadcastBus(userOptions = {}) {
     return () => anyHandlers.delete(handler)
   }
 
-  const setRole = (role) => { options.role = role }
-  const setPairId = (pairId) => { options.pairId = pairId }
+  const setRole = (role) => {
+    options.role = role
+  }
+  const setPairId = (pairId) => {
+    options.pairId = pairId
+  }
+
+  const onUserActivity = () => {
+    resetIdleTimer()
+  }
+  const bindUserActivity = () => {
+    USER_EVENTS.forEach((e) => window.addEventListener(e, onUserActivity, { passive: true }))
+  }
+
+  const unbindUserActivity = () => {
+    USER_EVENTS.forEach((e) => window.removeEventListener(e, onUserActivity))
+  }
 
   onMounted(() => {
     open()
+    bindUserActivity()
     window.addEventListener('pagehide', close)
     window.addEventListener('beforeunload', close)
   })
 
   onUnmounted(() => {
+    unbindUserActivity()
     if (idleTimer) clearTimeout(idleTimer)
     window.removeEventListener('pagehide', close)
     window.removeEventListener('beforeunload', close)
@@ -328,8 +359,12 @@ export function useBroadcastBus(userOptions = {}) {
     instanceId,
     presence,
     send,
-    on, off, onAny,
-    setRole, setPairId,
-    close, open,
+    on,
+    off,
+    onAny,
+    setRole,
+    setPairId,
+    close,
+    open,
   }
 }

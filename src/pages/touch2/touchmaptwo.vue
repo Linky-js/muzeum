@@ -25,7 +25,7 @@ const router = useRouter()
 const bus = useBroadcastBus({
   role: 'touch',
   pairId: '2',
-  debug: true,
+  debug: false,
 })
 initMasterSync(router, bus, '2')
 const regionUp = ref(false);
@@ -36,26 +36,26 @@ const targetregion = ref({
   name: '',
 });
 const links = ref([
-  
-      {
-        id: 0,
-        name: "Курируемые регионы",
-        link: "/touch-screen-regions",
 
-      },
-      {
-        id: 1,
-        name: "Карта AstraZeneca",
-        link: "/touch-screen-astrazeneca",
+  {
+    id: 0,
+    name: "Курируемые регионы",
+    link: "/touch-screen-regions",
 
-      },
-      {
-        id: 2,
-        name: "Тепловая карта факторы риска",
-        link: "/touchmaptwo",
+  },
+  {
+    id: 1,
+    name: "Карта AstraZeneca",
+    link: "/touch-screen-astrazeneca",
 
-      },
-    
+  },
+  {
+    id: 2,
+    name: "Тепловая карта факторы риска",
+    link: "/touchmaptwo",
+
+  },
+
 ]);
 const unFocus = ref(false)
 
@@ -124,7 +124,7 @@ onMounted(() => {
     <div class="header">
       <Breadcrums :list="breadcrumbsList" />
       <div class="header__logo">
-        
+
       </div>
     </div>
     <div class="content relative">
@@ -307,7 +307,8 @@ onMounted(() => {
 .active {
   background: rgba(124, 123, 123, 0.158);
 }
-.footer{
+
+.footer {
   margin-top: 10.56rem;
   display: flex;
   width: 100%;

@@ -8,7 +8,7 @@ const router = useRouter()
 
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
-const VIDEO_SRC = '/2.mp4'
+const VIDEO_SRC = '/video/monitors/metabol_center.webm'
 </script>
 <template>
     <div class="contentMonitor">
