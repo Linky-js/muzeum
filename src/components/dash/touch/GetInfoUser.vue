@@ -9,6 +9,8 @@ import {
 } from "vue";
 import VirtualKeyboard from "@/components/ui/VirtualKeyboard.vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
+import ModalDiscleimer from "@/components/ui/ModalDiscleimer.vue";
+
 
 const emit = defineEmits(["changePerson"]);
 const activeUp = ref(false);
@@ -55,6 +57,38 @@ const isDisabledBtn = computed(() => {
     person.value.cel === ""
   );
 });
+
+const isOpenModal = ref(false);
+const isAgreeCoockie = ref(false);
+const agreeCoockie = () => {
+  isAgreeCoockie.value = true;
+  isOpenModal.value = false;
+};
+const toggleModal = () => {
+  if (isAgreeCoockie.value) return;
+  isOpenModal.value = !isOpenModal.value;
+};
+
+const openModalForInput = (value) => {
+  if (!isAgreeCoockie.value) {
+    toggleModal();
+  } else {
+    switch (value) {
+      case "age":
+        activateKeyboard("age");
+        break;
+      case "ves":
+        activateKeyboard("ves");
+        break;
+      case "rost":
+        activateKeyboard("rost");
+        break;
+      case "active":
+        activeUp.value = true
+        break;
+    }
+  }
+};
 
 const goActive = (value) => {
   // Обновляем только локальную переменную для отображения
@@ -150,6 +184,7 @@ watch(
                 v-model="person.gender"
                 value="Мужской"
                 id=""
+                @click="toggleModal"
               />
               <span class="relative"> Мужской </span>
             </label>
@@ -161,6 +196,7 @@ watch(
                 v-model="person.gender"
                 value="Женский"
                 id=""
+                @click="toggleModal"
               />
               <span class="relative"> Женский </span>
             </label>
@@ -174,7 +210,7 @@ watch(
               class="input_quiz relative"
               v-model="person.age"
               placeholder="Введите возраст"
-              @focus="activateKeyboard('age')"
+              @focus="openModalForInput('age')"
             />
           </div>
         </div>
@@ -186,7 +222,7 @@ watch(
               class="input_quiz relative"
               v-model="person.ves"
               placeholder="Введите вес"
-              @focus="activateKeyboard('ves')"
+              @focus="openModalForInput('ves')"
             />
           </div>
         </div>
@@ -198,7 +234,7 @@ watch(
               class="input_quiz relative"
               v-model="person.rost"
               placeholder="Введите рост"
-              @focus="activateKeyboard('rost')"
+              @focus="openModalForInput('rost')"
             />
           </div>
         </div>
@@ -206,7 +242,7 @@ watch(
           <h4 class="question__title">Активность:</h4>
           <div class="input_wrap">
             <input
-              @focus="activeUp = true"
+              @focus="openModalForInput('active')"
               type="text"
               class="input_quiz relative"
               v-model="person.active.name"
@@ -241,6 +277,7 @@ watch(
                 name="cel"
                 v-model="person.cel"
                 value="Поддержание веса"
+                @click="toggleModal"
               />
               <span class="relative"> Поддержание веса </span>
             </label>
@@ -251,6 +288,7 @@ watch(
                 name="cel"
                 v-model="person.cel"
                 value="Похудение"
+                @click="toggleModal"
               />
               <span class="relative"> Похудение </span>
             </label>
@@ -261,6 +299,7 @@ watch(
                 name="cel"
                 v-model="person.cel"
                 value="Набор веса"
+                @click="toggleModal"
               />
               <span class="relative"> Набор веса </span>
             </label>
@@ -280,6 +319,13 @@ watch(
       </transition>
     </div>
   </div>
+    <ModalDiscleimer
+    v-if="isOpenModal"
+    @close="isOpenModal = false"
+    @agreeCoockie="agreeCoockie"
+    :backLink="'/touch1/screen-3'"
+    :text="' При прохождении опроса мы собираем данные для демонстрации статистики.<br> Вы соглашаетесь на обработку персональных данных?'"
+  />
 </template>
 
 <style scoped>

@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
 import VirtualKeyboard from "@/components/ui/VirtualKeyboard.vue";
+import ModalDiscleimer from "@/components/ui/ModalDiscleimer.vue";
 
 const props = defineProps({
   person: Object,
@@ -17,6 +18,33 @@ const activeInput = ref(null);
 const keyboardRef = ref(null);
 const quizRef = ref(null);
 const keyboardText = ref("");
+
+const isOpenModal = ref(false);
+const isAgreeCoockie = ref(false);
+const agreeCoockie = () => {
+  isAgreeCoockie.value = true;
+  isOpenModal.value = false;
+};
+const toggleModal = () => {
+  if (isAgreeCoockie.value) return;
+  isOpenModal.value = !isOpenModal.value;
+};
+
+const openModalForInput = (value) => {
+  if (!isAgreeCoockie.value) {
+    toggleModal();
+  } else {
+    switch (value) {
+      case "age":
+        activateKeyboard("age");
+        break;
+      case "region":
+        regionUp.value = true;
+        activateKeyboard("region");
+        break;
+    }
+  }
+};
 
 const ages = [
   { id: 1, name: "от 0 до 10 лет" },
@@ -209,6 +237,7 @@ onBeforeUnmount(() => {
               v-model="person.gender"
               value="Мужчины"
               id=""
+              @click="toggleModal"
             />
             <span class="relative"> Мужской </span>
           </label>
@@ -220,6 +249,7 @@ onBeforeUnmount(() => {
               v-model="person.gender"
               value="Женщины"
               id=""
+              @click="toggleModal"
             />
             <span class="relative"> Женский </span>
           </label>
@@ -233,7 +263,7 @@ onBeforeUnmount(() => {
             class="input_quiz relative"
             v-model="person.age"
             placeholder="Введите возраст"
-            @focus="activateKeyboard('age')"
+            @focus="openModalForInput('age')"
           />
           <div v-show="ageUp === 2" class="custom_list">
             <div
@@ -252,14 +282,11 @@ onBeforeUnmount(() => {
         <div class="label">Регион:</div>
         <div class="input_wrap">
           <input
-            @focus="
-              regionUp = true;
-              activateKeyboard('region');
-            "
             type="text"
             class="input_quiz relative"
             v-model="person.region.name"
             placeholder="Выберите регион"
+            @focus="openModalForInput('region')"
           />
           <IconArrow
             class="input_wrap-arr"
@@ -281,8 +308,11 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-    <button @click="goNextStep(step + 1)" :disabled="person.age == '' || person.gender == '' || !person.region.name"
-      class="quiz__btn">
+    <button
+      @click="goNextStep(step + 1)"
+      :disabled="person.age == '' || person.gender == '' || !person.region.name"
+      class="quiz__btn"
+    >
       Дальше
     </button>
   </div>
@@ -294,6 +324,13 @@ onBeforeUnmount(() => {
       @input="onKeyboardInput"
     />
   </transition>
+  <ModalDiscleimer
+    v-if="isOpenModal"
+    @close="isOpenModal = false"
+    @agreeCoockie="agreeCoockie"
+    :backLink="'/touch1/screen-3'"
+    :text="' При прохождении опроса мы собираем данные для демонстрации статистики.<br> Вы соглашаетесь на обработку персональных данных?'"
+  />
 </template>
 
 <style scoped>
