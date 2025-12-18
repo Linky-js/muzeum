@@ -5,14 +5,14 @@ import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMasterSync } from '@/composables/syncRouterSimple.js'
 
 const router = useRouter()
-const muteBtn = ref(null)
+
 const bus = useBroadcastBus({
   role: 'touch',
   pairId: '1',
-  debug: true,
+  debug: false,
 })
 initMasterSync(router, bus, '1')
-
+const muteBtn = ref(null)
 // UI state
 const playing = ref(true)
 const muted = ref(false)

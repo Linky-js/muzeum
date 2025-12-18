@@ -17,8 +17,8 @@ const showLoopVideo = ref(false)
 const introVideoRef = ref(null)
 const loopVideoRef = ref(null)
 
-const VIDEO_SRC = '/video/intro.mp4'
-const VIDEO_SRC_2 = '/video/cikl.mp4'
+const VIDEO_SRC = '/video/monitors/metabol_center.webm'
+const VIDEO_SRC_2 = '/video/monitors/ai.webm'
 
 bus.on('sentResult', () => {
     intro.value = false
@@ -68,6 +68,7 @@ onMounted(() => {
     top: 0;
     left: 0;
     z-index: 7;
+    background-color: black;
 }
 
 .intro {

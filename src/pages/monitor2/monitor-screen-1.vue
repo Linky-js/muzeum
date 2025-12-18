@@ -6,15 +6,15 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 
-const bus = useBroadcastBus({ role: 'monitor', pairId: '2', debug: true })
+const bus = useBroadcastBus({ role: 'monitor', pairId: '2', debug: false })
 initMonitorSync(router, bus, '2')
 
 const video = "/touch2/touch2.jpg";
 </script>
 <template>
-    <div class="wrapper-content">
-        <img class="bg" :src="video" alt="">
-    </div>
+  <div class="wrapper-content">
+    <img class="bg" :src="video" alt="">
+  </div>
 </template>
 <style scoped>
 .wrapper-content {

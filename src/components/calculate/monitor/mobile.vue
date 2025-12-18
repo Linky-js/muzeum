@@ -68,9 +68,13 @@ watch(
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 bus.on('person', (data) => {
+  console.log('person', person);
+  
   person.value = data
 })
-bus.on('step', (data) => {
+bus.on('stepCalc', (data) => {
+  console.log('stepCalc', data);
+  
   step.value = data
   emit('scrollDirection', 'top');
   changeTitles(step.value);

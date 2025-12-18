@@ -167,6 +167,7 @@ onMounted(() => {
   letter-spacing: -0.03em;
   fill: #ffffff;
   margin-bottom: 4px;
+  background: linear-gradient(180deg, red, green);
 }
 
 .gauge-label {

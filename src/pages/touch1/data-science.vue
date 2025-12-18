@@ -12,12 +12,12 @@ import { initMasterSync } from "@/composables/syncRouterSimple.js";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-// const bus = useBroadcastBus({
-//   role: "touch",
-//   pairId: "1",
-//   debug: true,
-// });
-// initMasterSync(router, bus, "1");
+const bus = useBroadcastBus({
+  role: "touch",
+  pairId: "1",
+  debug: false,
+});
+initMasterSync(router, bus, "1");
 
 const breadcrumbsList = ref([
   {
@@ -81,7 +81,7 @@ const breadcrumbsList = ref([
           :icon="IconCursor"
           icon-wrapper-color="pink"
         />
-        <GlassBtn
+        <!-- <GlassBtn
           class="animBtnBottom"
           link="kms"
           supname="Видео"
@@ -98,7 +98,7 @@ const breadcrumbsList = ref([
           type-btn="toInfo"
           :icon="IconPlay"
           icon-wrapper-color="transparent"
-        />
+        /> -->
       </div>
     </div>
   </div>

@@ -1,4 +1,7 @@
-<script></script>
+<script>
+    
+</script>
 <template>
     <RouterView></RouterView>
+    
 </template>

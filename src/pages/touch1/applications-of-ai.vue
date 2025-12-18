@@ -4,9 +4,36 @@ import GlassBtn from "@/components/touchScreenComponents/GlassBtn.vue";
 import { ref } from "vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
+import VideoModal from "@/components/video/VideoModal.vue";
+
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMasterSync } from '@/composables/syncRouterSimple.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const bus = useBroadcastBus({
+  role: 'touch',
+  pairId: '1',
+  debug: false,
+})
+initMasterSync(router, bus, '1')
+const widjetShow = ref(false)
+
+const currentVideo = ref(VIDEO_BG_SRC)
+const titleVideo = ref('')
+const descriptionVideo = ref('')
+const durationVideo = ref(0)
+const markersVideo = ref([])
+
+const VIDEO_BG_SRC = '/video.mp4'
+
+const AI_tele = '/video/ai/AI_tele.webm'
+const AI_diagnostic = '/video/ai/AI_diagnostic.webm'
+const AI_Farma = '/video/ai/AI_Farma.webm'
+const AI_Manage = '/video/ai/AI_Manage.webm'
+const AI_Personalize = '/video/ai/AI_Personalize.webm'
+const AI_education = '/video/ai/AI_education.webm'
+const AI_Epidemiology = '/video/ai/AI_Epidemiology.webm'
 
 const breadcrumbsList = ref([
   {
@@ -25,6 +52,60 @@ const breadcrumbsList = ref([
     link: "screen-4",
   },
 ]);
+
+function touchSendVideo(chapter) {
+  currentVideo.value = getVideoByChapter(chapter)
+  titleVideo.value = getTitleByChapter(chapter)
+  descriptionVideo.value = getDescriptionByChapter(chapter)
+  durationVideo.value = getDurationByChapter(chapter)
+  widjetShow.value = true
+}
+
+
+function getVideoByChapter(chapter) {
+  switch (chapter) {
+    case 'фармация': return AI_Farma
+    case 'управление': return AI_Manage
+    case 'диагностика': return AI_diagnostic
+    case 'телемедицина': return AI_tele
+    case 'персонализация': return AI_Personalize
+    case 'образование': return AI_education
+    case 'эпидемиология': return AI_Epidemiology
+  }
+}
+function getTitleByChapter(chapter) {
+  switch (chapter) {
+   case 'фармация': return 'ИИ фармация'
+    case 'управление': return 'ИИ управление'
+    case 'диагностика': return 'ИИ диагностика'
+    case 'телемедицина': return 'ИИ телемедицина'
+    case 'персонализация': return 'ИИ персонализация'
+    case 'образование': return 'ИИ образование'
+    case 'эпидемиология': return 'ИИ эпидемиология'
+  }
+}
+function getDescriptionByChapter(chapter) {
+  switch (chapter) {
+    case 'фармация': return 'Области применения ИИ'
+    case 'управление': return 'Области применения ИИ'
+    case 'диагностика': return 'Области применения ИИ'
+    case 'телемедицина': return 'Области применения ИИ'
+    case 'персонализация': return 'Области применения ИИ'
+    case 'образование': return 'Области применения ИИ'
+    case 'эпидемиология': return 'Области применения ИИ'
+  }
+}
+function getDurationByChapter(chapter) {
+  switch (chapter) {
+   case 'фармация': return 30
+    case 'управление': return 30
+    case 'диагностика': return 30
+    case 'телемедицина': return 30
+    case 'персонализация': return 30
+    case 'образование': return 30
+    case 'эпидемиология': return 30
+  }
+}
 </script>
 <template>
   <div class="header">
@@ -59,16 +140,17 @@ const breadcrumbsList = ref([
     </div>
     <div class="content__btns">
       <div class="content__btns-top">
-        <GlassBtn link="kms" class="animBtnBottom" name="Образование и кадры" />
-        <GlassBtn link="kms" class="animBtnBottom" name="AI management" />
-        <GlassBtn link="kms" class="animBtnBottom" name="Personification" />
-        <GlassBtn link="kms" class="animBtnBottom" name="AI - telehealth" />
-        <GlassBtn link="kms" class="animBtnBottom" name="Диагностика" />
-        <GlassBtn link="kms" class="animBtnBottom" name="AI - epidemiology" />
-        <GlassBtn class="grid-col-2 animBtnBottom" link="kms" name="AI Pharma" />
+        <GlassBtn @click="touchSendVideo('фармация')" class="animBtnBottom" name="ИИ фармация   " />
+        <GlassBtn @click="touchSendVideo('управление')" class="animBtnBottom" name="ИИ управление" />
+        <GlassBtn @click="touchSendVideo('диагностика')" class="animBtnBottom" name="ИИ диагностика" />
+        <GlassBtn @click="touchSendVideo('телемедицина')" class="animBtnBottom" name="ИИ телемедицина" />
+        <GlassBtn @click="touchSendVideo('персонализация')" class="animBtnBottom" name="ИИ персонализация" />
+        <GlassBtn @click="touchSendVideo('образование')" class="animBtnBottom" name="ИИ образование" />
+        <GlassBtn class="grid-col-2 animBtnBottom" @click="touchSendVideo('эпидемиология')" name="ИИ эпидемиология" />
       </div>
     </div>
   </div>
+  <VideoModal v-if="widjetShow" @close="widjetShow = false" :title="titleVideo" :description="descriptionVideo" :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
   <MenuNavigation class="footer__btn" />
   <svg style="display: none">
     <filter

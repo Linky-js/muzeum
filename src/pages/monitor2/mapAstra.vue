@@ -9,61 +9,87 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const bus = useBroadcastBus({ role: 'monitor', pairId: '2', debug: false })
 initMonitorSync(router, bus, '2')
+
 const targetregion = ref(null);
 const curRegion = ref(null);
 const isModalOpen = ref(false)
-let offListener = null
 const currentVideo = ref(null)
+const curentSindrom = ref(null)
+const deafaultScreen = ref(true)
 
+/* новая анимационная логика */
+const isDefault = ref(true)        // включает класс defaultVideos
+const isTextVisible = ref(true)    // fade текста
+const isVideoBig = ref(false)      // увеличение видео
+
+/* Видео слои */
+const videoA = ref(null);
+const videoB = ref(null);
+const videoA_src = ref("/video/xsn.webm");
+const videoB_src = ref("/video/xbp.webm");
+const activeLayer = ref("A");
+
+/* навигация */
 bus.on('navigate', (region) => {
-  console.log('navigate', region);
   isModalOpen.value = false
   targetregion.value = region.region
   curRegion.value = region
 })
+
+/* переход в sindrom режим */
 bus.on('sindrom', (sindrom) => {
-  currentVideo.value = sindrom.sindrom === 'xsn' ? '/video/xsn.webm' : sindrom.sindrom === 'xbp' ? '/video/xbp.webm' : null
-  console.log('currentVideo', currentVideo.value);
+  // 1) скрываем текст
+  isTextVisible.value = false;
+
+  // 2) через 500мс увеличиваем видео
+  setTimeout(() => {
+    isVideoBig.value = true;
+  }, 500);
+
+  // 3) через 900мс убираем defaultVideos
+  setTimeout(() => {
+    isDefault.value = false;
+  }, 900);
+
+  // логика смены видео
+  // videoA_src.value = ""
+  // videoB_src.value = ""
+  currentVideo.value =
+    sindrom.sindrom === 'xsn'
+      ? '/video/xsn.webm'
+      : sindrom.sindrom === 'xbp'
+        ? '/video/xbp.webm'
+        : null
+
+  curentSindrom.value = sindrom.sindrom
   targetregion.value = 'default'
-  curRegion.value = null 
+  curRegion.value = null
+  deafaultScreen.value = false
 })
-const videoA = ref(null);
-const videoB = ref(null);
 
-const videoA_src = ref("");
-const videoB_src = ref("");
-
-const activeLayer = ref("A"); // какая из двух активна сейчас
-
+/* кроссфейд видео */
 watch(currentVideo, (newSrc) => {
-  // Если сейчас активен слой A → загружаем в B
-  if (activeLayer.value === "A") {
-    videoB_src.value = newSrc;
+  if (!newSrc || deafaultScreen.value) return;
 
-    // Даем Vue перестроить DOM
+  if (activeLayer.value === "A" && curentSindrom.value === 'xbp') {    
+    // videoB_src.value = newSrc;
+
     setTimeout(() => {
       videoB.value.load();
       videoB.value.play();
-
-      // Плавно показать B и скрыть A
       videoB.value.style.opacity = 1;
       videoA.value.style.opacity = 0;
-
       activeLayer.value = "B";
     }, 50);
-  }
 
-  // Если активен слой B → загружаем в A
-  else {
-    videoA_src.value = newSrc;
+  } else {
+    // videoA_src.value = newSrc;
 
     setTimeout(() => {
       videoA.value.load();
       videoA.value.play();
-
       videoA.value.style.opacity = 1;
       videoB.value.style.opacity = 0;
-
       activeLayer.value = "A";
     }, 50);
   }
@@ -83,22 +109,68 @@ watch(currentVideo, (newSrc) => {
             d="M594.372 59.3135C593.211 48.5712 598.55 -16.5098 569.071 3.95543C550.502 19.6376 523.422 52.8838 512.513 74.1332C508.412 82.5232 513.131 84.0914 519.631 88.2472L520.404 88.6392L539.283 98.5974L558.085 108.948L572.089 116.946C557.156 125.336 521.488 158.503 559.787 161.012C570.464 160.542 610.388 152.779 616.655 144.938C617.738 143.37 617.816 141.723 616.887 139.998L615.959 138.665L614.876 137.568L613.87 136.783L605.359 131.53L594.836 125.257C640.563 95.5393 658.359 77.7401 594.372 59.3135ZM578.279 54.6089L565.358 51.5509L553.288 49.5122L549.419 49.2769C576.035 23.0877 575.184 12.1886 578.279 54.6089ZM598.55 133.098L602.806 135.999L605.668 138.273L606.829 139.449L607.68 140.469V140.547V140.626V140.704L607.603 140.782L607.448 140.861L568.685 143.919L570.309 142.351L578.588 136.078L590.658 127.766L598.55 133.098ZM611.626 88.404L611.394 88.9528L610.465 90.2074L607.061 93.1871L602.728 96.4803L597.003 100.479L575.803 114.28L544.545 96.1667L527.368 85.738L523.035 82.6016L522.416 81.9743L521.72 80.7197C521.178 79.0731 523.113 76.8776 524.118 75.8582L542.842 56.4907C554.216 82.4447 590.736 139.763 593.753 76.015L601.568 79.7004L608.918 84.013L610.775 85.5812L611.549 86.8358L611.703 87.5415L611.626 88.404Z"
             fill="white" />
         </svg>
+      </div>
+      <div v-if="curentSindrom === 'xsn'" class="text">
+        Масштаб исследований «Приоритет Хронической Сердечной недостаточности» <br> по регионам России.
+      </div>
+      <div v-if="curentSindrom === 'xbp'" class="text">
+        Масштаб исследований «Приоритет Хронической Почечной недостаточности» <br>
+        по регионам России.
+      </div>
 
-      </div>
-      <div class="text">
-        Масштаб исследований хронической <br>болезни сердца по регионам России.
-      </div>
     </div>
+    <transition>
+      <div v-if="!targetregion" class="default">
+        <div class="deafult__head">
+          Масштаб исследований <br>
+          "ПРИОРИТЕТ ХСН" и "ПРИОРИТЕТ ХБП" <br>
+          по регионам России.
+        </div>
+        <div class="default__description">
+          Эпидемиологические данные о распространенности таких состояний как<br>
+          хроническая сердечная недостаточность и хроническая болезнь почек ограничены, <br>что связано с особенностями
+          кодирования, гетерогенностью клинической практики в различных <br> регионах страны и варьирующим
+          клиническо-демографическим портретом пациента. <br><br>
+
+          Проведение масштабных наблюдательных исследований в российской популяции <br>
+          помогает закрывать этот пробел.
+        </div>
+      </div>
+    </transition>
     <MapSceneAstraMonitor :targetregion="targetregion" :bg="true" @showmodal="isModalOpen = true" />
   </div>
   <RegionModalAstra v-if="curRegion" :show="isModalOpen" :region="curRegion?.region" />
-  <DefaultScreenAstra />
-  <div class="video_sindrom">
-    <!-- Нижний слой -->
-    <video ref="videoA" :src="videoA_src" autoplay muted loop playsinline class="video_layer"></video>
 
-    <!-- Верхний слой (переключаемый) -->
-    <video ref="videoB" :src="videoB_src" autoplay muted loop playsinline class="video_layer layer_top"></video>
+  <div class="video_sindrom" :class="{ defaultVideos: isDefault }">
+
+    <div class="videoText" :class="{ hiddenText: !isTextVisible }">
+      В данный момент запущена линейка <br>
+      исследований ПРИОРИТЕТ, включающая в том числе:
+    </div>
+
+    <div class="prioritet_block xsnBlock">
+      <video ref="videoA" :src="videoA_src" autoplay muted loop playsinline class="video_layer"
+        :class="{ bigVideo: isVideoBig }"></video>
+
+      <div class="prioritet_info" :class="{ hiddenText: !isTextVisible }">
+        <div class="prioritet_head">Исследование "ПРИОРИТЕТ ХСН"</div>
+        <div class="prioritet_descriptiom">
+          – с целью оценить характеристики, терапию и годичные исходы...
+        </div>
+      </div>
+    </div>
+
+    <div class="prioritet_block xbpBlock">
+      <video ref="videoB" :src="videoB_src" autoplay muted loop playsinline class="video_layer"
+        :class="{ bigVideo: isVideoBig }"></video>
+
+      <div class="prioritet_info" :class="{ hiddenText: !isTextVisible }">
+        <div class="prioritet_head">Исследование "ПРИОРИТЕТ ХБП"</div>
+        <div class="prioritet_descriptiom">
+          – с целью оценить частоту диагностирования ХБП у пациентов...
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -145,20 +217,121 @@ watch(currentVideo, (newSrc) => {
   top: 0;
   height: 100%;
   z-index: 5;
-  width: 2000px;
+  width: 2673px;
+  padding-top: 451px;
+  padding-right: 785px;
+}
+
+.defaultVideos .video_layer {
+  position: static;
+  width: 409px;
+  height: 409px;
 }
 
 .video_layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+
   transition: opacity 0.6s ease;
 }
 
 .layer_top {
   opacity: 0;
+}
+
+.default {
+  position: fixed;
+  top: 766px;
+  left: 989px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 141px;
+}
+
+.deafult__head {
+  font-weight: 500;
+  font-size: 96px;
+  line-height: 100%;
+  letter-spacing: 0.02em;
+  font-variant: all-small-caps;
+  color: #fff;
+}
+
+.default__description {
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 125%;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.prioritet_block {
+  display: flex;
+  gap: 129px;
+  align-items: center;
+  margin-bottom: 162px;
+}
+
+.prioritet_descriptiom {
+  width: 1350px;
+  font-size: 48px;
+  color: #fff;
+}
+
+.prioritet_head {
+  font-weight: 400;
+  font-size: 70px;
+  line-height: 86%;
+  letter-spacing: 0.02em;
+  color: #178bff;
+}
+
+.videoText {
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 125%;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 107px;
+  padding-left: 538px;
+}
+
+
+
+/* fade текста */
+.hiddenText {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* увеличение видео */
+.bigVideo {
+  width: 1800px !important;
+  height: 1800px !important;
+  transform: translate(-100%, 20px);
+}
+
+/* дефолтное маленькое состояние */
+.defaultVideos .video_layer {
+  width: 409px;
+  height: 409px;
+
+}
+
+.prioritet_block.xsnBlock .video_layer.bigVideo {
+  transform: translate(66%, -29%);
+}
+
+.prioritet_block.xbpBlock .video_layer.bigVideo {
+  transform: translate(61%, -133%);
+}
+
+/* у видео будет smooth resize + opacity */
+.video_layer {
+  transition:
+    opacity 0.6s ease,
+    width 1.8s ease,
+    height 1.8s ease,
+    transform 1.8s ease;
+  object-fit: cover;
 }
 </style>

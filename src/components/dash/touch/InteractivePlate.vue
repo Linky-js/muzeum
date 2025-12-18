@@ -15,7 +15,7 @@ const router = useRouter();
 const bus = useBroadcastBus({
   role: "touch",
   pairId: "1",
-  debug: true,
+  debug: false,
 });
 initMasterSync(router, bus, "1");
 
@@ -523,55 +523,54 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
           </div>
         </div>
       </div>
-      <div class="bottom-inputs" :class="{
-        active:
-          selectedSubcat && selectedSubcat !== 'all' && selectedSubcat != '',
-      }">
-        <input ref="weightInputRef" class="weight-input bottom-inputs__inp" v-model="weight" @focus="useNumpad = true"
-          placeholder="г" />
-
-        <div v-if="!useNumpad" class="quick-btns bottom-inputs__quick">
-          <button v-for="w in quickWeights" :key="w" @click="applyQuickWeight(w)" class="bottom-inputs__quick-btn"
-            :class="{
-              active:
-                selectedSubcat &&
-                selectedSubcat !== 'all' &&
-                selectedSubcat != '',
-            }">
-            <div class="tint"></div>
-            <span> {{ w }} г </span>
-          </button>
-        </div>
-
-        <div v-else class="numpad bottom-inputs__numpad">
-          <button v-for="n in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']" :key="n" @click="numpadPress(n)"
-            class="bottom-inputs__numpad-btn">
-            <div class="tint"></div>
-            <span>
-              {{ n }}
-            </span>
-          </button>
-
-          <button @click="numpadPress('<')" class="bottom-inputs__numpad-btn">
-            <div class="tint"></div>
-            <span>
-              < </span>
-          </button>
-          <button @click="numpadPress('C')" class="bottom-inputs__numpad-btn">
-            <div class="tint"></div>
-            <span> С </span>
-          </button>
-        </div>
-
+      <div class="right-info">
         <button v-if="!useNumpad" class="bottom-inputs__btn" @click="toggleModal">
           Рассчитать
         </button>
-        <button v-if="useNumpad" class="bottom-inputs__btn-numpad" @click="confirmWeight">
-          ок
-        </button>
       </div>
     </div>
+    <div class="bottom-inputs" :class="{
+      active:
+        selectedSubcat && selectedSubcat !== 'all' && selectedSubcat != '',
+    }">
+      <input ref="weightInputRef" class="weight-input bottom-inputs__inp" v-model="weight" @focus="useNumpad = true"
+        placeholder="г" />
 
+      <div v-if="!useNumpad" class="quick-btns bottom-inputs__quick">
+        <button v-for="w in quickWeights" :key="w" @click="applyQuickWeight(w)" class="bottom-inputs__quick-btn" :class="{
+          active:
+            selectedSubcat &&
+            selectedSubcat !== 'all' &&
+            selectedSubcat != '',
+        }">
+          <div class="tint"></div>
+          <span> {{ w }} г </span>
+        </button>
+      </div>
+
+      <div v-else class="numpad bottom-inputs__numpad">
+        <button v-for="n in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']" :key="n" @click="numpadPress(n)"
+          class="bottom-inputs__numpad-btn">
+          <div class="tint"></div>
+          <span>
+            {{ n }}
+          </span>
+        </button>
+
+        <button @click="numpadPress('<')" class="bottom-inputs__numpad-btn">
+          <div class="tint"></div>
+          <span>
+            < </span>
+        </button>
+        <button @click="numpadPress('C')" class="bottom-inputs__numpad-btn">
+          <div class="tint"></div>
+          <span> С </span>
+        </button>
+      </div>
+      <button v-if="useNumpad" class="bottom-inputs__btn-numpad" @click="confirmWeight">
+        ок
+      </button>
+    </div>
     <!-- Weight Modal -->
     <div v-if="isOpenModal" class="modal-backdrop" @click="toggleModal">
       <div class="modal" @click.stop>
@@ -1111,16 +1110,35 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   color: #ffffff;
 }
 
+.right-info {
+  height: 602px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding-left: 40px;
+}
+
 .bottom-inputs {
   display: flex;
   flex-direction: column;
   padding: 40px;
+  height: 602px;
   background: rgba(0, 0, 0, 0.34);
   border-radius: 58px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 55;
 }
 
 .bottom-inputs.active {
+  opacity: 1;
+  visibility: visible;
   background: rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(40px);
 }
 
 .bottom-inputs__inp::placeholder {
@@ -1487,6 +1505,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   position: fixed;
   bottom: 60px;
   right: 60px;
+  z-index: 999;
 }
 
 .tint {
