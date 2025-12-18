@@ -31,7 +31,7 @@ bus.on('resultstep5', (payload) => {
                 <div class="percent">{{ resultPayload?.val?.attitude.percent }}%</div>
                 <div class="track">
                   <div class="current_track"
-                    :style="{ width: `${resultPayload?.val?.attitude.percent}%`, background: resultPayload?.val?.attitude.name === 'Положительное' ? 'linear-gradient(180deg, #3DB967 0%, #71E397 100%)' : resultPayload?.val?.attitude.name === 'Нейтральное' ? 'linear-gradient(180deg, #0A92F3 0%, #66B3EA 100%)' : resultPayload?.val?.name === 'Отрицательное' ? 'linear-gradient(180deg, #AD3473 0%, #CC78A3 100%)' : resultPayload?.val?.name === 'Затрудняюсь' ? 'linear-gradient(180deg, #CDCDCD 0%, #FBFBFB 100%)' : '' }">
+                    :style="{ width: `${resultPayload?.val?.attitude.percent}%`, background: resultPayload?.val?.attitude.name == 'Положительное' ? 'linear-gradient(180deg, #3DB967 0%, #71E397 100%)' : resultPayload?.val?.attitude.name == 'Нейтральное' ? 'linear-gradient(180deg, #0A92F3 0%, #66B3EA 100%)' : resultPayload?.val?.attitude.name == 'Отрицательное' ? 'linear-gradient(180deg, #AD3473 0%, #CC78A3 100%)' : resultPayload?.val?.attitude.name == 'Затрудняюсь' ? 'linear-gradient(180deg, #CDCDCD 0%, #FBFBFB 100%)' : '' }">
                   </div>
                 </div>
                 <div class="percent__text">

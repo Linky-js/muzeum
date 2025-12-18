@@ -94,17 +94,6 @@ const goToStep = (targetStep) => {
     toast.error(validation.error);
     return;
   }
-
-  // Дополнительные проверки для шагов 5 и 6
-  if (targetStep === 5 && person.value.diabet !== "Нет") {
-    toast.error("Нельзя перейти на этот шаг при наличии диабета");
-    return;
-  }
-  if (targetStep === 6 && person.value.diabet === "Нет") {
-    toast.error("Нельзя перейти на этот шаг при отсутствии диабета");
-    return;
-  }
-
   navigateToStep(targetStep);
 };
 async function saveUserResult(result) {
@@ -225,6 +214,8 @@ watch(
   (newStep) => {
     if (newStep) {
       const stepNumber = parseInt(newStep);
+      bus.send('step', { step: stepNumber })
+      bus.send('currentHeroGlobal', { hero: JSON.parse(JSON.stringify(person.value)) })
       if (stepNumber >= 1 && stepNumber <= 7) {
         goToStep(stepNumber);
       }

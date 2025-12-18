@@ -32,7 +32,7 @@ bus.on('step', (data) => {
 <template>
   <div class="wrapper-ai">
     <step1 v-if="step === 1" />
-    <step2 v-if="step === 2" />
+    <step2 v-if="step === 2" :currentHero="currentHero"/>
     <step3 v-if="step === 3" :currentHero="currentHero" />
     <step4 v-if="step === 4" :currentHero="currentHero" />
     <step5 v-if="step === 5" />

@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="animVideo contentMonitor">
     <!-- основное видео -->
-    <video ref="currentVideoRef" key="main" class="video-layer" :src="currentVideo" autoplay muted
+    <video ref="currentVideoRef" key="main" class="video-layer animVideo" :src="currentVideo" autoplay muted
       :loop="currentVideo === VIDEO_BG_SRC" playsinline>
     </video>
 

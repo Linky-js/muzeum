@@ -89,7 +89,7 @@ export default {
         subcategories: [
           {
             id: 'grain_snacks',
-            name: 'Крекеры',
+            name: 'Крекеры, снеки и пряники',
             oldname: 'Зерновые снеки (крекеры и пр.)',
             alteration: true,
             preview: '/products/subcat/subcat-1-1.png',
@@ -102,7 +102,7 @@ export default {
           },
           {
             id: 'grains_refined',
-            name: 'Макароны',
+            name: 'Злаки рафинированные',
             oldname: 'Злаки рафинированные (варёные, 1/2 стакана)',
             alteration: true,
             preview: '/products/subcat/subcat-1-2.png',
@@ -116,7 +116,7 @@ export default {
           },
           {
             id: 'grains_whole',
-            name: 'Гречка',
+            name: 'Злаки цельнозерновые',
             oldname: 'Злаки цельнозерновые (варёные, 1/2 стакана)',
             alteration: true,
             preview: '/products/subcat/subcat-1-3.png',
@@ -144,7 +144,7 @@ export default {
           },
           {
             id: 'muesli',
-            name: 'Мюсли',
+            name: 'Сухие хлопья и мюсли',
             oldname: 'Сухие хлопья/мюсли (1 oz)',
             alteration: true,
             preview: '/products/subcat/subcat-1-5.png',
@@ -158,7 +158,7 @@ export default {
           },
           {
             id: 'bread_white',
-            name: 'Кусок хлеба',
+            name: 'Хлеб белый/ рафинированный',
             oldname: 'Хлеб белый/рафинированный (ломтик)',
             alteration: true,
             preview: '/products/subcat/subcat-1-6.png',
@@ -170,7 +170,7 @@ export default {
           },
           {
             id: 'bread_whole',
-            name: 'кусок хлеба зерновой',
+            name: 'Хлеб цельнозерновой',
             oldname: 'Хлеб цельнозерновой (ломтик)',
             alteration: true,
             preview: '/products/subcat/subcat-1-7.png',
@@ -189,7 +189,7 @@ export default {
         subcategories: [
           {
             id: 'sunflower-oil',
-            name: 'Подсолнечное масло',
+            name: 'Растительные масла',
             oldname: 'Растительные масла (1 ч. л.)',
             alteration: true,
             preview: '/products/subcat/subcat-2-1.png',
@@ -217,7 +217,7 @@ export default {
           },
           {
             id: 'piece-of-butter',
-            name: 'кусочек слив. масла',
+            name: 'Масло и маргарин',
             oldname: 'Маргарин мягкий (1 ч. л.)',
             alteration: true,
             preview: '/products/subcat/subcat-2-2.png',
@@ -231,7 +231,7 @@ export default {
           },
           {
             id: 'sauce',
-            name: 'Соус (бальзамик или масло с травами)',
+            name: 'Заправки и соусы',
             oldname: 'Заправки/соусы (1 ст. л.)',
             alteration: true,
             preview: '/products/subcat/subcat-2-4.png',
@@ -252,7 +252,7 @@ export default {
         subcategories: [
           {
             id: 'white_meat',
-            name: 'куриная грудка жарен',
+            name: 'Белое мясо',
             oldname: 'Белое мясо (готовое, 1 oz)',
             alteration: true,
             preview: '/products/subcat/subcat-3-1.png',
@@ -266,7 +266,7 @@ export default {
           },
           {
             id: 'yaichnicas',
-            name: 'яичница',
+            name: 'Яйца',
             oldname: 'Яйца (1 шт)',
             alteration: true,
             preview: '/products/subcat/subcat-3-2.png',
@@ -280,7 +280,7 @@ export default {
           },
           {
             id: '#FF0004_meat',
-            name: 'свинина или говяд. кусок жар.',
+            name: 'Красное мясо',
             oldname: 'Красное мясо (готовое, 1 oz)',
             alteration: true,
             preview: '/products/subcat/subcat-3-3.png',
@@ -294,7 +294,7 @@ export default {
           },
           {
             id: 'seafood',
-            name: 'набор (креветки, мидии, осьминог)',
+            name: 'Морепродукты',
             oldname: 'Морепродукты (готовые, 1 oz)',
             alteration: true,
             preview: '/products/subcat/subcat-3-4.png',
@@ -308,7 +308,7 @@ export default {
           },
           {
             id: 'fish',
-            name: 'Рыба готовая',
+            name: 'Рыба',
             oldname: 'Рыба (готовая, 1 oz)',
             alteration: true,
             preview: '/products/subcat/subcat-3-5.png',
@@ -329,7 +329,7 @@ export default {
         subcategories: [
           {
             id: 'kefir',
-            name: 'Кефир (обезжиренный)',
+            name: 'Кефир и ряженка',
             preview: '/products/subcat/subcat-4-1.png',
             allowedSlots: [10],
             images: {
@@ -338,7 +338,7 @@ export default {
           },
           {
             id: 'yogurt',
-            name: 'Йогурт (обезжиренный)',
+            name: 'Йогурт',
             oldname: 'Йогурт (обезжиренный)',
             alteration: true,
             preview: '/products/subcat/subcat-4-2.png',
@@ -349,7 +349,7 @@ export default {
           },
           {
             id: 'cheese',
-            name: 'кусочек (2 кусочка)',
+            name: 'Сыр и творог',
             oldname: 'Сыр (пониженной жирности)',
             alteration: true,
             preview: '/products/subcat/subcat-4-3.png',
@@ -368,7 +368,7 @@ export default {
         subcategories: [
           {
             id: 'leafy',
-            name: 'салат микс',
+            name: 'Салаты и зелень',
             oldname: 'Листовые (сырые, 1 стакан)',
             alteration: true,
             preview: '/products/subcat/subcat-5-1.png',
@@ -382,7 +382,7 @@ export default {
           },
           {
             id: 'cruciferous',
-            name: 'огурец, томаты (кусочки крупно)',
+            name: 'Крестоцветные',
             oldname: 'Крестоцветные/прочие (1/2 стакана)',
             alteration: true,
             preview: '/products/subcat/subcat-5-2.png',
@@ -396,7 +396,7 @@ export default {
           },
           {
             id: 'roots',
-            name: 'Овощи варенные',
+            name: 'Корнеплоды',
             oldname: 'Корнеплоды/крахмалистые (1/2 стакана)',
             alteration: true,
             preview: '/products/subcat/subcat-5-3.png',
@@ -417,7 +417,7 @@ export default {
         subcategories: [
           {
             id: 'legumes',
-            name: 'вареная фасоль, бобы',
+            name: 'Бобовые',
             oldname: 'Бобовые (варёные, 1/2 стакана)',
             alteration: true,
             preview: '/products/subcat/subcat-6-1.png',
@@ -431,7 +431,7 @@ export default {
           },
           {
             id: 'nuts',
-            name: 'горсть небольшая',
+            name: 'Орехи',
             oldname: 'Орехи (1/3 стакана ≈ 42 г)',
             alteration: true,
             preview: '/products/subcat/subcat-6-2.png',
@@ -442,7 +442,7 @@ export default {
           },
           {
             id: 'seeds',
-            name: 'горсть небольшая',
+            name: 'Семечки',
             oldname: 'Семена (2 ст. л. ≈ 16 г)',
             alteration: true,
             preview: '/products/subcat/subcat-6-3.png',
@@ -474,7 +474,7 @@ export default {
         subcategories: [
           {
             id: 'jam-preserve',
-            name: 'варенье',
+            name: 'Джем и варенье',
             oldname: 'Джем/варенье (1 ст. л.)',
             alteration: true,
             preview: '/products/subcat/subcat-7-1.png',
@@ -488,7 +488,7 @@ export default {
           },
           {
             id: 'jelly-sorbet',
-            name: 'желе',
+            name: 'Желе, сорбет и мороженое ',
             oldname: 'Желейные/сорбет (1/2 стакана)',
             alteration: true,
             preview: '/products/subcat/subcat-7-2.png',
@@ -502,7 +502,7 @@ export default {
           },
           {
             id: 'sweet-pastries',
-            name: 'кусок торта/пирожное',
+            name: 'Десерты и выпечка',
             oldname: 'Кондитерские изделия (100 г)',
             alteration: true,
             preview: '/products/subcat/subcat-7-3.png',
@@ -520,7 +520,7 @@ export default {
         subcategories: [
           {
             id: 'fresh-fruit',
-            name: 'кусок яблока, банан кус. (или др.)',
+            name: 'Свежие фрукты',
             oldname: 'Свежие (1 средний плод)',
             alteration: true,
             preview: '/products/subcat/subcat-8-1.png',
@@ -531,7 +531,7 @@ export default {
           },
           {
             id: 'dried-fruits',
-            name: 'горсть курага/изюм',
+            name: 'Сухофрукты',
             oldname: 'Сухофрукты (1/4 стакана)',
             alteration: true,
             preview: '/products/subcat/subcat-8-2.png',
@@ -542,7 +542,7 @@ export default {
           },
           {
             id: 'berries-slices',
-            name: 'малина, черника (или др)',
+            name: 'мЯгоды',
             oldname: 'Ягоды/ломтики (1/2 стакана)',
             alteration: true,
             preview: "/products/subcat/subcat-8-3.png",
@@ -574,7 +574,7 @@ export default {
           },
           {
             id: 'tea',
-            name: 'чай',
+            name: 'Чай',
             oldname: 'чай',
             alteration: true,
             preview: '/products/subcat/subcat-9-2.png',
@@ -585,7 +585,7 @@ export default {
           },
           {
             id: 'black-coffee',
-            name: 'кофе черный',
+            name: 'Кофе чёрный',
             oldname: 'кофе черный',
             alteration: true,
             preview: '/products/subcat/subcat-9-3.png',
@@ -596,7 +596,7 @@ export default {
           },
           {
             id: 'coffee-with-milk',
-            name: 'кофе с молоком',
+            name: 'Кофе с молоком',
             oldname: 'кофе с молоком',
             alteration: true,
             preview: '/products/subcat/subcat-9-4.png',
@@ -607,7 +607,7 @@ export default {
           },
           {
             id: 'vegetable-juice',
-            name: 'овощной сок',
+            name: 'Овощной сок',
             oldname: 'Овощной сок (1/2 стакана)',
             alteration: true,
             oldCategory: 'Овощи',
@@ -620,7 +620,7 @@ export default {
           },
           {
             id: 'fruit-juice',
-            name: 'фруктовый сок',
+            name: '100% сок (1/2 стакана)',
             oldname: '100% сок (1/2 стакана)',
             alteration: true,
             oldCategory: 'Фрукты',
@@ -633,7 +633,7 @@ export default {
           },
           {
             id: 'sweetened-drinks',
-            name: 'подслащенные напитки',
+            name: 'Сладкие напитки и лимонады',
             oldname: 'Подслащённые напитки (1 стакан)',
             alteration: true,
             oldCategory: 'Сладости и добавленные сахара',

@@ -1,22 +1,11 @@
 <script setup>
 import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 
-import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
-import { initMonitorSync } from '@/composables/syncRouterSimple.js'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
-const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
-initMonitorSync(router, bus, '1')
-
-bus.on('currentHero', (payload) => {
-  console.log(payload);
-  currentHero.value = payload.hero
-  currentName.value = payload.hero.name
-  currentResponsibilities.value = payload.hero.responsibilities
+const props = defineProps({
+  currentHero: Object,
 })
 
-const currentHero = ref({})
 const currentName = ref("")
 const currentResponsibilities = ref("")
 const heroes = ref([
@@ -73,15 +62,14 @@ onBeforeUnmount(() => {
   <div class="wrapper-step">
     <div class="headAi">
       <div class="title animLayer">
-        {{ currentName }}
+        {{ currentHero.ai.name }}
       </div>
-      <div class="descriptio animLayern">
-        {{ currentResponsibilities }}
+      <div class="description animLayern" v-html="currentHero.ai.responsibilities">
       </div>
     </div>
     <div class="videos">
       <video v-for="v in heroes" :key="v.id" class="video-layer animLayer" :src="v.video" autoplay muted loop playsinline
-        :class="v.name === currentHero.name ? 'active' : ''"></video>
+        :class="v.name === currentHero.ai.name ? 'active' : ''"></video>
 
     </div>
   </div>
@@ -121,5 +109,8 @@ video.active {
   justify-content: center;
   margin-top: 328px;
   position: relative;
+}
+.video-layer{
+  transform: scale(1);
 }
 </style>
