@@ -42,11 +42,12 @@ const person = ref(null)
 
 const calculateTDEE = () => {
   const bmr = person.value.gender === "Мужской" ? 88.362 + (13.397 * person.value.ves) + (4.799 * person.value.rost) - (5.677 * person.value.age) : 447.593 + (9.247 * person.value.ves) + (3.098 * person.value.rost) - (4.330 * person.value.age);
+
   const TDEE = bmr * person.value.active.id;
   console.log(88.362 + (13.397 * person.value.ves) + (4.799 * person.value.rost) - (5.677 * person.value.age));
 
 
-  const celTDEE = person.value.cel === "Поддержание" ? TDEE : person.value.cel === "Похудение" ? TDEE - 500 : TDEE + 500;
+  const celTDEE = person.value.cel === "Поддержание веса" ? TDEE : person.value.cel === "Похудение" ? TDEE - 500 : TDEE + 500;
   console.log('TDEE', bmr, person.value.active.id, TDEE,);
   store.commit("dashResult/SET_TDEE", { TDEE: celTDEE });
   return celTDEE

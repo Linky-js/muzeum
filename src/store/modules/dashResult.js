@@ -129,12 +129,13 @@ function normalizeDashCategories(cats, TDEE) {
   }
 
   const out = {}
-
+ console.log('dfhvbdh',TDEE, Math.round((TDEE * 7) / 2000));
   // перебираем ВСЕ существующие категории
   for (const categoryName in DASH_LIMITS) {
     const portions = cats[categoryName]?.portions ?? 0
     const norm = DASH_LIMITS[categoryName]
-
+   
+    
     out[categoryName] = {
       portions,
       percent: Math.round((portions / norm) * 100),
