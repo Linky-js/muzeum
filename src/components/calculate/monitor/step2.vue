@@ -11,158 +11,161 @@ const props = defineProps({
   <div class="quiz-wrapper" :class="view">
     <div class="quiz">
       <div class="question">
-        <div class="label">
-          Наличие артериальной <br />
-          гипертензии:
-        </div>
-        <div class="answers">
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Да</span>
-            <input
-              type="radio"
-              name="arteriya"
-              v-model="person.arteriya"
-              value="Да"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Нет</span>
-            <input
-              type="radio"
-              name="arteriya"
-              v-model="person.arteriya"
-              value="Нет"
-              id=""
-            />
-          </label>
+        <div class="label">Рост:</div>
+        <div class="input_wrap">
+          <input
+            type="number"
+            class="input_quiz relative"
+            v-model="person.rost"
+            placeholder="См"
+          />
         </div>
       </div>
       <div class="question">
-        <div class="label">
-          Повышение уровня сахара в <br />
-          анамнезе:
-        </div>
-        <div class="answers">
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Да</span>
-            <input
-              type="radio"
-              name="sahar"
-              v-model="person.sahar"
-              value="Да"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Нет</span>
-            <input
-              type="radio"
-              name="sahar"
-              v-model="person.sahar"
-              value="Нет"
-              id=""
-            />
-          </label>
+        <div class="label">Вес:</div>
+        <div class="input_wrap">
+          <input
+            type="number"
+            class="input_quiz relative"
+            v-model="person.ves"
+            placeholder="Кг"
+          />
         </div>
       </div>
-      <div class="question">
-        <div class="label">Наличие сахарного диабета:</div>
-        <div class="answers">
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Да</span>
-            <input
-              type="radio"
-              name="diabet"
-              v-model="person.diabet"
-              value="Да"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Нет</span>
-            <input
-              type="radio"
-              name="diabet"
-              v-model="person.diabet"
-              value="Нет"
-              id=""
-            />
-          </label>
-        </div>
-      </div>
-      <div class="question">
+      <div v-if="person.gender == 'Мужчины'" class="question">
         <div class="label">
-          Прием препаратов, снижающих <br />
-          артериальное давление
-        </div>
-        <div class="answers">
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Да</span>
-            <input
-              type="radio"
-              name="priem"
-              v-model="person.priem"
-              value="Да"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Нет</span>
-            <input
-              type="radio"
-              name="priem"
-              v-model="person.priem"
-              value="Нет"
-              id=""
-            />
-          </label>
-        </div>
-      </div>
-      <div class="question">
-        <div class="label">
-          Семейный анамнез сахарного <br />
-          диабета.
+          Окружность талии: <br />
+          <small>Мужчина</small>
         </div>
         <div class="answers answersColumn">
           <label class="answer">
             <div class="tint"></div>
+            <span class="relative">&#60;94 см</span>
+            <input
+              type="radio"
+              name="taliya"
+              v-model="person.taliya"
+              value=" &#60;94 см"
+              id=""
+            />
+          </label>
+          <label class="answer">
+            <div class="tint"></div>
+            <span class="relative">от 94 до &#60; 102 см</span>
+            <input
+              type="radio"
+              name="taliya"
+              v-model="person.taliya"
+              value="от 94 до &#60; 102 см"
+              id=""
+            />
+          </label>
+          <label class="answer">
+            <div class="tint"></div>
+            <span class="relative">≥102 см</span>
+            <input
+              type="radio"
+              name="taliya"
+              v-model="person.taliya"
+              value="≥102 см"
+              id=""
+            />
+          </label>
+        </div>
+      </div>
+      <div v-if="person.gender == 'Женщины'" class="question">
+        <div class="label">
+          Окружность талии: <br />
+          <small>Женшина</small>
+        </div>
+        <div class="answers answersColumn">
+          <label class="answer">
+            <div class="tint"></div>
+            <span class="relative">&#60;80 см</span>
+            <input
+              type="radio"
+              name="taliya"
+              v-model="person.taliya"
+              value=" &#60;80 см"
+              id=""
+            />
+          </label>
+          <label class="answer">
+            <div class="tint"></div>
+            <span class="relative">80-88 см</span>
+            <input
+              type="radio"
+              name="taliya"
+              v-model="person.taliya"
+              value="80-88 см"
+              id=""
+            />
+          </label>
+          <label class="answer">
+            <div class="tint"></div>
+            <span class="relative">>88 см</span>
+            <input
+              type="radio"
+              name="taliya"
+              v-model="person.taliya"
+              value=">88 см"
+              id=""
+            />
+          </label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="label">Уровень физической активности:</div>
+        <div class="answers answersColumn">
+          <label class="answer">
+            <div class="tint"></div>
+            <span class="relative">≥4 часа/неделю</span>
+            <input
+              type="radio"
+              name="fizActive"
+              value="≥4 часа/неделю"
+              v-model="person.fizActive"
+              id=""
+            />
+          </label>
+          <label class="answer">
+            <div class="tint"></div>
+            <span class="relative">&#60;4 часа в неделю</span>
+            <input
+              type="radio"
+              name="fizActive"
+              value="&#60;4 часа в неделю"
+              v-model="person.fizActive"
+              id=""
+            />
+          </label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="label">
+          Ежедневное потребление <br />
+          фруктов,овощей, ягод
+        </div>
+        <div class="answers">
+          <label class="answer">
+            <div class="tint"></div>
+            <span class="relative">Да</span>
+            <input
+              type="radio"
+              name="yagody"
+              value="Да"
+              v-model="person.yagody"
+              id=""
+            />
+          </label>
+          <label class="answer">
+            <div class="tint"></div>
             <span class="relative">Нет</span>
             <input
               type="radio"
-              name="diabetFamily"
-              v-model="person.diabetFamily"
+              name="yagody"
               value="Нет"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Да, в первой линии родства</span>
-            <input
-              type="radio"
-              name="diabetFamily"
-              v-model="person.diabetFamily"
-              value="Да, в первой линии родства"
-              id=""
-            />
-          </label>
-          <label class="answer">
-            <div class="tint"></div>
-            <span class="relative">Да, во второй линии родства</span>
-            <input
-              type="radio"
-              name="diabetFamily"
-              v-model="person.diabetFamily"
-              value="Да, во второй линии родства"
+              v-model="person.yagody"
               id=""
             />
           </label>
@@ -170,17 +173,17 @@ const props = defineProps({
       </div>
     </div>
     <button
-      @click="goNextStep(step + 1)"
+      @click="goNextStep(3)"
       :disabled="
-        person.arteriya == '' ||
-        person.sahar == '' ||
-        person.diabet == '' ||
-        person.priem == '' ||
-        person.diabetFamily == ''
+        person.rost == '' ||
+        person.ves == '' ||
+        person.taliya == '' ||
+        person.fizActive == '' ||
+        person.yagody == ''
       "
       class="quiz__btn"
     >
-      Рассчитать
+      Дальше
     </button>
   </div>
 </template>
@@ -202,7 +205,7 @@ const props = defineProps({
   padding: 32px 0 64px;
   width: 100%;
   max-width: 1422px;
-  margin-bottom: 230px;
+  margin-bottom: 69px;
 }
 .question {
   display: flex;
@@ -349,6 +352,7 @@ const props = defineProps({
   overflow-y: scroll;
   z-index: 1;
 }
+
 .custom_list-wrapper {
   padding: 15px;
   display: flex;
@@ -395,6 +399,7 @@ const props = defineProps({
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  z-index: 1;
 }
 .quiz__btn:disabled {
   background-color: rgba(255, 255, 255, 0.12);
@@ -419,6 +424,7 @@ const props = defineProps({
   backdrop-filter: blur(10px);
   background: rgba(217, 217, 217, 0.4);
 }
+
 .tint::before {
   content: "";
   position: absolute;
@@ -430,6 +436,7 @@ const props = defineProps({
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 }
+
 .shine {
   position: absolute;
   inset: 0;

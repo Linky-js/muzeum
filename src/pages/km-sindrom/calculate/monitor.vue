@@ -1,5 +1,5 @@
 <script setup>
-import Mobile from "@/components/calculate/monitor.vue/mobile.vue";
+import Mobile from "@/components/calculate/monitor/mobile.vue";
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
