@@ -69,12 +69,19 @@ const showKeyboard = ref(false);
 const activeInput = ref(null);
 const keyboardRef = ref(null);
 const quizRef = ref(null);
+const keyboardText = ref('');
 
 const activateKeyboard = (field) => {
   activeInput.value = field;
   showKeyboard.value = true;
+  
+  if (field === 'age') keyboardText.value = person.value.age;
+  else if (field === 'rost') keyboardText.value = person.value.rost;
+  else if (field === 'ves') keyboardText.value = person.value.ves;
+  else keyboardText.value = '';
 };
 const onKeyboardInput = (text) => {
+  keyboardText.value = text;
   if (activeInput.value === "age") {
     person.value.age = text.replace(/\D/g, "");
   }
@@ -89,7 +96,7 @@ const onKeyboardInput = (text) => {
 const handleClickOutside = (event) => {
   const keyboard = keyboardRef.value?.$refs.keyboardEl;
   const quiz = quizRef.value;
-  console.log("keyboard", keyboard);
+  // console.log("keyboard", keyboard);
 
   // Если клавиатура не открыта — ничего не делаем
   if (!showKeyboard.value) return;
@@ -267,6 +274,7 @@ watch(
         <VirtualKeyboard
           ref="keyboardRef"
           v-if="showKeyboard"
+          v-model="keyboardText"
           @input="onKeyboardInput"
         />
       </transition>

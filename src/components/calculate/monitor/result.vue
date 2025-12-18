@@ -406,5 +406,6 @@ onBeforeUnmount(() => {
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  z-index: 1;
 }
 </style>

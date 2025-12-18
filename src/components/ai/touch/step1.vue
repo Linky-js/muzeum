@@ -33,6 +33,7 @@ const keyboardRef = ref(null);
 const quizRef = ref(null);
 
 const activateKeyboard = (field) => {
+  activeInput.value = null;
   activeInput.value = field;
   showKeyboard.value = true;
 };

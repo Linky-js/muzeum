@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount  } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
 import VirtualKeyboard from "@/components/ui/VirtualKeyboard.vue";
 
@@ -16,6 +16,7 @@ const localRegionName = ref("");
 const activeInput = ref(null);
 const keyboardRef = ref(null);
 const quizRef = ref(null);
+const keyboardText = ref("");
 
 const ages = [
   { id: 1, name: "от 0 до 10 лет" },
@@ -145,10 +146,17 @@ const activateKeyboard = (field) => {
   activeInput.value = field;
   showKeyboard.value = true;
 
-  if (field === "region") regionUp.value = true;
-  if (field === "age") ageUp.value = true;
+  if (field === "region") {
+    regionUp.value = true;
+    keyboardText.value = props.person.region.name;
+  }
+  if (field === "age") {
+    ageUp.value = true;
+    keyboardText.value = props.person.age;
+  }
 };
 const onKeyboardInput = (text) => {
+  keyboardText.value = text;
   if (activeInput.value === "region") {
     props.person.region.name = text;
   }
@@ -160,8 +168,8 @@ const onKeyboardInput = (text) => {
 const handleClickOutside = (event) => {
   const keyboard = keyboardRef.value?.$refs.keyboardEl;
   const quiz = quizRef.value;
-  console.log('keyboard', keyboard);
-  
+  console.log("keyboard", keyboard);
+
   // Если клавиатура не открыта — ничего не делаем
   if (!showKeyboard.value) return;
 
@@ -185,23 +193,34 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
 });
-
 </script>
 
 <template>
   <div ref="quizRef" class="quiz-wrapper" :class="view">
     <div class="quiz">
       <div class="question animBtnBottom">
-        <div class="label ">Пол:</div>
+        <div class="label">Пол:</div>
         <div class="answers">
           <label class="answer">
             <div class="tint"></div>
-            <input type="radio" name="answer" v-model="person.gender" value="Мужчины" id="" />
+            <input
+              type="radio"
+              name="answer"
+              v-model="person.gender"
+              value="Мужчины"
+              id=""
+            />
             <span class="relative"> Мужской </span>
           </label>
           <label class="answer">
             <div class="tint"></div>
-            <input type="radio" name="answer" v-model="person.gender" value="Женщины" id="" />
+            <input
+              type="radio"
+              name="answer"
+              v-model="person.gender"
+              value="Женщины"
+              id=""
+            />
             <span class="relative"> Женский </span>
           </label>
         </div>
@@ -209,11 +228,21 @@ onBeforeUnmount(() => {
       <div class="question animBtnBottom">
         <div class="label">Возраст:</div>
         <div class="input_wrap">
-          <input type="number" class="input_quiz relative" v-model="person.age" placeholder="Введите возраст"
-            @focus="activateKeyboard('age')" />
+          <input
+            type="number"
+            class="input_quiz relative"
+            v-model="person.age"
+            placeholder="Введите возраст"
+            @focus="activateKeyboard('age')"
+          />
           <div v-show="ageUp === 2" class="custom_list">
-            <div v-for="value in ages" :key="value.id" @click="goAges(value)" class="region"
-              :class="value.id == person.age.id ? 'active' : ''">
+            <div
+              v-for="value in ages"
+              :key="value.id"
+              @click="goAges(value)"
+              class="region"
+              :class="value.id == person.age.id ? 'active' : ''"
+            >
               {{ value.name }}
             </div>
           </div>
@@ -222,20 +251,35 @@ onBeforeUnmount(() => {
       <div class="question animBtnBottom">
         <div class="label">Регион:</div>
         <div class="input_wrap">
-          <input @focus="regionUp = true; activateKeyboard('region')" type="text" class="input_quiz relative"
-            v-model="person.region.name" placeholder="Выберите регион" />
-          <IconArrow class="input_wrap-arr" :class="{ active: regionUp === true }" />
+          <input
+            @focus="
+              regionUp = true;
+              activateKeyboard('region');
+            "
+            type="text"
+            class="input_quiz relative"
+            v-model="person.region.name"
+            placeholder="Выберите регион"
+          />
+          <IconArrow
+            class="input_wrap-arr"
+            :class="{ active: regionUp === true }"
+          />
           <div v-show="regionUp && regionsHints.length" class="custom_list">
             <div class="custom_list-wrapper">
-              <div v-for="value in regionsHints" :key="value.id" @click="goRegion(value)" class="region relative"
-                :class="value.id === person.region.id ? 'active' : ''">
+              <div
+                v-for="value in regionsHints"
+                :key="value.id"
+                @click="goRegion(value)"
+                class="region relative"
+                :class="value.id === person.region.id ? 'active' : ''"
+              >
                 {{ value.name }}
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
     <button @click="goNextStep(step + 1)" :disabled="person.age == '' || person.gender == '' || !person.region.name"
       class="quiz__btn">
@@ -243,7 +287,12 @@ onBeforeUnmount(() => {
     </button>
   </div>
   <transition>
-    <VirtualKeyboard ref="keyboardRef" v-if="showKeyboard" @input="onKeyboardInput" />
+    <VirtualKeyboard
+      ref="keyboardRef"
+      v-model="keyboardText"
+      v-if="showKeyboard"
+      @input="onKeyboardInput"
+    />
   </transition>
 </template>
 
@@ -253,7 +302,7 @@ onBeforeUnmount(() => {
   z-index: 1;
 }
 
-.quiz-wrapper{
+.quiz-wrapper {
   width: 1386px;
   margin-top: 100px;
 }
@@ -370,9 +419,11 @@ onBeforeUnmount(() => {
   padding: 24px;
   width: 100%;
   height: 100%;
-  background: linear-gradient(85.26deg,
-      rgba(217, 217, 217, 0.1) 3.83%,
-      rgba(115, 115, 115, 0.1) 99.95%);
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
   border-radius: 16px;
   font-variant-numeric: lining-nums tabular-nums stacked-fractions;
   font-feature-settings: "liga" off, "clig" off;
@@ -391,7 +442,6 @@ onBeforeUnmount(() => {
 .answer:has(input:checked) .tint {
   opacity: 1;
 }
-
 
 .input_quiz::placeholder {
   font-family: "TT Hoves";
@@ -419,9 +469,11 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background: linear-gradient(85.26deg,
-      rgba(217, 217, 217, 0.1) 3.83%,
-      rgba(115, 115, 115, 0.1) 99.95%);
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
   position: relative;
 }
 
@@ -571,9 +623,11 @@ onBeforeUnmount(() => {
 .quiz-wrapper.mobile .input_wrap {
   width: 100%;
   height: 48px;
-  background: linear-gradient(85.26deg,
-      rgba(217, 217, 217, 0.1) 3.83%,
-      rgba(115, 115, 115, 0.1) 99.95%);
+  background: linear-gradient(
+    85.26deg,
+    rgba(217, 217, 217, 0.1) 3.83%,
+    rgba(115, 115, 115, 0.1) 99.95%
+  );
   border-radius: 16px;
 }
 
@@ -685,9 +739,11 @@ onBeforeUnmount(() => {
   .input_wrap {
     width: 100%;
     height: 48px;
-    background: linear-gradient(85.26deg,
-        rgba(217, 217, 217, 0.1) 3.83%,
-        rgba(115, 115, 115, 0.1) 99.95%);
+    background: linear-gradient(
+      85.26deg,
+      rgba(217, 217, 217, 0.1) 3.83%,
+      rgba(115, 115, 115, 0.1) 99.95%
+    );
     border-radius: 16px;
   }
 
