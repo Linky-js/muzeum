@@ -10,7 +10,7 @@ const router = useRouter();
 const bus = useBroadcastBus({
   role: "touch",
   pairId: "1",
-  debug: true,
+  debug: false,
 });
 initMasterSync(router, bus, "1");
 
@@ -41,8 +41,8 @@ onMounted(async () => {
 <template>
   <div class="home">
     <!-- <video class="bg" :src="video" autoplay muted loop playsinline></video> -->
-     <img src="@/assets/img/bg.jpg" alt="" class="bg">
-     <img src="@/assets/img/bg2.png" alt="" class="bg2">
+    <img src="@/assets/img/bg.jpg" alt="" class="bg">
+    <img src="@/assets/img/bg2.png" alt="" class="bg2">
 
     <div class="header">
       <div class="header__left">
@@ -64,66 +64,66 @@ onMounted(async () => {
       <!-- Панель контролов -->
       <div id="glass-controls-container" class="glass-controls">
         <div id="controls-content" class="controls-content">
-        <h3>Controls</h3>
+          <h3>Controls</h3>
 
-        <div class="control-group">
-          <label>Edge Intensity <span class="control-value" id="edgeValue">0.01</span></label>
-          <input type="range" id="edgeIntensity" min="0" max="0.1" step="0.001" value="0.01">
-        </div>
+          <div class="control-group">
+            <label>Edge Intensity <span class="control-value" id="edgeValue">0.01</span></label>
+            <input type="range" id="edgeIntensity" min="0" max="0.1" step="0.001" value="0.01">
+          </div>
 
-        <div class="control-group">
-          <label>Rim Intensity <span class="control-value" id="rimValue">0.05</span></label>
-          <input type="range" id="rimIntensity" min="0" max="0.2" step="0.001" value="0.05">
-        </div>
+          <div class="control-group">
+            <label>Rim Intensity <span class="control-value" id="rimValue">0.05</span></label>
+            <input type="range" id="rimIntensity" min="0" max="0.2" step="0.001" value="0.05">
+          </div>
 
-        <div class="control-group">
-          <label>Base Intensity <span class="control-value" id="baseValue">0.01</span></label>
-          <input type="range" id="baseIntensity" min="0" max="0.05" step="0.001" value="0.01">
-        </div>
+          <div class="control-group">
+            <label>Base Intensity <span class="control-value" id="baseValue">0.01</span></label>
+            <input type="range" id="baseIntensity" min="0" max="0.05" step="0.001" value="0.01">
+          </div>
 
-        <div class="control-group">
-          <label>Edge Distance <span class="control-value" id="edgeDistValue">0.15</span></label>
-          <input type="range" id="edgeDistance" min="0.05" max="0.5" step="0.01" value="0.15">
-        </div>
+          <div class="control-group">
+            <label>Edge Distance <span class="control-value" id="edgeDistValue">0.15</span></label>
+            <input type="range" id="edgeDistance" min="0.05" max="0.5" step="0.01" value="0.15">
+          </div>
 
-        <div class="control-group">
-          <label>Rim Distance <span class="control-value" id="rimDistValue">0.8</span></label>
-          <input type="range" id="rimDistance" min="0.1" max="2.0" step="0.05" value="0.8">
-        </div>
+          <div class="control-group">
+            <label>Rim Distance <span class="control-value" id="rimDistValue">0.8</span></label>
+            <input type="range" id="rimDistance" min="0.1" max="2.0" step="0.05" value="0.8">
+          </div>
 
-        <div class="control-group">
-          <label>Base Distance <span class="control-value" id="baseDistValue">0.1</span></label>
-          <input type="range" id="baseDistance" min="0.05" max="0.3" step="0.01" value="0.1">
-        </div>
+          <div class="control-group">
+            <label>Base Distance <span class="control-value" id="baseDistValue">0.1</span></label>
+            <input type="range" id="baseDistance" min="0.05" max="0.3" step="0.01" value="0.1">
+          </div>
 
-        <div class="control-group">
-          <label>Corner Boost <span class="control-value" id="cornerValue">0.02</span></label>
-          <input type="range" id="cornerBoost" min="0" max="0.1" step="0.001" value="0.02">
-        </div>
+          <div class="control-group">
+            <label>Corner Boost <span class="control-value" id="cornerValue">0.02</span></label>
+            <input type="range" id="cornerBoost" min="0" max="0.1" step="0.001" value="0.02">
+          </div>
 
-        <div class="control-group">
-          <label>Ripple Effect <span class="control-value" id="rippleValue">0.1</span></label>
-          <input type="range" id="rippleEffect" min="0" max="0.5" step="0.01" value="0.1">
-        </div>
+          <div class="control-group">
+            <label>Ripple Effect <span class="control-value" id="rippleValue">0.1</span></label>
+            <input type="range" id="rippleEffect" min="0" max="0.5" step="0.01" value="0.1">
+          </div>
 
-        <div class="control-group">
-          <label>Blur Radius <span class="control-value" id="blurValue">5.0</span></label>
-          <input type="range" id="blurRadius" min="1" max="15" step="0.5" value="5.0">
-        </div>
+          <div class="control-group">
+            <label>Blur Radius <span class="control-value" id="blurValue">5.0</span></label>
+            <input type="range" id="blurRadius" min="1" max="15" step="0.5" value="5.0">
+          </div>
 
-        <div class="control-group">
-          <label>Tint Opacity <span class="control-value" id="tintValue">0.2</span></label>
-          <input type="range" id="tintOpacity" min="0" max="1.0" step="0.01" value="0.2">
-        </div>
+          <div class="control-group">
+            <label>Tint Opacity <span class="control-value" id="tintValue">0.2</span></label>
+            <input type="range" id="tintOpacity" min="0" max="1.0" step="0.01" value="0.2">
+          </div>
 
-        <div class="control-group">
-          <label> <input type="checkbox" id="warpToggle"> Enable Center Warp </label>
-        </div>
-<!-- 
+          <div class="control-group">
+            <label> <input type="checkbox" id="warpToggle"> Enable Center Warp </label>
+          </div>
+          <!-- 
         <div class="control-group control-group-button">
           <button id="randomizeButton" class="randomize-button">🎲 Randomize Glass Effects</button>
         </div> -->
-      </div>
+        </div>
       </div>
     </div>
   </div>
@@ -157,7 +157,8 @@ onMounted(async () => {
   position: fixed;
   right: 150px;
 }
-.buttons-wrapper{
+
+.buttons-wrapper {
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -420,6 +421,7 @@ onMounted(async () => {
   object-position: left bottom;
   z-index: 0;
 }
+
 .bg2 {
   position: absolute;
   top: 100vh;

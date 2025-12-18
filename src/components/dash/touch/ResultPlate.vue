@@ -12,21 +12,16 @@ const props = defineProps({
 const categories = ref(null);
 const reccomendations = ref([
   {
-    title: "Отлично! Потребление фруктов соответствует норме DASH.",
+    title: "Отлично! Потребление соответствует норме DASH.",
     color: "#00FF11",
   },
   {
-    title: "Уменьшите порции хлеба и круп, выбирайте цельнозерновые варианты.",
+    title: "Вы молодец, но можете лучше.",
     color: "#FFAE00",
   },
   {
     title:
-      "Снизьте потребление соли: ограничьте готовые соусы, консервы и обработанные продукты",
-    color: "#FF0004",
-  },
-  {
-    title:
-      "Добавьте больше овощей: стремитесь к 4-5 порциям в день. Овощи богаты калием, который помогает контролировать давление.",
+      "Снизьте потребление.",
     color: "#FF0004",
   },
 ]);
@@ -40,19 +35,18 @@ const sortCategories = computed(() => {
 });
 
 const formatColor = (percent) => {
-  if (percent >= 66.6 && percent <= 110) {
-    return "#00FF11"; 
+  if (percent >= 70 && percent <= 110) {
+    return "#00FF11";
+  }
+  if (percent <= 40) {
+    return "#FF0004";
   }
 
-  if (percent >= 33.3 && percent <= 66.6) {
-    return "#FFAE00"; 
+  if (percent >= 40 && percent <= 70) {
+    return "#FFAE00";
   }
 
-  if ((percent >= 0 && percent <= 33.3) || percent >= 110.1) {
-    return "#FF0004"; 
-  }
-
-  return "#f1f1f1"; 
+  return "#FF0004";
 };
 
 console.log("props.resultObj", props.resultObj);
@@ -64,7 +58,7 @@ onMounted(() => {
     'Зерновые': Math.round((props.resultObj.TDEE * 7) / 2000),
   }
   console.log('porciesDash', porciesDash);
-  
+
 });
 </script>
 
@@ -92,12 +86,9 @@ onMounted(() => {
                 </p>
               </div>
               <div class="diagram-item__right">
-                <RoundDiagram
-                  :value="resultObj.totalSodium"
-                  label="Критичное превышение"
-                  :maxValue="resultObj.totalSodium * 4"
-                  fill-color="#FF0004"
-                />
+                <RoundDiagram :value="resultObj.totalSodium"
+                  :label="resultObj.totalSodium * 100 / 2300 < 90 ? 'Норма' : 'Критичное превышение'" :maxValue="2300"
+                  :fill-color="resultObj.totalSodium * 100 / 2300 < 70 ? '#00FF11' : resultObj.totalSodium * 100 / 2300 > 70 && resultObj.totalSodium * 100 / 2300 < 100 ? '#FFAE00' : '#FF0004'" />
               </div>
             </div>
             <div class="modal__diagrams-item diagram-item">
@@ -114,7 +105,7 @@ onMounted(() => {
               </div>
               <div class="diagram-item__right">
                 <RoundDiagram :value="resultObj.totalCalories" label="Целевой диапазон" :maxValue="resultObj.TDEE"
-                  fill-color="#00FF11" />
+                  :fill-color="resultObj.totalCalories * 100 / resultObj.TDEE < 70 ? '#00FF11' : resultObj.totalCalories * 100 / resultObj.TDEE > 70 && resultObj.totalCalories * 100 / resultObj.TDEE < 100 ? '#FFAE00' : '#FF0004'" />
               </div>
             </div>
           </div>
@@ -146,10 +137,7 @@ onMounted(() => {
                 <span class="line" :style="{ width: `${item.percent}%` }"></span>
               </div>
               <div class="modal__item-dot">
-                <span
-                  class="modal__item-color"
-                  :style="{ backgroundColor: formatColor(item.percent) }"
-                ></span>
+                <span class="modal__item-color" :style="{ backgroundColor: formatColor(item.percent) }"></span>
               </div>
             </div>
           </div>

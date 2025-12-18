@@ -210,7 +210,7 @@ watch(
               type="text"
               class="input_quiz relative"
               v-model="person.active.name"
-              placeholder="Выберите регион"
+              placeholder="Выберите активность"
             />
             <IconArrow
               class="input_wrap-arr"

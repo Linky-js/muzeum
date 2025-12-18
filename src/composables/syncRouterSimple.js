@@ -1,5 +1,5 @@
 import routeMap from './routeMap.js'
-
+import gsap from 'gsap'
 const normalize = (route) => ({
   name: route.name,
   path: route.path,
@@ -64,6 +64,7 @@ export function initMasterSync(router, bus, pairId) {
  * Для монитора: теперь есть два типа событий
  */
 export function initMonitorSync(router, bus, pairId) {
+  
   const slaveStack = []
   slaveStack.push(normalize(router.currentRoute.value))
 

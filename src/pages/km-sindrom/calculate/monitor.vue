@@ -15,7 +15,7 @@ const isShowMobile = ref(true);
 const step = ref(1)
 
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
-initMonitorSync(router, bus, '1')
+initMonitorSync(router, bus, '10')
 
 const ROUTE_PATH = "/monitor-calculate";
 
@@ -29,7 +29,7 @@ const generateQr = () => {
 bus.on('step', (data) => {
   step.value = data
   console.log('data', data)
-  if(step.value > 3) isShowMobile.value = false;
+  if (step.value > 3) isShowMobile.value = false;
   else isShowMobile.value = true;
 })
 
@@ -245,9 +245,11 @@ onUnmounted(() => {
   padding: 0 30px;
   width: 724px;
 }
+
 .monitor-mobile__content::-webkit-scrollbar {
   display: none;
 }
+
 .monitor-mobile.not-mobile {
   max-width: none;
   height: auto;

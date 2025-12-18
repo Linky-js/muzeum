@@ -281,11 +281,8 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-    <button
-      @click="goNextStep(step + 1)"
-      :disabled="person.age == '' || person.gender == '' || !person.region.name"
-      class="quiz__btn animBtnBottom"
-    >
+    <button @click="goNextStep(step + 1)" :disabled="person.age == '' || person.gender == '' || !person.region.name"
+      class="quiz__btn">
       Дальше
     </button>
   </div>

@@ -3,18 +3,13 @@ import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMonitorSync } from '@/composables/syncRouterSimple.js'
 import { useRouter } from 'vue-router'
-
 const router = useRouter()
-const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: true })
+const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
-const VIDEO_BG_SRC = '/video.mp4'
-const OZHIRENIE = '/video/ozhirenie.mp4'
-const ARTERIA = '/video/arterya.mp4'
-const DISLIPIDEMIA = '/video/dislipidemia.mp4'
-const SERDCE = '/video/serdce.mp4'
-const POCHKA = '/video/pochka.mp4'
+const VIDEO_BG_SRC = '/video/monitors/metabol_sindrom.webm'
 
+const offVideo = ref(null)
 const currentVideo = ref(VIDEO_BG_SRC)
 const nextVideo = ref(null)
 const isTransitioning = ref(false)
@@ -23,19 +18,39 @@ const isTransitioning = ref(false)
 const currentVideoRef = ref(null)
 const nextVideoRef = ref(null)
 
-function getVideoByChapter(chapter) {
-  switch (chapter) {
-    case 'OZHIRENIE': return OZHIRENIE
-    case 'ARTERIA': return ARTERIA
-    case 'DISLIPIDEMIA': return DISLIPIDEMIA
-    case 'SERDCE': return SERDCE
-    case 'POCHKA': return POCHKA
-    default: return VIDEO_BG_SRC
+function handleVideoControl(cmd) {
+  console.log(cmd);
+
+  const video = currentVideoRef.value
+  if (!video) return
+
+  switch (cmd.action) {
+    case 'play':
+      video.play()
+      break
+
+    case 'pause':
+      video.pause()
+      break
+
+    case 'mute':
+      video.muted = cmd.value
+      break
+
+    case 'seek':
+      video.currentTime = cmd.time
+      break
+
+    case 'change_video':
+      handleVideoCommand(cmd)
+      break
   }
 }
-
+bus.on('currentVideo', handleVideoCommand)
 function handleVideoCommand(chapter) {
-  const newSrc = getVideoByChapter(chapter.chapter)
+  console.log('chapter', chapter);
+
+  const newSrc = chapter.video
   if (newSrc === currentVideo.value) return
 
   nextVideo.value = newSrc
@@ -56,41 +71,50 @@ function handleVideoCommand(chapter) {
   }, 800)
 }
 
-let offListener = null
 onMounted(() => {
-  offListener = bus.on('msVideos', handleVideoCommand)
+  offVideo.value = bus.on('video_control', handleVideoControl)
+
+  nextTick(() => {
+    const video = currentVideoRef.value
+    if (!video) return
+
+    video.addEventListener('timeupdate', handleTimeUpdate)
+  })
 })
 
+function handleTimeUpdate() {
+  const video = currentVideoRef.value
+  if (!video) return
+
+  bus.send('video_state', {
+    time: video.currentTime
+  })
+}
+
 onBeforeUnmount(() => {
-  if (offListener) offListener()
+  // снимаем listener с события
+  const video = currentVideoRef.value
+  if (video) {
+    video.removeEventListener('timeupdate', handleTimeUpdate)
+  }
+
+  // отписка от bus
+  if (offVideo.value) {
+    offVideo.value()
+  }
 })
 </script>
 
 <template>
-  <div class="contentMonitor">
+  <div class="animVideo contentMonitor">
     <!-- основное видео -->
-    <video 
-      ref="currentVideoRef"
-      key="main"
-      class="video-layer"
-      :src="currentVideo"
-      autoplay 
-      muted 
-      loop 
-      playsinline>
+    <video ref="currentVideoRef" key="main" class="video-layer animVideo" :src="currentVideo" autoplay muted
+      :loop="currentVideo === VIDEO_BG_SRC" playsinline>
     </video>
 
     <!-- следующее видео поверх (только если идёт переход) -->
     <transition name="fade-blur">
-      <video 
-        v-if="nextVideo"
-        ref="nextVideoRef"
-        key="next"
-        class="video-layer"
-        :src="nextVideo"
-        autoplay 
-        muted 
-        loop 
+      <video v-if="nextVideo" ref="nextVideoRef" key="next" class="video-layer" :src="nextVideo" autoplay muted loop
         playsinline>
       </video>
     </transition>
@@ -102,18 +126,21 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.contentMonitor{
+.contentMonitor {
   position: relative;
   overflow: hidden;
 }
+
 video {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .video-layer {
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -124,6 +151,7 @@ video {
 .fade-blur-leave-active {
   transition: opacity 0.8s ease, filter 0.8s ease;
 }
+
 .fade-blur-enter-from,
 .fade-blur-leave-to {
   opacity: 0;

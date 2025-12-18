@@ -1,11 +1,32 @@
 <script setup>
+import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
+import { initMasterSync } from '@/composables/syncRouterSimple.js'
+import { useRouter } from 'vue-router'
+
+
+const router = useRouter();
+
+const bus = useBroadcastBus({ role: 'touch', pairId: '1', debug: false })
+initMasterSync(router, bus, 'touch1')
+
+bus.on("defaultScreen", (payload) => {
+  router.push('/touch1/screen-1')
+})
+import { onMounted } from 'vue';
+onMounted(() => {
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.documentElement.requestFullscreen().catch(() => { });
+    }, 500);
+  });
+})
 const video = "/bg2.mp4";
 </script>
 <template>
-    <div class="wrapper-content">
-        <video class="bg" :src="video" autoplay muted loop playsinline></video>
-        <router-view></router-view>
-    </div>
+  <div class="wrapper-content">
+    <video class="bg" :src="video" autoplay muted loop playsinline></video>
+    <router-view></router-view>
+  </div>
 </template>
 <style scoped>
 .wrapper-content {

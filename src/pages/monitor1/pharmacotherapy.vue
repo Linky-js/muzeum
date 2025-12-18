@@ -286,8 +286,8 @@ const farm_zhir = "/video/farm/farm_zhir.webm"
 const groupSvg = "/group.svg"
 </script>
 <template>
-  <div class="page">
-    <video :src="bg" autoplay loop muted playsinline class="bg"></video>
+  <div class=" page">
+    <video  :src="bg" autoplay loop muted playsinline class="bg animVideo"></video>
     <div class="group-wrapper">
       <img class="group" :src="groupSvg" alt="">
       <div class="videos">
@@ -395,12 +395,14 @@ const groupSvg = "/group.svg"
 
 .video-layer {
   position: absolute;
-  filter: contrast(0.6);
+  filter: grayscale(0.8) contrast(0.4);
+  opacity: 0.5;
   transition: all 0.3s ease;
 }
 
 .video-layer.active {
-  filter: contrast(1)
+   filter: grayscale(0) contrast(1);
+   opacity: 1;
 }
 
 .farm_pechen {

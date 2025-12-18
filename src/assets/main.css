@@ -713,7 +713,6 @@ text.st23{
 }
 .animVideo{
   opacity: 0;
-  filter: brightness(0%);
   transition: none;
 }
 .effect {
@@ -783,4 +782,13 @@ text.st23{
 }
 .textPharm p:not(:last-child) {
   margin-bottom: 20px;
+}
+
+.animLayer {
+  opacity: 0 ;
+  transform: scale(0.5) ;
+}
+.showAnim {
+  opacity: 1;
+  transform: scale(1);
 }
