@@ -227,7 +227,9 @@ onMounted(() => {
 const goBack = () => {
   if (step.value === 1) {
     router.push(`/touch-calculate/touch-qr`);
-  } else {
+  } else if(step.value === 7 && person.value.diabet){
+    router.push(`${ROUTE_PATH}?step=${step.value - 2}`);
+  }else {
     router.push(`${ROUTE_PATH}?step=${step.value - 1}`);
   }
 };
@@ -313,7 +315,7 @@ const goBack = () => {
       <result-final v-if="step === 7" :person="person" />
     </div>
   </div>
-  <MenuNavigation v-if="step !== 4 && step !== 7" class="footer__btn" />
+  <MenuNavigation v-if="step !== 4" class="footer__btn" />
   <svg style="display: none">
     <filter
       id="glass-distortion"

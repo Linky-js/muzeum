@@ -121,7 +121,7 @@ const video = "/video.mp4";
   padding: 6.25rem;
   padding-top: 0;
   width: 100vw;
-  margin-top: 281px;
+  margin-top: 150px;
 }
 
 .final__body {
