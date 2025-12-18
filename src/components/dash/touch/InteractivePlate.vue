@@ -736,6 +736,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   background: rgba(0, 0, 0, 0.34);
   border-radius: 64px;
   padding: 40px;
+  z-index: 51;
 }
 
 .days-controls.many_days {

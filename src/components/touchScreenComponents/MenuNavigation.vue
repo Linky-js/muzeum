@@ -171,6 +171,7 @@ onUnmounted(() => {
   border-radius: 3rem;
   transform: translateY(-9rem) translateX(-88%);
   padding: 3rem;
+  z-index: 5;
 }
 
 .menu-block__top {

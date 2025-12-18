@@ -65,6 +65,25 @@ onMounted(() => {
 <template>
   <div class="modal-backdrop">
     <div class="modal">
+
+      <div class="modal__right">
+        <div class="modal__items" v-if="sortCategories">
+          <div class="modal__item" v-for="([name, item], key) in sortCategories" :key="key">
+            <div class="modal__item-top">
+              <h5 class="modal__item-title">{{ name }}</h5>
+              <p class="modal__item-percent">{{ item.percent }}%</p>
+            </div>
+            <div class="modal__item-bottom">
+              <div class="modal__item-line">
+                <span class="line" :style="{ width: `${item.percent}%` }"></span>
+              </div>
+              <div class="modal__item-dot">
+                <span class="modal__item-color" :style="{ backgroundColor: formatColor(item.percent) }"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="modal__left">
         <div class="modal__top">
           <h1 class="modal__title">Анализ резуальтатов</h1>
@@ -78,34 +97,34 @@ onMounted(() => {
             <div class="modal__diagrams-item diagram-item">
               <div class="diagram-item__left">
                 <div class="diagram-item__left-top">
-                  <h4 class="diagram-item__title">Потребляемый <br />натрий</h4>
-                  <p class="diagram-item__subtitle">Значение</p>
+                  <h4 class="diagram-item__title">
+                    Потребляемые каллории
+                  </h4>
+                  <p class="diagram-item__subtitle">Диапазон отклонение</p>
+                </div>
+                <div class="diagram-item__right">
+                  <RoundDiagram :value="resultObj.totalCalories" label="Целевой диапазон" :maxValue="resultObj.TDEE"
+                    :fill-color="resultObj.totalCalories * 100 / resultObj.TDEE < 70 ? '#00FF11' : resultObj.totalCalories * 100 / resultObj.TDEE > 70 && resultObj.totalCalories * 100 / resultObj.TDEE < 100 ? '#FFAE00' : '#FF0004'" />
                 </div>
                 <p class="diagram-item__text">
-                  Чем меньше отклонение - <br />тем лучше
+                  Чем меньше отклонение - тем лучше
                 </p>
-              </div>
-              <div class="diagram-item__right">
-                <RoundDiagram :value="resultObj.totalSodium"
-                  :label="resultObj.totalSodium * 100 / 2300 < 90 ? 'Норма' : 'Критичное превышение'" :maxValue="2300"
-                  :fill-color="resultObj.totalSodium * 100 / 2300 < 70 ? '#00FF11' : resultObj.totalSodium * 100 / 2300 > 70 && resultObj.totalSodium * 100 / 2300 < 100 ? '#FFAE00' : '#FF0004'" />
               </div>
             </div>
             <div class="modal__diagrams-item diagram-item">
               <div class="diagram-item__left">
                 <div class="diagram-item__left-top">
-                  <h4 class="diagram-item__title">
-                    Потребляемые <br />каллории
-                  </h4>
-                  <p class="diagram-item__subtitle">Диапазон отклонение</p>
+                  <h4 class="diagram-item__title">Потребляемый натрий</h4>
+                  <p class="diagram-item__subtitle">Значение</p>
+                </div>
+                <div class="diagram-item__right">
+                  <RoundDiagram :value="resultObj.totalSodium"
+                    :label="resultObj.totalSodium * 100 / 2300 < 90 ? 'Норма' : 'Критичное превышение'" :maxValue="2300"
+                    :fill-color="resultObj.totalSodium * 100 / 2300 < 70 ? '#00FF11' : resultObj.totalSodium * 100 / 2300 > 70 && resultObj.totalSodium * 100 / 2300 < 100 ? '#FFAE00' : '#FF0004'" />
                 </div>
                 <p class="diagram-item__text">
-                  Чем меньше отклонение - <br />тем лучше
+                  Чем меньше отклонение - тем лучше
                 </p>
-              </div>
-              <div class="diagram-item__right">
-                <RoundDiagram :value="resultObj.totalCalories" label="Целевой диапазон" :maxValue="resultObj.TDEE"
-                  :fill-color="resultObj.totalCalories * 100 / resultObj.TDEE < 70 ? '#00FF11' : resultObj.totalCalories * 100 / resultObj.TDEE > 70 && resultObj.totalCalories * 100 / resultObj.TDEE < 100 ? '#FFAE00' : '#FF0004'" />
               </div>
             </div>
           </div>
@@ -120,24 +139,6 @@ onMounted(() => {
               <div class="modal__recom-item" v-for="item in reccomendations" :key="item.title">
                 <div class="modal__recom-color" :style="{ backgroundColor: item.color }"></div>
                 <h5 class="modal__recom-text">{{ item.title }}</h5>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal__right">
-        <div class="modal__items" v-if="sortCategories">
-          <div class="modal__item" v-for="([name, item], key) in sortCategories" :key="key">
-            <div class="modal__item-top">
-              <h5 class="modal__item-title">{{ name }}</h5>
-              <p class="modal__item-percent">{{ item.percent }}%</p>
-            </div>
-            <div class="modal__item-bottom">
-              <div class="modal__item-line">
-                <span class="line" :style="{ width: `${item.percent}%` }"></span>
-              </div>
-              <div class="modal__item-dot">
-                <span class="modal__item-color" :style="{ backgroundColor: formatColor(item.percent) }"></span>
               </div>
             </div>
           </div>
@@ -161,7 +162,7 @@ onMounted(() => {
 
 .modal {
   display: grid;
-  grid-template-columns: minmax(0, 1782px) minmax(0, 1001px);
+  grid-template-columns: minmax(0, 1001px) minmax(0, 1782px);
   gap: 40px;
   width: 2823px;
 }
@@ -211,17 +212,24 @@ onMounted(() => {
 
 .diagram-item {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   padding: 32px;
   background: rgba(255, 255, 255, 0.24);
   border-radius: 40px;
-  height: 411px;
+  height: 695px;
 }
 
 .diagram-item__left {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+.diagram-item__right{
+  width: max-content;
+  align-self: center;
 }
 
 .diagram-item__title {

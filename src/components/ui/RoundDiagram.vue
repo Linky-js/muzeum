@@ -16,11 +16,11 @@ const props = defineProps({
   },
   width: {
     type: Number,
-    default: 348,
+    default: 387,
   },
   height: {
     type: Number,
-    default: 348,
+    default: 387,
   },
   strokeWidth: {
     type: Number,
@@ -107,7 +107,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="gauge-chart">
-    <svg :width="width" :height="height" :viewBox="'0 0 347 347'">
+    <svg :width="width" :height="height" :viewBox="'0 0 387 387'">
       <!-- Фон -->
       <circle
         class="gauge-background"

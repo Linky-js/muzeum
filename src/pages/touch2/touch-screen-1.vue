@@ -42,8 +42,8 @@ const breadcrumbsList = ref([
           :icon="IconCursor" icon-wrapper-color="pink" class="animBtnBottom" />
         <GlassBtn link="touch2-astrazeneca" supname="Интерактив" name="Приоритет - Эпидемиология" type-btn="toInfo"
           :icon="IconCursor" icon-wrapper-color="pink" class="animBtnBottom" />
-        <GlassBtn link="kms" supname="Интерактив" name="Карта факторов риска" type-btn="toInfo" :icon="IconCursor"
-          icon-wrapper-color="pink" class="animBtnBottom" />
+        <!-- <GlassBtn link="kms" supname="Интерактив" name="Карта факторов риска" type-btn="toInfo" :icon="IconCursor"
+          icon-wrapper-color="pink" class="animBtnBottom" /> -->
       </div>
 
     </div>

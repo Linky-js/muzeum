@@ -11,7 +11,7 @@ import { useRouter } from 'vue-router'
 // --- базовые элементы интерфейса ---
 const breadcrumbsListDefault = [
   { id: 0, title: "Главная", link: "/touch2" },
-  { id: 1, title: "AstraZeneca", link: "/touch-screen-3" },
+  { id: 1, title: "AstraZeneca"  },
 ]
 const breadcrumbsList = computed(() => {
   const list = [...breadcrumbsListDefault]
@@ -327,7 +327,9 @@ const openSearchItem = (res) => {
 // --- кнопка Назад ---
 const goBack = () => {
   const prev = stack.value.pop()
-  if (!prev) return
+  if (!prev) {
+    router.push({ name: 'touch2-screen-1' })
+  }
   currentList.value = prev.list
   currentLevel.value = prev.level
   searchQuery.value = ''
@@ -431,12 +433,10 @@ const clearRegion = () => {
                   {{ item.name }}
                 </div>
               </template>
-
               <template v-else>
                 <div v-for="res in filteredList" :key="res.path.join('>')" class="region search-result"
                   @click="openSearchItem(res)">
                   <div class="name">{{ res.name }}</div>
-
                 </div>
               </template>
             </div>
@@ -448,10 +448,7 @@ const clearRegion = () => {
         </div>
       </div>
     </div>
-
   </div>
-
-
 </template>
 
 <style scoped>
