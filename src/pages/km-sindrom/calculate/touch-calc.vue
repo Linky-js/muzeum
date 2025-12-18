@@ -61,7 +61,7 @@ const updateField = (key, value) => {
 // Универсальная функция для перехода по шагам
 const navigateToStep = (targetStep, updateUrl = true) => {
   step.value = targetStep;
-  bus.send('step', targetStep, { role: 'monitor', pairId: '10' })
+  bus.send('stepCalc', targetStep, { role: 'monitor', pairId: '1' })
   changeTitles(targetStep);
   updateBreadcrumbs(targetStep);
 
