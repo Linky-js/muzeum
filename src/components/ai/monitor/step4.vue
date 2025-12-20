@@ -1,12 +1,12 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from "vue";
+import { ref, watch, nextTick, onMounted, onBeforeUnmount, computed } from "vue";
 
 const props = defineProps({
   currentHero: Object,
 })
 
 const currentVideo = computed(() => {
-  return spheresVideos[props.currentHero?.sphere] || ''
+  return spheresVideos[props.currentHero?.sphere] || null
 })
 
 const spheresVideos = {
@@ -38,21 +38,60 @@ const spheres = [
     img: "./ai/sphere-5.png",
   },
 ];
-onMounted(() => {
-  let animItems = document.querySelectorAll('.animLayer')
-  if (animItems.length > 0) {
-    animItems.forEach(item => {
-      item.classList.add('showAnim')
-    })
+const videoRef0 = ref(null)
+const videoRef1 = ref(null)
+const videoRefs = [videoRef0, videoRef1]
+
+const activeIndex = ref(0)
+const sources = ref([null, null])
+
+/* 🔁 переключение видео */
+function switchVideo(newSrc) {
+  if (!newSrc) return
+
+  const nextIndex = activeIndex.value === 0 ? 1 : 0
+  const nextVideo = videoRefs[nextIndex].value
+  const currentVideoEl = videoRefs[activeIndex.value].value
+
+  if (!nextVideo || !currentVideoEl) return
+  if (sources.value[activeIndex.value] === newSrc) return
+
+  sources.value[nextIndex] = newSrc
+  nextVideo.oncanplay = null
+
+  const start = () => {
+    nextVideo.currentTime = 0
+    nextVideo.play().catch(() => { })
+
+    nextVideo.classList.add('active')
+    currentVideoEl.classList.remove('active')
+
+    setTimeout(() => currentVideoEl.pause(), 800)
+    activeIndex.value = nextIndex
   }
+
+  if (nextVideo.readyState >= 3) {
+    start()
+  } else {
+    nextVideo.addEventListener('canplay', start, { once: true })
+  }
+}
+
+/* 👀 реагируем на смену сферы */
+watch(currentVideo, async (newSrc) => {
+  if (!newSrc) return
+  await nextTick()
+  switchVideo(newSrc)
 })
+
+onMounted(() => {
+  const animItems = document.querySelectorAll('.animLayer')
+  animItems.forEach(i => i.classList.add('showAnim'))
+})
+
 onBeforeUnmount(() => {
-  let animItems = document.querySelectorAll('.animLayer')
-  if (animItems.length > 0) {
-    animItems.forEach(item => {
-      item.classList.remove('showAnim')
-    })
-  }
+  const animItems = document.querySelectorAll('.animLayer')
+  animItems.forEach(i => i.classList.remove('showAnim'))
 })
 </script>
 <template>
@@ -73,11 +112,10 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-   <transition>
-      <div v-if="currentVideo" class="video__wrapper">
-        <video  :src="currentVideo" autoplay muted loop playsinline></video>
-      </div>
-   </transition>
+    <div class="video__wrapper" v-show="currentVideo">
+      <video ref="videoRef0" class="video-layer active" :src="sources[0]" muted autoplay loop playsinline />
+      <video ref="videoRef1" class="video-layer" :src="sources[1]" muted loop playsinline />
+    </div>
   </div>
 </template>
 <style scoped>
@@ -111,24 +149,39 @@ onBeforeUnmount(() => {
   letter-spacing: -0.02em;
   color: #fff;
 }
-.tabAi__img{
+
+.tabAi__img {
   border-radius: 45px;
-width: 781px;
-height: 823px;
-overflow: hidden;
+  width: 781px;
+  height: 823px;
+  overflow: hidden;
 
 }
-.tabAi__img img{
+
+.tabAi__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.video__wrapper{
+
+.video__wrapper {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
+  z-index: 1000;
+}
+
+.video-layer {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  object-fit: cover;
+
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.video-layer.active {
+  opacity: 1;
 }
 </style>

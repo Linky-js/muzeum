@@ -62,14 +62,14 @@ onBeforeUnmount(() => {
   <div class="wrapper-step">
     <div class="headAi">
       <div class="title animLayer">
-        {{ currentHero.ai.name }}
+        {{ currentHero?.ai?.name }}
       </div>
-      <div class="description animLayern" v-html="currentHero.ai.responsibilities">
+      <div class="description animLayern" v-html="currentHero?.ai?.responsibilities">
       </div>
     </div>
     <div class="videos">
-      <video v-for="v in heroes" :key="v.id" class="video-layer animLayer" :src="v.video" autoplay muted loop playsinline
-        :class="v.name === currentHero.ai.name ? 'active' : ''"></video>
+      <video v-for="v in heroes" :key="v.id" class="video-layer animLayer" :src="v.video" autoplay muted loop
+        playsinline :class="v.name === currentHero?.ai?.name ? 'active' : ''"></video>
 
     </div>
   </div>
@@ -110,7 +110,8 @@ video.active {
   margin-top: 328px;
   position: relative;
 }
-.video-layer{
+
+.video-layer {
   transform: scale(1);
 }
 </style>

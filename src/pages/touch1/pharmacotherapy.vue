@@ -47,6 +47,9 @@ const breadcrumbsList = ref([
     link: "touch1-pharmacotherapy",
   },
 ]);
+const agreeCoockie = () => {
+  isOpenModal.value = false
+}
 </script>
 <template>
   <div class="header">
@@ -107,7 +110,7 @@ const breadcrumbsList = ref([
   </div>
   <MenuNavigation class="footer__btn" />
   <ModalDiscleimer class="modalOverlay" v-if="isOpenModal" @close="isOpenModal = false" :text="textModal"
-    :modalClass="'w1078'" :backLink="'/touch1/screen-3'" />
+    @agreeCoockie="agreeCoockie" :modalClass="'w1078'" :backLink="'/touch1/screen-3'" />
 </template>
 <style scoped>
 .modalOverlay {

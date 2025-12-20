@@ -17,7 +17,7 @@ const goBack = () => {
   emit("close");
 };
 const agreeCoockie = () => {
-  emit("close");
+  emit("agreeCoockie");
 };
 onMounted(() => { });
 </script>
