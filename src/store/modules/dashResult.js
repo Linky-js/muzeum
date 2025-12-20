@@ -59,7 +59,8 @@ export default {
           const weight = slot.weight ?? 0
 
           const { dashCategoryName, dashSubcatName } = findDashCategoryData(categories, subcatId)
-
+          console.log('dashCategoryName', dashCategoryName);
+          
           if (!dashSubcatName) continue
 
           const dashProduct = dashData.find((p) => p.subcategory === dashSubcatName)

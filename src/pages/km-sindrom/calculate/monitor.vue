@@ -22,7 +22,6 @@ const ROUTE_PATH = "/monitor-calculate";
 // функция для генерации рандомного QR
 const generateQr = () => {
   // случайное число для "уникальности"
-  const randomData = Math.random().toString(36).substring(2, 10);
   qrCodeUrl.value = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://muz.dmgug.ru/touch-calculate/touch-calc-mobile`;
 };
 
@@ -55,15 +54,11 @@ const onScroll = (direction) => {
 };
 
 onMounted(() => {
-  generateQr(); // первый QR сразу
-  intervalId = setInterval(generateQr, 20000); // каждые 20 секунды обновляем
+  generateQr();
 });
 
 onMounted(() => {
   if (step.value > 3) isShowMobile.value = false;
-});
-onUnmounted(() => {
-  clearInterval(intervalId);
 });
 
 const changeMobileView = (changeValue) => {
@@ -97,7 +92,7 @@ const changeMobileView = (changeValue) => {
       <div class="monitor-mobile__content-wrapper">
         <div class="monitor-mobile__screen relative">
           <div class="monitor-mobile__content">
-            <Mobile :is-not-mobile="isShowMobile" @scrollDirection="onScroll" @changeMobile="changeMobileView"/>
+            <Mobile :is-not-mobile="isShowMobile" @scrollDirection="onScroll" @changeMobile="changeMobileView" />
           </div>
         </div>
       </div>

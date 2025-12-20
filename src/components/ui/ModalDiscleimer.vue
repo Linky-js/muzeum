@@ -6,6 +6,7 @@ const emit = defineEmits(["close", "agreeCoockie"]);
 const props = defineProps({
   backLink: String,
   text: String,
+  modalClass: String
 });
 const goBack = () => {
   if (props.backLink) {
@@ -16,13 +17,13 @@ const goBack = () => {
   emit("close");
 };
 const agreeCoockie = () => {
-  emit("agreeCoockie");
+  emit("close");
 };
-onMounted(() => {});
+onMounted(() => { });
 </script>
 <template>
-  <div class="modal-backdrop" @click="emit('close')">
-    <div class="modal" @click.stop>
+  <div class="modal-backdrop">
+    <div class="modal" :class="props.modalClass" @click.stop>
       <div class="modal__inner">
         <h3 class="modal__title" v-html="props.text"></h3>
         <div class="modal__btns">
@@ -37,16 +38,21 @@ onMounted(() => {});
 .modal-backdrop {
   position: fixed;
 }
+
 .modal {
-  padding: 100px;
+  padding: 84px;
   width: 900px;
-  height: 548px;
+  min-height: 548px;
   background: #1b1c21;
   border-radius: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+.w1078 {
+  width: 1078px;
 }
 
 .modal::before {
@@ -63,7 +69,6 @@ onMounted(() => {});
 }
 
 .modal__inner {
-  max-width: 700px;
   position: relative;
   z-index: 1;
 }

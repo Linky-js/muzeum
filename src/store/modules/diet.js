@@ -267,20 +267,7 @@ export default {
               4: '/products/kurica4.png',
             },
           },
-          {
-            id: 'yaichnicas',
-            name: 'Яйца',
-            oldname: 'Яйца (1 шт)',
-            alteration: true,
-            preview: '/products/subcat/subcat-3-2.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/yaichnica1.png',
-              2: '/products/yaichnica2.png',
-              3: '/products/yaichnica3.png',
-              4: '/products/yaichnica4.png',
-            },
-          },
+          
           {
             id: '#FF0004_meat',
             name: 'Красное мясо',
@@ -329,28 +316,9 @@ export default {
         id: 'dairy',
         name: 'Обезжиренные/ низкожирные молочные',
         currentName: 'Молочные продукты и яйца',
-        img: '/products/cat/moloko.png',
+        img: '/products/subcat/subcat-4-3.png',
         subcategories: [
-          {
-            id: 'kefir',
-            name: 'Кефир и ряженка',
-            preview: '/products/subcat/subcat-4-1.png',
-            allowedSlots: [10],
-            images: {
-              10: '/products/kefir1.png',
-            },
-          },
-          {
-            id: 'yogurt',
-            name: 'Йогурт',
-            oldname: 'Йогурт (обезжиренный)',
-            alteration: true,
-            preview: '/products/subcat/subcat-4-2.png',
-            allowedSlots: [10],
-            images: {
-              10: '/products/yogurt1.png',
-            },
-          },
+          
           {
             id: 'cheese',
             name: 'Сыр и творог',
@@ -361,6 +329,20 @@ export default {
             images: {
               8: '/products/sir1.png',
               8_1: '/products/sir2.png',
+            },
+          },
+          {
+            id: 'yaichnicas',
+            name: 'Яйца',
+            oldname: 'Яйца (1 шт)',
+            alteration: true,
+            preview: '/products/subcat/subcat-3-2.png',
+            allowedSlots: [1, 2, 3, 4],
+            images: {
+              1: '/products/yaichnica1.png',
+              2: '/products/yaichnica2.png',
+              3: '/products/yaichnica3.png',
+              4: '/products/yaichnica4.png',
             },
           },
         ],
@@ -561,7 +543,6 @@ export default {
           },
         ],
       },
-
       {
         id: 'drinks',
         name: 'Напитки',
@@ -579,6 +560,30 @@ export default {
             images: {
               9: '/products/moloko2_right.png',
               14: '/products/moloko1_left.png',
+            },
+          },
+          {
+            id: 'kefir',
+            name: 'Кефир и ряженка',
+            oldname: 'Кефир (обезжиренный)',
+            oldCategory: 'Обезжиренные/ низкожирные молочные',
+            alteration: true,
+            preview: '/products/subcat/subcat-4-1.png',
+            allowedSlots: [10],
+            images: {
+              10: '/products/kefir1.png',
+            },
+          },
+          {
+            id: 'yogurt',
+            name: 'Йогурт',
+            oldname: 'Йогурт (обезжиренный)',
+            oldCategory: 'Обезжиренные/ низкожирные молочные',
+            alteration: true,
+            preview: '/products/subcat/subcat-4-2.png',
+            allowedSlots: [10],
+            images: {
+              10: '/products/yogurt1.png',
             },
           },
           {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch, nextTick, defineEmits } from "vue";
+import { ref, computed, onMounted, watch, nextTick, defineEmits, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
 import IconInfo from "@/components/icons/IconInfo.vue";
@@ -325,6 +325,11 @@ const toggleModal = () => {
   isOpenModal.value = !isOpenModal.value
 }
 onMounted(() => store.commit("diet/INIT_DAY", 1));
+onBeforeUnmount(() => {
+  console.log('onBefore');
+
+  store.commit("diet/RESET_ALL")
+})
 </script>
 
 <template>
@@ -458,10 +463,9 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
             class="bottom-prompt__icon" />
         </div>
         <div class="bottom-info__products">
-          <div class="product" v-for="(p, index) of currentProducts" :key="p.id">
-            {{ p.product }}{{ currentProducts.length > 1 && currentProducts.length - 1 !== index ? ', ' : '' }}
-          </div>
+          {{currentProducts.map(p => p.product).join(', ')}}
         </div>
+
         <p v-if="!currentProducts.length" class="bottom-prompt__text">
           В данном окне мы покажем перечень продуктов входящих в подкатегорию
         </p>
@@ -920,6 +924,12 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   gap: 16px;
   overflow-y: auto;
   margin-top: 30px;
+  color: #1b1c21;
+  font-size: 24px;
+
+  /* перенос по словам */
+  white-space: normal;
+  word-break: break-word;
 }
 
 .bottom-info__products::-webkit-scrollbar {
@@ -938,6 +948,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 
 .bottom-info__products .product {
   color: #1b1c21;
+  font-size: 27px;
 }
 
 .bottom-prompt__text {
@@ -971,7 +982,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 .categories-list__cats-wrapper {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(10, 1fr);
   gap: 8px;
   height: 100%;
 }
@@ -984,6 +995,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   gap: 8px;
   max-height: 172px;
   height: 100%;
+  width: 183px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 24px;
 }

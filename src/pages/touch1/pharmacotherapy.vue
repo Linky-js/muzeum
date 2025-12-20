@@ -1,12 +1,14 @@
 <script setup>
 import Breadcrums from "@/components/touchScreenComponents/Breadcrums.vue";
 import GlassBtn from "@/components/touchScreenComponents/GlassBtn.vue";
+import ModalDiscleimer from "@/components/ui/ModalDiscleimer.vue";
 import { ref } from "vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
 import { useBroadcastBus } from "@/composables/useBroadcastBus.js";
 import { initMasterSync } from "@/composables/syncRouterSimple.js";
 import { useRouter } from "vue-router";
+
 
 const router = useRouter();
 const bus = useBroadcastBus({
@@ -22,6 +24,12 @@ bus.on('defaultScreen', (payload) => {
   console.log('defaultScreen');
   router.push('/touch1/screen-1')
 })
+
+const textModal = `Данный раздел содержит информацию по незарегистрированным на территории РФ препаратам компании AstraZeneca.<br>
+Компания AstraZeneca не рекомендует применение препаратов компании вне рамок зарегистрированной инструкции по применению.`
+
+const isOpenModal = ref(true);
+
 const breadcrumbsList = ref([
   {
     id: 0,
@@ -98,31 +106,23 @@ const breadcrumbsList = ref([
     </div>
   </div>
   <MenuNavigation class="footer__btn" />
-  <svg style="display: none">
-    <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox">
-      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" seed="5" result="turbulence">
-      </feTurbulence>
-      <feComponentTransfer in="turbulence" result="mapped">
-        <feFuncR type="gamma" amplitude="1" exponent="10" offset="0.5"></feFuncR>
-        <feFuncG type="gamma" amplitude="0" exponent="1" offset="0"></feFuncG>
-        <feFuncB type="gamma" amplitude="0" exponent="1" offset="0.5"></feFuncB>
-      </feComponentTransfer>
-
-      <feGaussianBlur in="turbulence" stdDeviation="3" result="softMap"></feGaussianBlur>
-
-      <feSpecularLighting in="softMap" surfaceScale="5" specularConstant="1" specularExponent="100"
-        lighting-color="white" result="specLight">
-        <fePointLight x="-200" y="-200" z="300"></fePointLight>
-      </feSpecularLighting>
-
-      <feComposite in="specLight" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litImage"></feComposite>
-
-      <feDisplacementMap in="SourceGraphic" in2="softMap" scale="150" xChannelSelector="R" yChannelSelector="G">
-      </feDisplacementMap>
-    </filter>
-  </svg>
+  <ModalDiscleimer class="modalOverlay" v-if="isOpenModal" @close="isOpenModal = false" :text="textModal"
+    :modalClass="'w1078'" :backLink="'/touch1/screen-3'" />
 </template>
 <style scoped>
+.modalOverlay {
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(74px);
+  background: rgba(78, 78, 78, 0.2);
+}
+
 .wrapper-content {
   padding: 10rem 31.875rem;
   color: rgb(245, 245, 245);
