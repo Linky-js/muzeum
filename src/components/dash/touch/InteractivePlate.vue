@@ -306,6 +306,7 @@ const closeActiveInfo = () => {
 };
 
 const goResult = () => {
+  selectedSubcat.value = null;
   isOpenModal.value = false;
   emit("goResult");
 };
@@ -319,7 +320,10 @@ const onSwiper = (swiper) => {
   swiperInstance.value = swiper;
 };
 
-const toggleModal = () => (isOpenModal.value = !isOpenModal.value);
+const toggleModal = () => {
+  selectedSubcat.value = null;
+  isOpenModal.value = !isOpenModal.value
+}
 onMounted(() => store.commit("diet/INIT_DAY", 1));
 </script>
 
@@ -472,7 +476,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
               :class="{ active: openCategory === cat.id }">
               <img class="categories-list__cat-img" :src="cat.img" :alt="cat.id" />
               <h6 class="categories-list__cat-title">
-                {{ cat.name }}
+                {{ cat.currentName }}
               </h6>
             </div>
             <div class="categories-list__subcat-wrapper" :class="{ 'hidden-gradient': cat.subcategories.length <= 6 }"
@@ -482,7 +486,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
                 momentum: false,
                 sticky: false,
               }" :autoplay="{
-                delay: 0, // Минимальная задержка
+                delay: 1500, // Минимальная задержка
                 disableOnInteraction: true, // Не останавливать при взаимодействии
                 pauseOnMouseEnter: true, // Не останавливать при наведении
               }" :speed="1500" :pagination="{
@@ -588,10 +592,10 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
             добавить еще продуктов?
           </h3>
           <div class="modal__btns">
-            <button class="modal__btn cancel" @click="toggleModal">
+            <button class="modal__btn ok" @click="toggleModal">
               Добавить
             </button>
-            <button class="modal__btn ok" @click="goResult">Рассчитать</button>
+            <button class="modal__btn cancel" @click="goResult">Рассчитать</button>
           </div>
         </div>
       </div>

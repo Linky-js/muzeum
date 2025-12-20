@@ -85,6 +85,7 @@ export default {
       {
         id: 'grains',
         name: 'Зерновые',
+        currentName: 'Зерновые',
         img: '/products/cat/zernovie.png',
         subcategories: [
           {
@@ -185,6 +186,7 @@ export default {
       {
         id: 'fats',
         name: 'Жиры и масла',
+        currentName: 'Жиры и масла',
         img: '/products/cat/maslo.png',
         subcategories: [
           {
@@ -248,6 +250,7 @@ export default {
       {
         id: 'meat_fish',
         name: 'Нежирное мясо, птица и рыба',
+        currentName: 'Мясо, птица, рыба',
         img: '/products/cat/myaso.png',
         subcategories: [
           {
@@ -325,6 +328,7 @@ export default {
       {
         id: 'dairy',
         name: 'Обезжиренные/ низкожирные молочные',
+        currentName: 'Молочные продукты и яйца',
         img: '/products/cat/moloko.png',
         subcategories: [
           {
@@ -364,6 +368,7 @@ export default {
       {
         id: 'vegetables',
         name: 'Овощи',
+        currentName: 'Овощи',
         img: '/products/cat/ovoshi.png',
         subcategories: [
           {
@@ -413,6 +418,7 @@ export default {
       {
         id: 'nuts',
         name: 'Орехи, семена и бобовые',
+        currentName: 'Орехи, семена и бобовые',
         img: '/products/cat/orehi.png',
         subcategories: [
           {
@@ -470,6 +476,7 @@ export default {
       {
         id: 'sweets',
         name: 'Сладости и добавленные сахара',
+        currentName: 'Сладкое',
         img: '/products/cat/sladosti.png',
         subcategories: [
           {
@@ -516,6 +523,7 @@ export default {
       {
         id: 'fruits',
         name: 'Фрукты',
+        currentName: 'Фрукты',
         img: '/products/cat/fructi.png',
         subcategories: [
           {
@@ -557,6 +565,7 @@ export default {
       {
         id: 'drinks',
         name: 'Напитки',
+        currentName: 'Напитки',
         img: '/products/cat/napitki.png',
         subcategories: [
           {
