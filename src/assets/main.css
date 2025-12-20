@@ -305,7 +305,7 @@ text.st23{
 }
 .wrapper {
   width: 100vw;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
   min-height: 100svh;
 }
