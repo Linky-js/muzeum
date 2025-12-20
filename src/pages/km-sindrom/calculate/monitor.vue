@@ -36,7 +36,7 @@ bus.on('step', (data) => {
 let intervalId;
 
 watch(
-  () => route.query.step,
+  () => step.value,
   (newStep) => {
     console.log('newStep', newStep)
     if (newStep > 3) isShowMobile.value = false;
@@ -60,12 +60,16 @@ onMounted(() => {
 });
 
 onMounted(() => {
-  console.log('route.query.step', route.query.step)
-  if (route.query.step > 3) isShowMobile.value = false;
+  if (step.value > 3) isShowMobile.value = false;
 });
 onUnmounted(() => {
   clearInterval(intervalId);
 });
+
+const changeMobileView = (changeValue) => {
+  console.log('e', changeValue)
+  isShowMobile.value = changeValue;
+}
 </script>
 
 <template>
@@ -93,7 +97,7 @@ onUnmounted(() => {
       <div class="monitor-mobile__content-wrapper">
         <div class="monitor-mobile__screen relative">
           <div class="monitor-mobile__content">
-            <Mobile :is-not-mobile="isShowMobile" @scrollDirection="onScroll" />
+            <Mobile :is-not-mobile="isShowMobile" @scrollDirection="onScroll" @changeMobile="changeMobileView"/>
           </div>
         </div>
       </div>
