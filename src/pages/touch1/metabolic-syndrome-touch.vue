@@ -24,10 +24,10 @@ const VIDEO_BG_SRC = '/video/monitors/metabol_sindrom.webm'
 const OZHIRENIE = '/video/ms/ozhirenie.webm'
 const ARTERIA = '/video/ms/arterya.webm'
 const DISLIPIDEMIA = '/video/ms/dislipidemia.webm'
-const SERDCE = '/video/ms/serdce.webm'
+const SERDCE = '/video/ms/Heart.webm'
 const POCHKA = '/video/ms/pochka.webm'
 const DIABET = '/video/ms/diabet.webm'
-const MC = '/2.mp4'
+const MC = '/video/ms/km_film.webm'
 
 const router = useRouter()
 const bus = useBroadcastBus({
@@ -99,14 +99,14 @@ function getDurationByChapter(chapter) {
     case 'ARTERIA': return 63
     case 'DISLIPIDEMIA': return 117
     case 'DIABET': return 60
-    case 'SERDCE': return 8
+    case 'SERDCE': return 129
     case 'POCHKA': return 160
-    case 'MC': return 608
+    case 'MC': return 153
   }
 }
 function getMarkersByChapter(chapter) {
   switch (chapter) {
-    case 'MC': return [100, 254, 450]
+    case 'MC': return [50, 100]
   }
 }
 </script>
@@ -156,7 +156,7 @@ function getMarkersByChapter(chapter) {
     </div>
   </div>
   <MenuNavigation class="footer__btn" />
-  <VideoModal v-if="widjetShow" @close="widjetShow = false" :title="titleVideo" :description="descriptionVideo"
+  <VideoModal v-if="widjetShow" @close="widjetShow = false" :defaultSrc="VIDEO_BG_SRC" :title="titleVideo" :description="descriptionVideo"
     :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
 
 </template>

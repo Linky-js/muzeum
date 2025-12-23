@@ -21,7 +21,7 @@ const reccomendations = ref([
   },
   {
     title:
-      "Снизьте потребление.",
+      "Показатель значительно отклонился - обратите на него внимание.",
     color: "#FF0004",
   },
 ]);
@@ -104,7 +104,7 @@ onMounted(() => {
                 </div>
                 <div class="diagram-item__right">
                   <RoundDiagram :value="resultObj.totalCalories" label="Целевой диапазон" :maxValue="resultObj.TDEE"
-                    :fill-color="resultObj.totalCalories * 100 / resultObj.TDEE < 70 ? '#00FF11' : resultObj.totalCalories * 100 / resultObj.TDEE > 70 && resultObj.totalCalories * 100 / resultObj.TDEE < 100 ? '#FFAE00' : '#FF0004'" />
+                    :fill-color="resultObj.totalCalories * 100 / resultObj.TDEE < 70 ? '#FFAE00' : resultObj.totalCalories * 100 / resultObj.TDEE > 70 && resultObj.totalCalories * 100 / resultObj.TDEE < 100 ? '#00FF11' : '#FF0004'" />
                 </div>
                 <p class="diagram-item__text">
                   Чем меньше отклонение - тем лучше
@@ -119,7 +119,7 @@ onMounted(() => {
                 </div>
                 <div class="diagram-item__right">
                   <RoundDiagram :value="resultObj.totalSodium"
-                    :label="resultObj.totalSodium * 100 / 2300 < 90 ? 'Норма' : 'Критичное превышение'" :maxValue="2300"
+                    :label="'Целевой диапазон'" :maxValue="2300"
                     :fill-color="resultObj.totalSodium * 100 / 2300 < 70 ? '#00FF11' : resultObj.totalSodium * 100 / 2300 > 70 && resultObj.totalSodium * 100 / 2300 < 100 ? '#FFAE00' : '#FF0004'" />
                 </div>
                 <p class="diagram-item__text">
@@ -227,7 +227,8 @@ onMounted(() => {
   height: 100%;
   width: 100%;
 }
-.diagram-item__right{
+
+.diagram-item__right {
   width: max-content;
   align-self: center;
 }

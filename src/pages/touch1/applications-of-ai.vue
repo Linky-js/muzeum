@@ -25,7 +25,7 @@ const descriptionVideo = ref('')
 const durationVideo = ref(0)
 const markersVideo = ref([])
 
-const VIDEO_BG_SRC = '/video.mp4'
+const VIDEO_BG_SRC = '/video/monitors/ai.webm'
 
 const AI_tele = '/video/ai/AI_tele.webm'
 const AI_diagnostic = '/video/ai/AI_diagnostic.webm'
@@ -150,7 +150,7 @@ function getDurationByChapter(chapter) {
       </div>
     </div>
   </div>
-  <VideoModal v-if="widjetShow" @close="widjetShow = false" :title="titleVideo" :description="descriptionVideo" :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
+  <VideoModal v-if="widjetShow" @close="widjetShow = false" :defaultSrc="VIDEO_BG_SRC" :title="titleVideo" :description="descriptionVideo" :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
   <MenuNavigation class="footer__btn" />
   <svg style="display: none">
     <filter

@@ -17,7 +17,8 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  currentVideo: String
+  currentVideo: String,
+  defaultSrc: String
 })
 
 const bus = useBroadcastBus({ role: 'touch', pairId: '1', debug: false })
@@ -71,7 +72,6 @@ function seekToMarker(time) {
 }
 bus.on('video_state', state => {
   currentTime.value = state.time
-
 })
 function minSecTime(time) {
   if (!time || isNaN(time)) return '00:00'
@@ -91,7 +91,7 @@ onMounted(() => {
   bus.send('currentVideo', { video: props.currentVideo })
 })
 const closeWidjet = () => {
-  bus.send('currentVideo', { video: '/video/monitors/metabol_sindrom.webm' })
+  bus.send('currentVideo', { video: props.defaultSrc })
   emit('close')
 }
 </script>

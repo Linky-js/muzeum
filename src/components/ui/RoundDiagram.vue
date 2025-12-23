@@ -34,6 +34,10 @@ const props = defineProps({
     type: String,
     default: "#ff4444",
   },
+  fillText: {
+    type: String,
+    default: "white",
+  },
   percentage: {
     type: Number,
     default: 500,
@@ -109,38 +113,33 @@ onMounted(() => {
   <div class="gauge-chart">
     <svg :width="width" :height="height" :viewBox="'0 0 387 387'">
       <!-- Фон -->
-      <circle
-        class="gauge-background"
-        :cx="centerX"
-        :cy="centerY"
-        :r="radius"
-        fill="none"
-        :stroke="backgroundColor"
-        :stroke-width="strokeWidth"
-        stroke-linecap="round"
-      />
+      <circle class="gauge-background" :cx="centerX" :cy="centerY" :r="radius" fill="none" :stroke="backgroundColor"
+        :stroke-width="strokeWidth" stroke-linecap="round" />
       <!-- Заполнение с анимацией -->
-      <circle
-        class="gauge-fill"
-        :cx="centerX"
-        :cy="centerY"
-        :r="radius"
-        fill="none"
-        :stroke="fillColor"
-        :stroke-width="strokeWidth"
-        :stroke-dasharray="circumference"
-        :stroke-dashoffset="dashOffset"
-        stroke-linecap="round"
-        :transform="`rotate(95 ${centerX} ${centerY})`"
-      />
+      <circle class="gauge-fill" :cx="centerX" :cy="centerY" :r="radius" fill="none" :stroke="fillColor"
+        :stroke-width="strokeWidth" :stroke-dasharray="circumference" :stroke-dashoffset="dashOffset"
+        stroke-linecap="round" :transform="`rotate(95 ${centerX} ${centerY})`" />
 
       <!-- Тексты -->
-      <text :x="centerX" :y="textY" text-anchor="middle" class="gauge-value">
-        {{ displayValue }}
-      </text>
-      <text :x="centerX" :y="labelY" text-anchor="middle" class="gauge-label">
-        {{ label }}
-      </text>
+      <g>
+        <!-- Значение -->
+        <text :x="centerX" :y="textY - 20" text-anchor="middle" class="gauge-value" :fill="fillText">
+          {{ value }}
+        </text>
+
+        <!-- Линия-разделитель -->
+        <line :x1="centerX - 100" :x2="centerX + 100" :y1="textY" :y2="textY" :stroke="fillText" opacity="0.2"
+          stroke-width="1" />
+
+        <!-- Подпись -->
+        <text :x="centerX" :y="labelY + 20" text-anchor="middle" class="gauge-value" :fill="fillText">
+          {{ Math.round(maxValue) }}
+        </text>
+        <text :x="centerX" :y="labelY + 40" text-anchor="middle" class="gauge-label" :fill="fillText">
+          {{ label }}
+        </text>
+      </g>
+
     </svg>
   </div>
 </template>
@@ -165,7 +164,7 @@ onMounted(() => {
   font-size: 40px;
   line-height: 100%;
   letter-spacing: -0.03em;
-  fill: #ffffff;
+  /* fill: #ffffff; */
   margin-bottom: 4px;
   background: linear-gradient(180deg, red, green);
 }
@@ -176,7 +175,7 @@ onMounted(() => {
   font-size: 16px;
   line-height: 110%;
   letter-spacing: -0.02em;
-  fill: #ffffff;
+  /* fill: #ffffff; */
   opacity: 0.5;
 }
 </style>

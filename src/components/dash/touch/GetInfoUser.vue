@@ -15,15 +15,15 @@ import ModalDiscleimer from "@/components/ui/ModalDiscleimer.vue";
 const emit = defineEmits(["changePerson"]);
 const activeUp = ref(false);
 const person = ref({
-  age: "",
-  gender: "",
-  ves: "",
-  rost: "",
+  age: 50,
+  gender: "Мужской",
+  ves: "100",
+  rost: "180",
   active: {
-    id: null,
-    name: "",
+    id: 1.375,
+    name: "Легкая активность",
   },
-  cel: "",
+  cel: "Поддержание веса",
 });
 const activeVersion = ref([
   {

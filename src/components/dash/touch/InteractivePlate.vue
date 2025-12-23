@@ -160,7 +160,7 @@ const getProducts = async (name) => {
 }
 async function confirmWeight() {
   if (!weight.value || Number(weight.value) <= 0) {
-    alert("Введите количество грамм!");
+    customAlert("Введите количество грамм!");
     return;
   }
   const res = await store.dispatch("diet/addProduct", {
@@ -170,7 +170,7 @@ async function confirmWeight() {
     weight: Number(weight.value),
   });
 
-  if (!res.ok) alert("Нет свободного места для продукта!");
+  if (!res.ok) customAlert("Нет свободного места для продукта!");
   useNumpad.value = false;
   weight.value = "";
   selectedSubcat.value = null;
@@ -274,9 +274,15 @@ async function saveAsImage() {
     link.click();
   } catch (err) {
     console.error(err);
-    alert("Ошибка сохранения");
+    customAlert("Ошибка сохранения");
   }
 }
+const alertText = ref("");
+const isOpenAlert = ref(false);
+const customAlert = (text) => {
+  alertText.value = text;
+  isOpenAlert.value = true;
+};
 
 function goActiveInfoBtn(posId, el) {
   activeInfoBtn.value = posId;
@@ -608,12 +614,67 @@ onBeforeUnmount(() => {
     <div class="controls save-control">
       <button class="btn-save" @click="saveAsImage">💾 Сохранить PNG</button>
     </div> -->
+    <transition>
+      <div v-if="isOpenAlert" class="customAlert">
+        <div class="close" @click="isOpenAlert = false">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M6.36396 4.94978L11.3138 0L12.728 1.41421L7.77816 6.36398L12.728 11.3137L11.3138 12.7279L6.36396 7.77818L1.41422 12.7279L0 11.3137L4.94976 6.36398L0 1.41421L1.41422 0L6.36396 4.94978Z"
+              fill="white" />
+          </svg>
+        </div>
+        <div class="textAlert" v-html="alertText"></div>
+      </div>
+    </transition>
     <MenuNavigation class="footer__btn" on-page="dash" />
     <canvas ref="canvasRef" class="hidden"></canvas>
   </div>
 </template>
 
 <style scoped>
+.customAlert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 48px;
+  padding: 98px 74px;
+  width: 567px;
+  height: 316px;
+  z-index: 51;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 1.60px solid rgba(255, 255, 255, 0.15);
+  border-radius: 32px;
+  padding: 19px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #34373d;
+  z-index: 52;
+}
+
+.textAlert {
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: #000;
+}
+
 .plate-wrapper {
   position: relative;
   width: 3840px;

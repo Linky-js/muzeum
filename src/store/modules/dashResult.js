@@ -93,6 +93,7 @@ export default {
         totalCalories,
         totalSodium,
         categories: finalCategories,
+        TDEE: state.TDEE.TDEE,
       })
     },
   },

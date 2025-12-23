@@ -27,6 +27,12 @@ const store = useStore();
 const baseImgSrc = "/dash/stol/fon3.png";
 const bg1 = "/dash/stol/bg1.png"
 
+const props = defineProps({
+  result: {
+    type: Boolean,
+  }
+})
+
 const currentDay = ref(1);
 const currentMeal = ref("breakfast");
 const openCategory = ref(null);
@@ -50,6 +56,7 @@ const days = [
   { id: 7, smallName: "Воскресенье" },
 ];
 
+const resultStage = computed(() => props.result);
 const categories = computed(() => store.state.diet.categories || []);
 const currentMealState = ref(null)
 
@@ -273,7 +280,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 <template>
   <div class="plate-wrapper" ref="plateArea">
     <img :src="bg1" class="bg1">
-    <div class="monitor__info">
+    <div v-if="!resultStage" class="monitor__info">
       <div class="dash__head">
         <h1>Диета DASH</h1>
         <h4>Dietary Approaches to Stop Hypertension</h4>
@@ -293,7 +300,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
         </div>
       </div>
     </div>
-    <div class="top-info" v-if="activeMealProducts.length !== 0">
+    <div class="top-info" v-if="activeMealProducts.length !== 0 && !resultStage">
       <div class="top-info__inner">
         <div class="top-info__top">
           <p class="top-info__top-left">Продукт</p>
@@ -1248,6 +1255,6 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   z-index: 2;
   top: 0;
   left: 0;
-  opacity: 1;
+  opacity: 0.1;
 }
 </style>

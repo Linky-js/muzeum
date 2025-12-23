@@ -9,7 +9,7 @@ const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
 const videoEl = ref(null)
-const VIDEO_SRC = '/2.mp4'
+const VIDEO_SRC = '/video/ms/km_film.webm'
 
 function preloadViaLink(url) {
   try {

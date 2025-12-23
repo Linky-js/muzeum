@@ -58,11 +58,12 @@ const goResult = () => {
   console.log("goResult");
   store.dispatch("dashResult/calculateDash", 1);
   const result = store.getters["dashResult/getResult"];
+  bus.send('resultObj', JSON.parse(JSON.stringify(result)), { role: 'monitor', pairId: '1' })
   resultInfo.value = result;
   resultInfo.value.TDEE = TDEE;
 };
 const changePerson = (event) => {
-  person.value = event.value
+  person.value = event.value 
   sentResult.value = true
   bus.send('sentResult', {}, { role: 'monitor', pairId: '1' })
 }
