@@ -565,5 +565,26 @@
       }
     },
     "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "c84d27bd-3dc8-4fae-8e3f-521ab4297f43",
+    "timestamp": 1768390063472,
+    "age": 50,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Образование"
   }
 ]

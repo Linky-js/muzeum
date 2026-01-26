@@ -3,218 +3,215 @@ import gsap from 'gsap'
 
 const routes = [
   {
-    name: "Home",
-    path: "/",
-    component: () => import("@/pages/touch1/touch-screen-1.vue"),
+    name: 'Home',
+    path: '/',
+    component: () => import('@/pages/touch1/touch-screen-1.vue'),
   },
   {
-    name: "touch1-home",
-    path: "/touch1",
-    component: () => import("@/pages/touch1/touch1.vue"),
-    redirect: { name: "touch1-screen-1" },
+    name: 'touch1-home',
+    path: '/touch1',
+    component: () => import('@/pages/touch1/touch1.vue'),
+    redirect: { name: 'touch1-screen-1' },
     children: [
       {
-        name: "touch1-screen-1",
-        path: "screen-1",
-        component: () => import("@/pages/touch1/touch-screen-1.vue"),
+        name: 'touch1-screen-1',
+        path: 'screen-1',
+        component: () => import('@/pages/touch1/touch-screen-1.vue'),
       },
       {
-        name: "metabolic-syndrome-touch",
-        path: "screen-3",
-        component: () => import("@/pages/touch1/metabolic-syndrome-touch.vue"),
+        name: 'metabolic-syndrome-touch',
+        path: 'screen-3',
+        component: () => import('@/pages/touch1/metabolic-syndrome-touch.vue'),
       },
       {
-        name: "data-science",
-        path: "screen-2",
-        component: () => import("@/pages/touch1/data-science.vue"),
+        name: 'data-science',
+        path: 'screen-2',
+        component: () => import('@/pages/touch1/data-science.vue'),
       },
       {
-        name: "applications-of-ai",
-        path: "screen-4",
-        component: () => import("@/pages/touch1/applications-of-ai.vue"),
+        name: 'applications-of-ai',
+        path: 'screen-4',
+        component: () => import('@/pages/touch1/applications-of-ai.vue'),
       },
       {
-        name: "touch1-pharmacotherapy",
-        path: "pharmacotherapy",
-        component: () => import("@/pages/touch1/pharmacotherapy.vue"),
+        name: 'touch1-pharmacotherapy',
+        path: 'pharmacotherapy',
+        component: () => import('@/pages/touch1/pharmacotherapy.vue'),
       },
     ],
   },
   {
-    name: "dashPageTouch",
-    path: "/touch-1-dash",
-    component: () => import("@/pages/touch1/dash/dashPageTouch.vue"),
+    name: 'dashPageTouch',
+    path: '/touch-1-dash',
+    component: () => import('@/pages/touch1/dash/dashPageTouch.vue'),
   },
   {
-    name: "touch-ai",
-    path: "/touch-ai",
-    component: () => import("@/pages/touch1/touchAI/touch-ai.vue"),
+    name: 'touch-ai',
+    path: '/touch-ai',
+    component: () => import('@/pages/touch1/touchAI/touch-ai.vue'),
   },
   {
-    name: "monitor-ai",
-    path: "/monitor-ai",
-    component: () => import("@/pages/monitor1/monitorAI/monitor-ai.vue"),
+    name: 'monitor-ai',
+    path: '/monitor-ai',
+    component: () => import('@/pages/monitor1/monitorAI/monitor-ai.vue'),
   },
 
   {
-    name: "monitor1-home",
-    path: "/monitor1",
-    component: () => import("@/pages/monitor1/monitor1.vue"),
-    redirect: { name: "monitor1-screen-1" },
+    name: 'monitor1-home',
+    path: '/monitor1',
+    component: () => import('@/pages/monitor1/monitor1.vue'),
+    redirect: { name: 'monitor1-screen-1' },
     children: [
       {
-        name: "monitor1-screen-1",
-        path: "screen-1",
-        component: () => import("@/pages/monitor1/monitor-screen-1.vue"),
+        name: 'monitor1-screen-1',
+        path: 'screen-1',
+        component: () => import('@/pages/monitor1/monitor-screen-1.vue'),
       },
       {
-        name: "metabolic-syndrome-monitor",
-        path: "screen-3",
-        component: () => import("@/pages/monitor1/monitor-screen-3.vue"),
+        name: 'metabolic-syndrome-monitor',
+        path: 'screen-3',
+        component: () => import('@/pages/monitor1/monitor-screen-3.vue'),
       },
       {
-        name: "monitor1-screen-2",
-        path: "screen-2",
-        component: () => import("@/pages/monitor1/monitor-screen-2.vue"),
+        name: 'monitor1-screen-2',
+        path: 'screen-2',
+        component: () => import('@/pages/monitor1/monitor-screen-2.vue'),
       },
       {
-        name: "monitor1-screen-4",
-        path: "screen-4",
-        component: () => import("@/pages/monitor1/monitor-screen-4.vue"),
+        name: 'monitor1-screen-4',
+        path: 'screen-4',
+        component: () => import('@/pages/monitor1/monitor-screen-4.vue'),
       },
     ],
   },
   {
-    name: "monitor1-pharmacotherapy",
-    path: "/monitor-1-pharmacotherapy",
-    component: () => import("@/pages/monitor1/pharmacotherapy.vue"),
+    name: 'monitor1-pharmacotherapy',
+    path: '/monitor-1-pharmacotherapy',
+    component: () => import('@/pages/monitor1/pharmacotherapy.vue'),
   },
   {
-    name: "dashPageMonitor",
-    path: "/monitor-1-dash",
-    component: () => import("@/pages/monitor1/dash/dashPageMonitor.vue"),
+    name: 'dashPageMonitor',
+    path: '/monitor-1-dash',
+    component: () => import('@/pages/monitor1/dash/dashPageMonitor.vue'),
   },
   {
-    name: "touch2-home",
-    path: "/touch2",
-    component: () => import("@/pages/touch2/touch2.vue"),
-    redirect: { name: "touch2-screen-1" },
+    name: 'touch2-home',
+    path: '/touch2',
+    component: () => import('@/pages/touch2/touch2.vue'),
+    redirect: { name: 'touch2-screen-1' },
     children: [
       {
-        name: "touch2-screen-1",
-        path: "screen-1",
-        component: () => import("@/pages/touch2/touch-screen-1.vue"),
+        name: 'touch2-screen-1',
+        path: 'screen-1',
+        component: () => import('@/pages/touch2/touch-screen-1.vue'),
       },
     ],
   },
   {
-    name: "touch2-screen-regions",
-    path: "/touch-screen-regions",
-    component: () => import("@/pages/touch2/touchmaptwo.vue"),
+    name: 'touch2-screen-regions',
+    path: '/touch-screen-regions',
+    component: () => import('@/pages/touch2/touchmaptwo.vue'),
   },
   {
-    name: "touch2-astrazeneca",
-    path: "/touch-screen-astrazeneca",
-    component: () => import("@/pages/touch2/touchMapAstra.vue"),
+    name: 'touch2-astrazeneca',
+    path: '/touch-screen-astrazeneca',
+    component: () => import('@/pages/touch2/touchMapAstra.vue'),
   },
   {
-    name: "monitor2-home",
-    path: "/monitor2",
-    component: () => import("@/pages/monitor2/monitor2.vue"),
-    redirect: { name: "monitor2-screen-1" },
+    name: 'monitor2-home',
+    path: '/monitor2',
+    component: () => import('@/pages/monitor2/monitor2.vue'),
+    redirect: { name: 'monitor2-screen-1' },
     children: [
       {
-        name: "monitor2-screen-1",
-        path: "screen-1",
-        component: () => import("@/pages/monitor2/monitor-screen-1.vue"),
+        name: 'monitor2-screen-1',
+        path: 'screen-1',
+        component: () => import('@/pages/monitor2/monitor-screen-1.vue'),
       },
-
-      
     ],
   },
   {
-    name: "monitor2-screen-regions",
-    path: "/monitor-screen-regions",
-    component: () => import("@/pages/monitor2/mapTwo.vue"),
+    name: 'monitor2-screen-regions',
+    path: '/monitor-screen-regions',
+    component: () => import('@/pages/monitor2/mapTwo.vue'),
   },
   {
-    name: "monitor2-astrazeneca",
-    path: "/monitor-astrazeneca",
-    component: () => import("@/pages/monitor2/mapAstra.vue"),
+    name: 'monitor2-astrazeneca',
+    path: '/monitor-astrazeneca',
+    component: () => import('@/pages/monitor2/mapAstra.vue'),
   },
   {
-    name: "Btns",
-    path: "/btns",
-    component: () => import("@/pages/btns.vue"),
+    name: 'Btns',
+    path: '/btns',
+    component: () => import('@/pages/btns.vue'),
   },
   {
-    name: "touch-home",
-    path: "/touch1old",
-    component: () => import("@/pages/touch1/touch1OLD.vue"),
+    name: 'touch-home',
+    path: '/touch1old',
+    component: () => import('@/pages/touch1/touch1OLD.vue'),
   },
   {
-    name: "touch-video",
-    path: "/touch1-video",
-    component: () => import("@/pages/touch1/touch-video.vue"),
+    name: 'touch-video',
+    path: '/touch1-video',
+    component: () => import('@/pages/touch1/touch-video.vue'),
   },
   {
-    name: "monitor-home",
-    path: "/monitor1old",
-    component: () => import("@/pages/monitor1.vue"),
+    name: 'monitor-home',
+    path: '/monitor1old',
+    component: () => import('@/pages/monitor1.vue'),
   },
   {
-    name: "monitor-video",
-    path: "/monitor1-video",
-    component: () => import("@/pages/touch1/monitor-video.vue"),
+    name: 'monitor-video',
+    path: '/monitor1-video',
+    component: () => import('@/pages/touch1/monitor-video.vue'),
   },
 
   // КМ синдром
   {
-    name: "kms",
-    path: "/kms",
-    component: () => import("@/pages/km-sindrom/index-touch.vue"),
+    name: 'kms',
+    path: '/kms',
+    component: () => import('@/pages/km-sindrom/index-touch.vue'),
   },
   {
-    name: "kms-m",
-    path: "/kms-m",
-    component: () => import("@/pages/km-sindrom/index-monitor.vue"),
+    name: 'kms-m',
+    path: '/kms-m',
+    component: () => import('@/pages/km-sindrom/index-monitor.vue'),
   },
   {
-    name: "touch-calculate",
-    path: "/touch-calculate",
-    component: () => import("@/pages/km-sindrom/calculate/touch.vue"),
+    name: 'touch-calculate',
+    path: '/touch-calculate',
+    component: () => import('@/pages/km-sindrom/calculate/touch.vue'),
     children: [
       {
-        name: "touch-qr",
-        path: "touch-qr",
-        component: () => import("@/pages/km-sindrom/calculate/touch-qr.vue"),
+        name: 'touch-qr',
+        path: 'touch-qr',
+        component: () => import('@/pages/km-sindrom/calculate/touch-qr.vue'),
       },
       {
-        name: "touch-calc",
-        path: "touch-calc",
-        component: () => import("@/pages/km-sindrom/calculate/touch-calc.vue"),
+        name: 'touch-calc',
+        path: 'touch-calc',
+        component: () => import('@/pages/km-sindrom/calculate/touch-calc.vue'),
       },
       {
-        name: "touch-calc-mobile",
-        path: "touch-calc-mobile",
-        component: () =>
-          import("@/pages/km-sindrom/calculate/touch-calc-mobile.vue"),
+        name: 'touch-calc-mobile',
+        path: 'touch-calc-mobile',
+        component: () => import('@/pages/km-sindrom/calculate/touch-calc-mobile.vue'),
       },
     ],
   },
   {
-    name: "monitor-calculate",
-    path: "/monitor-calculate",
-    component: () => import("@/pages/km-sindrom/calculate/monitor.vue"),
+    name: 'monitor-calculate',
+    path: '/monitor-calculate',
+    component: () => import('@/pages/km-sindrom/calculate/monitor.vue'),
   },
 
   // пробы
   {
-    name: "map",
-    path: "/map",
-    component: () => import("@/pages/mapRussia.vue"),
+    name: 'map',
+    path: '/map',
+    component: () => import('@/pages/mapRussia.vue'),
   },
-];
+]
 
 const router = createRouter({
   mode: 'history',
@@ -224,6 +221,25 @@ const router = createRouter({
     document.getElementById('app').scrollIntoView({ behavior: 'smooth' })
   },
 })
+router.afterEach((to) => {
+  if (to.path.startsWith('/touch1')) {
+    document.title = 'touch1'
+    return
+  }
+  if (to.path.startsWith('/touch2')) {
+    document.title = 'touch2'
+    return
+  }
+  if (to.path.startsWith('/monitor1')) {
+    document.title = 'monitor1'
+    return
+  }
+  if (to.path.startsWith('/monitor2')) {
+    document.title = 'monitor2'
+    return
+  }
+})
+
 router.beforeEach((to, from, next) => {
   if (!from.name) {
     return next()

@@ -1,6 +1,7 @@
 // store/modules/diet.js
 // Vuex модуль для интерактива "Тарелка / неделя".
 // Фокус сейчас на слотах 1..4 (тарелка). Остальные слоты оставлены в конфиге для будущего расширения.
+import categoriesJson from '@/data/categories.json'
 
 const initialMeal = () => ({
   // plate: ключи — id слотов (строго числа или строк)
@@ -27,6 +28,14 @@ const initialMeal = () => ({
     19: null,
   },
   usedSlots: [], // список занятых id слотов
+  items: [
+    // {
+    //   id,           // уникальный id (uuid или timestamp)
+    //   subcatId,
+    //   weight,
+    //   slotId: null | number
+    // }
+  ],
 })
 
 const initialDay = () => ({
@@ -81,586 +90,7 @@ export default {
 
     // Категории -> подкатегории. Подкатегория хранит:
     // id, name, allowedSlots (куда её можно ставить), images: map slot->path
-    categories: [
-      {
-        id: 'grains',
-        name: 'Зерновые',
-        currentName: 'Зерновые',
-        img: '/products/cat/zernovie.png',
-        subcategories: [
-          {
-            id: 'grain_snacks',
-            name: 'Крекеры, снеки и пряники',
-            oldname: 'Зерновые снеки (крекеры и пр.)',
-            alteration: true,
-            preview: '/products/subcat/subcat-1-1.png',
-            allowedSlots: [5],
-            // images: ключ — номер слота; значение — путь к картинке для этого слота
-            images: {
-              5: '/products/kreker1.png',
-              5_1: '/products/kreker2.png',
-            },
-          },
-          {
-            id: 'grains_refined',
-            name: 'Злаки рафинированные',
-            oldname: 'Злаки рафинированные (варёные, 1/2 стакана)',
-            alteration: true,
-            preview: '/products/subcat/subcat-1-2.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/makaroshki1.png',
-              2: '/products/makaroshki2.png',
-              3: '/products/makaroshki3.png',
-              4: '/products/makaroshki4.png',
-            },
-          },
-          {
-            id: 'grains_whole',
-            name: 'Злаки цельнозерновые',
-            oldname: 'Злаки цельнозерновые (варёные, 1/2 стакана)',
-            alteration: true,
-            preview: '/products/subcat/subcat-1-3.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/grecha1.png',
-              2: '/products/grecha2.png',
-              3: '/products/grecha3.png',
-              4: '/products/grecha4.png',
-            },
-          },
-          {
-            id: 'popcorn',
-            name: 'Попкорн',
-            oldname: 'Попкорн несолёный',
-            alteration: true,
-            preview: '/products/subcat/subcat-1-4.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/popcorn1.png',
-              2: '/products/popcorn2.png',
-              3: '/products/popcorn3.png',
-              4: '/products/popcorn4.png',
-            },
-          },
-          {
-            id: 'muesli',
-            name: 'Сухие хлопья и мюсли',
-            oldname: 'Сухие хлопья/мюсли (1 oz)',
-            alteration: true,
-            preview: '/products/subcat/subcat-1-5.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/musli1.png',
-              2: '/products/musli2.png',
-              3: '/products/musli3.png',
-              4: '/products/musli4.png',
-            },
-          },
-          {
-            id: 'bread_white',
-            name: 'Хлеб белый/ рафинированный',
-            oldname: 'Хлеб белый/рафинированный (ломтик)',
-            alteration: true,
-            preview: '/products/subcat/subcat-1-6.png',
-            allowedSlots: [11],
-            images: {
-              11: '/products/hleb1.png',
-              11_1: '/products/hleb2.png',
-            },
-          },
-          {
-            id: 'bread_whole',
-            name: 'Хлеб цельнозерновой',
-            oldname: 'Хлеб цельнозерновой (ломтик)',
-            alteration: true,
-            preview: '/products/subcat/subcat-1-7.png',
-            allowedSlots: [11],
-            images: {
-              11: '/products/hleb_zerno_1.png',
-              11_1: '/products/hleb_zerno_2.png',
-            },
-          },
-        ],
-      },
-      {
-        id: 'fats',
-        name: 'Жиры и масла',
-        currentName: 'Жиры и масла',
-        img: '/products/cat/maslo.png',
-        subcategories: [
-          {
-            id: 'sunflower-oil',
-            name: 'Растительные масла',
-            oldname: 'Растительные масла (1 ч. л.)',
-            alteration: true,
-            preview: '/products/subcat/subcat-2-1.png',
-            allowedSlots: [16, 17, 18, 19],
-            images: {
-              16: '/products/maslo1.png',
-              17: '/products/maslo2.png',
-              18: '/products/maslo3.png',
-              19: '/products/maslo4.png',
-            },
-          },
-          {
-            id: 'mayonnaise',
-            name: 'Майонез',
-            oldname: 'Майонез (1 ст. л.)',
-            alteration: true,
-            preview: '/products/subcat/subcat-2-3.png',
-            allowedSlots: [16, 17, 18, 19],
-            images: {
-              16: '/products/mazik1.png',
-              17: '/products/mazik2.png',
-              18: '/products/mazik3.png',
-              19: '/products/mazik4.png',
-            },
-          },
-          {
-            id: 'piece-of-butter',
-            name: 'Масло и маргарин',
-            oldname: 'Маргарин мягкий (1 ч. л.)',
-            alteration: true,
-            preview: '/products/subcat/subcat-2-2.png',
-            allowedSlots: [16, 17, 18, 19],
-            images: {
-              16: '/products/maslo_cube1.png',
-              17: '/products/maslo_cube2.png',
-              18: '/products/maslo_cube3.png',
-              19: '/products/maslo_cube4.png',
-            },
-          },
-          {
-            id: 'sauce',
-            name: 'Заправки и соусы',
-            oldname: 'Заправки/соусы (1 ст. л.)',
-            alteration: true,
-            preview: '/products/subcat/subcat-2-4.png',
-            allowedSlots: [16, 17, 18, 19],
-            images: {
-              16: '/products/maslo_travi1.png',
-              17: '/products/maslo_travi2.png',
-              18: '/products/maslo_travi3.png',
-              19: '/products/maslo_travi4.png',
-            },
-          },
-        ],
-      },
-      {
-        id: 'meat_fish',
-        name: 'Нежирное мясо, птица и рыба',
-        currentName: 'Мясо, птица, рыба',
-        img: '/products/cat/myaso.png',
-        subcategories: [
-          {
-            id: 'white_meat',
-            name: 'Белое мясо',
-            oldname: 'Белое мясо (готовое, 1 oz)',
-            alteration: true,
-            preview: '/products/subcat/subcat-3-1.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/kurica1.png',
-              2: '/products/kurica2.png',
-              3: '/products/kurica3.png',
-              4: '/products/kurica4.png',
-            },
-          },
-          
-          {
-            id: '#FF0004_meat',
-            name: 'Красное мясо',
-            oldname: 'Красное мясо (готовое, 1 oz)',
-            alteration: true,
-            preview: '/products/subcat/subcat-3-3.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/bife1.png',
-              2: '/products/bife2.png',
-              3: '/products/bife3.png',
-              4: '/products/bife4.png',
-            },
-          },
-          {
-            id: 'seafood',
-            name: 'Морепродукты',
-            oldname: 'Морепродукты (готовые, 1 oz)',
-            alteration: true,
-            preview: '/products/subcat/subcat-3-4.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/more1.png',
-              2: '/products/more2.png',
-              3: '/products/more3.png',
-              4: '/products/more4.png',
-            },
-          },
-          {
-            id: 'fish',
-            name: 'Рыба',
-            oldname: 'Рыба (готовая, 1 oz)',
-            alteration: true,
-            preview: '/products/subcat/subcat-3-5.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/riba1.png',
-              2: '/products/riba2.png',
-              3: '/products/riba3.png',
-              4: '/products/riba4.png',
-            },
-          },
-        ],
-      },
-      {
-        id: 'dairy',
-        name: 'Обезжиренные/ низкожирные молочные',
-        currentName: 'Молочные продукты и яйца',
-        img: '/products/subcat/subcat-4-3.png',
-        subcategories: [
-          
-          {
-            id: 'cheese',
-            name: 'Сыр и творог',
-            oldname: 'Сыр (пониженной жирности)',
-            alteration: true,
-            preview: '/products/subcat/subcat-4-3.png',
-            allowedSlots: [8],
-            images: {
-              8: '/products/sir1.png',
-              8_1: '/products/sir2.png',
-            },
-          },
-          {
-            id: 'yaichnicas',
-            name: 'Яйца',
-            oldname: 'Яйца (1 шт)',
-            alteration: true,
-            preview: '/products/subcat/subcat-3-2.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/yaichnica1.png',
-              2: '/products/yaichnica2.png',
-              3: '/products/yaichnica3.png',
-              4: '/products/yaichnica4.png',
-            },
-          },
-        ],
-      },
-      {
-        id: 'vegetables',
-        name: 'Овощи',
-        currentName: 'Овощи',
-        img: '/products/cat/ovoshi.png',
-        subcategories: [
-          {
-            id: 'leafy',
-            name: 'Салаты и зелень',
-            oldname: 'Листовые (сырые, 1 стакан)',
-            alteration: true,
-            preview: '/products/subcat/subcat-5-1.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/salat1.png',
-              2: '/products/salat2.png',
-              3: '/products/salat3.png',
-              4: '/products/salat4.png',
-            },
-          },
-          {
-            id: 'cruciferous',
-            name: 'Крестоцветные',
-            oldname: 'Крестоцветные/прочие (1/2 стакана)',
-            alteration: true,
-            preview: '/products/subcat/subcat-5-2.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/ogurci_tomat1.png',
-              2: '/products/ogurci_tomat2.png',
-              3: '/products/ogurci_tomat3.png',
-              4: '/products/ogurci_tomat4.png',
-            },
-          },
-          {
-            id: 'roots',
-            name: 'Корнеплоды',
-            oldname: 'Корнеплоды/крахмалистые (1/2 стакана)',
-            alteration: true,
-            preview: '/products/subcat/subcat-5-3.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/kartof_svekl1.png',
-              2: '/products/kartof_svekl2.png',
-              3: '/products/kartof_svekl3.png',
-              4: '/products/kartof_svekl4.png',
-            },
-          },
-        ],
-      },
-      {
-        id: 'nuts',
-        name: 'Орехи, семена и бобовые',
-        currentName: 'Орехи, семена и бобовые',
-        img: '/products/cat/orehi.png',
-        subcategories: [
-          {
-            id: 'legumes',
-            name: 'Бобовые',
-            oldname: 'Бобовые (варёные, 1/2 стакана)',
-            alteration: true,
-            preview: '/products/subcat/subcat-6-1.png',
-            allowedSlots: [1, 2, 3, 4],
-            images: {
-              1: '/products/bobi1.png',
-              2: '/products/bobi2.png',
-              3: '/products/bobi3.png',
-              4: '/products/bobi4.png',
-            },
-          },
-          {
-            id: 'nuts',
-            name: 'Орехи',
-            oldname: 'Орехи (1/3 стакана ≈ 42 г)',
-            alteration: true,
-            preview: '/products/subcat/subcat-6-2.png',
-            allowedSlots: [6],
-            images: {
-              6: '/products/orehi1.png',
-            },
-          },
-          {
-            id: 'seeds',
-            name: 'Семечки',
-            oldname: 'Семена (2 ст. л. ≈ 16 г)',
-            alteration: true,
-            preview: '/products/subcat/subcat-6-3.png',
-            allowedSlots: [6],
-            images: {
-              6: '/products/semki1.png',
-            },
-          },
-          {
-            id: 'peanut-butter',
-            name: 'Арахисовая паста',
-            oldname: 'Арахисовая паста (2 ст. л.)',
-            alteration: true,
-            preview: '/products/subcat/subcat-6-4.png',
-            allowedSlots: [16, 17, 18, 19],
-            images: {
-              16: '/products/arahis1.png',
-              17: '/products/arahis2.png',
-              18: '/products/arahis3.png',
-              19: '/products/arahis4.png',
-            },
-          },
-        ],
-      },
-      {
-        id: 'sweets',
-        name: 'Сладости и добавленные сахара',
-        currentName: 'Сладкое',
-        img: '/products/cat/sladosti.png',
-        subcategories: [
-          {
-            id: 'jam-preserve',
-            name: 'Джем и варенье',
-            oldname: 'Джем/варенье (1 ст. л.)',
-            alteration: true,
-            preview: '/products/subcat/subcat-7-1.png',
-            allowedSlots: [16, 17, 18, 19],
-            images: {
-              16: '/products/varenia1.png',
-              17: '/products/varenia2.png',
-              18: '/products/varenia3.png',
-              19: '/products/varenia4.png',
-            },
-          },
-          {
-            id: 'jelly-sorbet',
-            name: 'Желе, сорбет и мороженое ',
-            oldname: 'Желейные/сорбет (1/2 стакана)',
-            alteration: true,
-            preview: '/products/subcat/subcat-7-2.png',
-            allowedSlots: [16, 17, 18, 19],
-            images: {
-              16: '/products/zhele1.png',
-              17: '/products/zhele2.png',
-              18: '/products/zhele3.png',
-              19: '/products/zhele4.png',
-            },
-          },
-          {
-            id: 'sweet-pastries',
-            name: 'Десерты и выпечка',
-            oldname: 'Кондитерские изделия (100 г)',
-            alteration: true,
-            preview: '/products/subcat/subcat-7-3.png',
-            allowedSlots: [12],
-            images: {
-              12: '/products/desert1.png',
-            },
-          },
-        ],
-      },
-      {
-        id: 'fruits',
-        name: 'Фрукты',
-        currentName: 'Фрукты',
-        img: '/products/cat/fructi.png',
-        subcategories: [
-          {
-            id: 'fresh-fruit',
-            name: 'Свежие фрукты',
-            oldname: 'Свежие (1 средний плод)',
-            alteration: true,
-            preview: '/products/subcat/subcat-8-1.png',
-            allowedSlots: [15],
-            images: {
-              15: '/products/frukti.png',
-            },
-          },
-          {
-            id: 'dried-fruits',
-            name: 'Сухофрукты',
-            oldname: 'Сухофрукты (1/4 стакана)',
-            alteration: true,
-            preview: '/products/subcat/subcat-8-2.png',
-            allowedSlots: [6],
-            images: {
-              6: '/products/suho1.png',
-            },
-          },
-          {
-            id: 'berries-slices',
-            name: 'мЯгоды',
-            oldname: 'Ягоды/ломтики (1/2 стакана)',
-            alteration: true,
-            preview: "/products/subcat/subcat-8-3.png",
-            allowedSlots: [7],
-            images: {
-              7: "/products/yagodi_1.png",
-            },
-          },
-        ],
-      },
-      {
-        id: 'drinks',
-        name: 'Напитки',
-        currentName: 'Напитки',
-        img: '/products/cat/napitki.png',
-        subcategories: [
-          {
-            id: 'milk',
-            name: 'Молоко',
-            oldname: 'Молоко (обезжиренное)',
-            alteration: true,
-            oldCategory: 'Обезжиренные/ низкожирные молочные',
-            preview: '/products/subcat/subcat-9-1.png',
-            allowedSlots: [14, 9],
-            images: {
-              9: '/products/moloko2_right.png',
-              14: '/products/moloko1_left.png',
-            },
-          },
-          {
-            id: 'kefir',
-            name: 'Кефир и ряженка',
-            oldname: 'Кефир (обезжиренный)',
-            oldCategory: 'Обезжиренные/ низкожирные молочные',
-            alteration: true,
-            preview: '/products/subcat/subcat-4-1.png',
-            allowedSlots: [10],
-            images: {
-              10: '/products/kefir1.png',
-            },
-          },
-          {
-            id: 'yogurt',
-            name: 'Йогурт',
-            oldname: 'Йогурт (обезжиренный)',
-            oldCategory: 'Обезжиренные/ низкожирные молочные',
-            alteration: true,
-            preview: '/products/subcat/subcat-4-2.png',
-            allowedSlots: [10],
-            images: {
-              10: '/products/yogurt1.png',
-            },
-          },
-          {
-            id: 'tea',
-            name: 'Чай',
-            oldname: 'чай',
-            alteration: true,
-            preview: '/products/subcat/subcat-9-2.png',
-            allowedSlots: [13],
-            images: {
-              13: '/products/chay.png',
-            },
-          },
-          {
-            id: 'black-coffee',
-            name: 'Кофе чёрный',
-            oldname: 'кофе черный',
-            alteration: true,
-            preview: '/products/subcat/subcat-9-3.png',
-            allowedSlots: [13],
-            images: {
-              13: '/products/cofe2.png',
-            },
-          },
-          {
-            id: 'coffee-with-milk',
-            name: 'Кофе с молоком',
-            oldname: 'кофе с молоком',
-            alteration: true,
-            preview: '/products/subcat/subcat-9-4.png',
-            allowedSlots: [13],
-            images: {
-              13: '/products/cofe1.png',
-            },
-          },
-          {
-            id: 'vegetable-juice',
-            name: 'Овощной сок',
-            oldname: 'Овощной сок (1/2 стакана)',
-            alteration: true,
-            oldCategory: 'Овощи',
-            preview: '/products/subcat/subcat-9-5.png',
-            allowedSlots: [14, 9],
-            images: {
-              9: "/products/sok2_right.png",
-              14: "/products/sok2_left.png",
-            },
-          },
-          {
-            id: 'fruit-juice',
-            name: '100% сок (1/2 стакана)',
-            oldname: '100% сок (1/2 стакана)',
-            alteration: true,
-            oldCategory: 'Фрукты',
-            preview: '/products/subcat/subcat-9-6.png',
-            allowedSlots: [9, 14],
-            images: {
-              9: "/products/sok1_right.png",
-              14: "/products/sok1_left.png",
-            },
-          },
-          {
-            id: 'sweetened-drinks',
-            name: 'Сладкие напитки и лимонады',
-            oldname: 'Подслащённые напитки (1 стакан)',
-            alteration: true,
-            oldCategory: 'Сладости и добавленные сахара',
-            preview: '/products/subcat/subcat-9-7.png',
-            allowedSlots: [9, 14],
-            images: {
-              9: "/products/sok3_right.png",
-              14: "/products/sok3_left.png",
-            },
-          },
-        ],
-      },
-    ],
+    categories: [...categoriesJson],
   }),
 
   getters: {
@@ -789,6 +219,21 @@ export default {
         state.week.synced = false
       }
     },
+    REMOVE_ITEM(state, { dayId, mealId, itemId }) {
+      const meal = state.week.days[dayId].meals[mealId]
+
+      const idx = meal.items.findIndex((i) => i.id === itemId)
+      if (idx === -1) return
+
+      const item = meal.items[idx]
+
+      if (item.slotId) {
+        meal.plate[item.slotId] = null
+        meal.usedSlots = meal.usedSlots.filter((s) => s !== item.slotId)
+      }
+
+      meal.items.splice(idx, 1)
+    },
 
     // Удалить продукт с позиции
     REMOVE_PRODUCT(state, { dayId, mealId, slotId }) {
@@ -831,42 +276,64 @@ export default {
         },
       }
     },
+    ADD_ITEM(state, { dayId, mealId, subcatId, weight, slotId }) {
+      const meal = state.week.days[dayId].meals[mealId]
+
+      const id = Date.now() + Math.random()
+
+      const item = {
+        id,
+        subcatId,
+        weight,
+        slotId,
+      }
+
+      meal.items.push(item)
+
+      // ⬇️ если слот есть — визуально кладём
+      if (slotId) {
+        let image = null
+      for (const cat of state.categories) {
+        const sub = cat.subcategories?.find((s) => s.id === subcatId)
+        if (sub) {
+          image = sub.images?.[slotId] || null
+          break
+        }
+      }
+
+        meal.plate[slotId] = {
+          subcatId,
+          image,
+          slot: slotId,
+          weight,
+          itemId: id,
+        }
+
+        meal.usedSlots.push(slotId)
+      }
+    },
   },
 
   actions: {
     // Добавить продукт — action принимает либо конкретный slotId, либо подставляет первый свободный из allowedSlots
-    addProduct(
-      { commit, getters },
-      { dayId, mealId = 'breakfast', subcatId, weight = null, slotId = null, extra = {} }
-    ) {
-      // ensure day inited
+    addProduct({ commit, getters }, { dayId, mealId, subcatId, weight }) {
       commit('INIT_DAY', dayId)
 
-      // если слот не указан — берём первый свободный подходящий
-      let chosenSlot = slotId
-      if (!chosenSlot) {
-        chosenSlot = getters.getFirstFreeSlotForSubcategory(dayId, mealId, subcatId)
-      }
+      const slotId = getters.getFirstFreeSlotForSubcategory(dayId, mealId, subcatId) || null
 
-      if (!chosenSlot) {
-        // нет места
-        console.warn('Нет свободного слота для выбранной подкатегории')
-        return { ok: false, reason: 'no-slot' }
-      }
-
-      commit('ADD_PRODUCT', {
+      commit('ADD_ITEM', {
         dayId,
         mealId,
         subcatId,
-        slotId: chosenSlot,
-        extra: { weight },
+        weight,
+        slotId,
       })
 
-      return { ok: true, slot: chosenSlot }
+      return { ok: true, placed: !!slotId }
     },
 
     removeProduct({ commit }, payload) {
-      commit('REMOVE_PRODUCT', payload)
+      commit('REMOVE_ITEM', payload)
     },
 
     fillWeekFromDay1({ commit }) {

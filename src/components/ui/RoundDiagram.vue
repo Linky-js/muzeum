@@ -124,7 +124,7 @@ onMounted(() => {
       <g>
         <!-- Значение -->
         <text :x="centerX" :y="textY - 20" text-anchor="middle" class="gauge-value" :fill="fillText">
-          {{ value }}
+          {{ Math.round(value) }}
         </text>
 
         <!-- Линия-разделитель -->

@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
-import diet from './modules/diet.js'
-import dashResult from './modules/dashResult.js'
+import diet from './modules/dietOld.js'
+import dashResult from './modules/dashResultOld.js'
 
 export default createStore({
   modules: {

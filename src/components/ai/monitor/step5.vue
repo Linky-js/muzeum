@@ -87,7 +87,7 @@ bus.on('resultstep5', (payload) => {
           <div class="othersHero">
             <div v-for="hero in resultPayload?.val?.hero.others" class="otherHero">
               <div class="heroImg"><img :src="hero.avatar" alt="" /></div>
-              <div class="percentHero">{{ hero.percent }}</div>
+              <div class="percentHero">{{ hero.percent }} %</div>
             </div>
           </div>
         </div>

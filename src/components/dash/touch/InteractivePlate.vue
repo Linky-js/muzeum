@@ -303,6 +303,32 @@ const activeMealProducts = computed(() =>
     currentMeal.value
   )
 );
+// TODO: ДАЛЬШЕ ИСПОЛЬЗОВАТЬ ЭТУ ФУНКЦИЮ
+const activeMealProductsNew = computed(() => {
+  const items = currentMealState.value?.items || []
+
+  const map = {}
+
+  for (const item of items) {
+    const key = item.subcatId
+
+    if (!map[key]) {
+      map[key] = {
+        subcatId: item.subcatId,
+        weight: 0,
+        count: 0,
+        items: [],
+      }
+    }
+
+    map[key].weight += Number(item.weight) || 0
+    map[key].count += 1
+    map[key].items.push(item)
+  }
+
+  return Object.values(map)
+})
+
 
 const modules = [Autoplay, Pagination, Navigation, FreeMode];
 

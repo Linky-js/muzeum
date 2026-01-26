@@ -65,6 +65,7 @@ watch(
 <style>
 .vk-container {
   width: 100%;
+  
 }
 /* --- базовые кнопки --- */
 .vk-container.hg-theme-default .hg-button {
@@ -72,7 +73,8 @@ watch(
   color: #ffffff !important;
   border-radius: 6px !important;
   border: none !important;
-  font-size: 16px;
+  font-size: 35px;
+  height: 80px;
 }
 
 /* --- кнопка при нажатии --- */
@@ -83,13 +85,15 @@ watch(
 
 /* --- контейнер (по желанию) --- */
 .vk-container {
-  background: #00000000; /* прозрачный / поменяй при необходимости */
-  padding: 10px;
-  width: 1310px;
+  background: #1A1A1A;
+  padding: 20px;
+  width: 1810px;
   position: fixed;
   bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
 }
-
+.hg-theme-default .hg-row:not(:last-child) {
+  margin-bottom: 15px;
+}
 </style>

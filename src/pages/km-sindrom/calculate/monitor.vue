@@ -78,7 +78,7 @@ const changeMobileView = (changeValue) => {
       </div>
       <div class="monitor-qr__info">
         <h2 class="monitor-qr__title">
-          Калькулятор продолжительности жизни и <br />риска возникновения
+          Калькулятор продолжительности жизни<br /> и риска возникновения 
           развития<br />
           метаболического синдрома
         </h2>
@@ -195,6 +195,8 @@ const changeMobileView = (changeValue) => {
   letter-spacing: -0.03em;
   color: #ffffff;
   margin-bottom: 28px;
+  width: 1553px;
+  flex-shrink: 0;
 }
 
 .monitor-qr__description {

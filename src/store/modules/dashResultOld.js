@@ -49,22 +49,25 @@ export default {
       const dashCategories = {}
 
       for (const meal of meals) {
-        const items = day.meals[meal].items
+        const plate = day.meals[meal].plate
 
-        for (const item of items) {
-          if (!item) continue
+        for (const slotKey in plate) {
+          const slot = plate[slotKey]
+          if (!slot) continue
 
-          const subcatId = item.subcatId
-          const weight = item.weight ?? 0
+          const subcatId = slot.subcatId
+          const weight = slot.weight ?? 0
 
           const { dashCategoryName, dashSubcatName } = findDashCategoryData(categories, subcatId)
-
+          console.log('dashCategoryName', dashCategoryName);
+          
           if (!dashSubcatName) continue
 
           const dashProduct = dashData.find((p) => p.subcategory === dashSubcatName)
 
           if (!dashProduct) continue
-
+          console.log(weight);
+          
           const coeff = weight / 100
 
           const portions = coeff * Number(dashProduct.porc100g)
@@ -75,7 +78,9 @@ export default {
           totalSodium += sodium
 
           if (!dashCategories[dashCategoryName]) {
-            dashCategories[dashCategoryName] = { portions: 0 }
+            dashCategories[dashCategoryName] = {
+              portions: 0,
+            }
           }
 
           dashCategories[dashCategoryName].portions += portions
@@ -115,9 +120,9 @@ function findDashCategoryData(categories, subcatId) {
  */
 function normalizeDashCategories(cats, TDEE) {
   const DASH_LIMITS = {
-    Овощи: Math.round((TDEE * 4.5) / 2000),
-    Фрукты: Math.round((TDEE * 4.5) / 2000),
-    Зерновые: Math.round((TDEE * 7) / 2000),
+    'Овощи': Math.round((TDEE * 4.5) / 2000),
+    'Фрукты': Math.round((TDEE * 4.5) / 2000),
+    'Зерновые': Math.round((TDEE * 7) / 2000),
     'Нежирное мясо, птица и рыба': Math.round((TDEE * 2) / 2000),
     'Обезжиренные/ низкожирные молочные': Math.round((TDEE * 2.5) / 2000),
     'Жиры и масла': Math.round((TDEE * 2.5) / 2000),
@@ -126,12 +131,13 @@ function normalizeDashCategories(cats, TDEE) {
   }
 
   const out = {}
-  console.log('dfhvbdh', TDEE, Math.round((TDEE * 7) / 2000))
+ console.log('dfhvbdh',TDEE, Math.round((TDEE * 7) / 2000));
   // перебираем ВСЕ существующие категории
   for (const categoryName in DASH_LIMITS) {
     const portions = cats[categoryName]?.portions ?? 0
     const norm = DASH_LIMITS[categoryName]
-
+   
+    
     out[categoryName] = {
       portions,
       percent: Math.round((portions / norm) * 100),
@@ -140,3 +146,4 @@ function normalizeDashCategories(cats, TDEE) {
 
   return out
 }
+
