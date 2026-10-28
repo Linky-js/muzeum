@@ -9,16 +9,31 @@ lerna-debug.log*
 
 node_modules
 .DS_Store
+*.zip
 dist
 dist-ssr
 coverage
 *.local
-public/*.mp4
-
-
-# Игнорировать все mp4-файлы
-*.mp4
+# Тяжёлые медиа не храним в git (файлы остаются локально)
 *.webm
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.bmp
+*.avif
+*.tif
+*.tiff
+*.wav
+*.mp3
+*.ogg
+*.m4a
+*.flac
 
 
 # Editor directories and files

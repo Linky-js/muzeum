@@ -93,37 +93,41 @@ const resultPayload = computed(() => ({
 const attitudes = ref([])
 const spheres = ref([])
 const heroes = ref([])
-const currentAttitudeName = props.person.attitude.name
+const currentAttitudeName = props.person.attitude?.name
 const currentSphereName = props.person.sphere
-const currentHeroName = props.person.ai.name
+const currentHeroName = props.person.ai?.name
 
 // Текущее значение
 const currentAttitudeValue = computed(() => attitudes.value[currentAttitudeName] ?? null)
 const currentSphereValue = computed(() => spheres.value[currentSphereName] ?? null)
 const currentHeroValue = computed(() => heroes.value[currentHeroName] ?? null)
-const currentSrcVideo = computed(() => typesAi.value.find(item => item.name === currentHeroName).video)
+const currentSrcVideo = computed(() => typesAi.value.find(item => item?.name === currentHeroName)?.video)
 
 // Массив остальных
 const otherAttitudes = computed(() => {
   return Object.entries(attitudes.value)
     .filter(([name]) => name !== currentAttitudeName)
     .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value) 
 })
 
 const otherSpheres = computed(() => {
   return Object.entries(spheres.value)
     .filter(([name]) => name !== currentSphereName)
     .map(([name, value]) => ({ name, value }))
+     .sort((a, b) => b.value - a.value)
 })
 const otherHeroes = computed(() => {
   return typesAi.value
     // убираем текущего героя
-    .filter(hero => hero.name !== currentHeroName)
+    .filter(hero => hero?.name !== currentHeroName)
     // добавляем процент
     .map(hero => ({
       ...hero,
-      percent: heroes.value?.[hero.name] ?? 0
+      percent: heroes.value?.[hero?.name] ?? 0
     }))
+    // сортируем по убыванию процентов
+    .sort((a, b) => b.percent - a.percent)
 })
 
 
@@ -170,7 +174,7 @@ const getStatistickHeroes = async () => {
     }
     )
     heroes.value = await res.json()
-    console.log('heroes', heroes.value);
+    
 
   } catch (error) {
     console.log(error);
@@ -195,20 +199,20 @@ onMounted(() => {
     <div class="stats">
       <div class="stat">
         <div class="head">
-          Отношение к ИИ в медицине
+          Ваше отношение к ИИ в медицине
         </div>
         <div class="percents">
           <div class="current__percent percent-block">
-            <div class="label">Ваш выбор</div>
+            <div class="label">С вами согласны</div>
             <div class="percent__block">
               <div class="percent">{{ currentAttitudeValue }}%</div>
               <div class="track">
                 <div class="current_track"
-                  :style="{ width: `${currentAttitudeValue}%`, background: person.attitude.name === 'Положительное' ? 'linear-gradient(180deg, #3DB967 0%, #71E397 100%)' : person.attitude.name === 'Нейтральное' ? 'linear-gradient(180deg, #0A92F3 0%, #66B3EA 100%)' : person.attitude.name === 'Отрицательное' ? 'linear-gradient(180deg, #AD3473 0%, #CC78A3 100%)' : person.attitude.name === 'Затрудняюсь' ? 'linear-gradient(180deg, #CDCDCD 0%, #FBFBFB 100%)' : '' }">
+                  :style="{ width: `${currentAttitudeValue}%`, background: person.attitude?.name === 'Положительное' ? 'linear-gradient(180deg, #3DB967 0%, #71E397 100%)' : person.attitude?.name === 'Нейтральное' ? 'linear-gradient(180deg, #0A92F3 0%, #66B3EA 100%)' : person.attitude?.name === 'Отрицательное' ? 'linear-gradient(180deg, #AD3473 0%, #CC78A3 100%)' : person.attitude?.name === 'Затрудняюсь' ? 'linear-gradient(180deg, #CDCDCD 0%, #FBFBFB 100%)' : '' }">
                 </div>
               </div>
               <div class="percent__text">
-                {{ person.attitude.name }}
+                {{ person.attitude?.name }}
               </div>
             </div>
           </div>
@@ -218,11 +222,11 @@ onMounted(() => {
               <div class="percent">{{ attitude.value }}%</div>
               <div class="track">
                 <div class="current_track"
-                  :style="{ width: `${attitude.value}%`, background: attitude.name === 'Положительное' ? 'linear-gradient(180deg, #3DB967 0%, #71E397 100%)' : attitude.name === 'Нейтральное' ? 'linear-gradient(180deg, #0A92F3 0%, #66B3EA 100%)' : attitude.name === 'Отрицательное' ? 'linear-gradient(180deg, #AD3473 0%, #CC78A3 100%)' : attitude.name === 'Затрудняюсь' ? 'linear-gradient(180deg, #CDCDCD 0%, #FBFBFB 100%)' : '' }">
+                  :style="{ width: `${attitude.value}%`, background: attitude?.name === 'Положительное' ? 'linear-gradient(180deg, #3DB967 0%, #71E397 100%)' : attitude?.name === 'Нейтральное' ? 'linear-gradient(180deg, #0A92F3 0%, #66B3EA 100%)' : attitude?.name === 'Отрицательное' ? 'linear-gradient(180deg, #AD3473 0%, #CC78A3 100%)' : attitude?.name === 'Затрудняюсь' ? 'linear-gradient(180deg, #CDCDCD 0%, #FBFBFB 100%)' : '' }">
                 </div>
               </div>
               <div class="percent__text">
-                {{ attitude.name }}
+                {{ attitude?.name }}
               </div>
             </div>
           </div>
@@ -240,7 +244,7 @@ onMounted(() => {
           <div class="otherGraphs">
             <div class="label">Выбор других пользователей</div>
             <div class="graphsList">
-              <CirclePercent v-for="sphere in otherSpheres" :key="sphere.name" :label="sphere.name"
+              <CirclePercent v-for="sphere in otherSpheres" :key="sphere?.name" :label="sphere?.name"
                 :percent="sphere.value" />
             </div>
           </div>
@@ -249,15 +253,17 @@ onMounted(() => {
     </div>
     <div class="stat">
       <div class="head">
-        Какой вы тип ИИ
+        Ваше восприятие ИИ
       </div>
       <div class="heroes">
         <div class="currentHero">
-          <div class="label">Ваш выбор</div>
+          <div class="label">С вами согласны</div>
           <div class="head">{{ currentHeroValue }}%</div>
+
           <video :src="currentSrcVideo" autoplay muted loop playsinline></video>
         </div>
         <div class="othersHero">
+          <div class="label">Выбор других пользователей</div>
           <div v-for="hero in otherHeroes" class="otherHero">
             <div class="heroImg"><img :src="hero.avatar" alt="" /></div>
             <div class="percentHero">{{ hero.percent }} %</div>
@@ -265,9 +271,15 @@ onMounted(() => {
         </div>
       </div>
     </div>
+    <RouterLink to="/touch1/screen-2" class="quiz__btn">
+      На главную
+    </RouterLink>
   </div>
 </template>
 <style scoped>
+.quiz__btn{
+  transform: translateX(-50%);
+}
 .result__wrapper {
   margin-top: 215px;
   width: 100%;
@@ -334,7 +346,7 @@ onMounted(() => {
 
 .current__percent .percent__block {
   border-radius: 60px;
-  width: 1300px;
+  width: 1342px;
   height: 81px;
   background: rgba(177, 177, 177, 0.1);
   padding: 18px 67px;
@@ -343,6 +355,7 @@ onMounted(() => {
 
 .track {
   width: 747px;
+  flex-shrink: 0;
   height: 25px;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 60px;
@@ -369,7 +382,7 @@ onMounted(() => {
   gap: 43px;
   border-radius: 60px;
   width: 351px;
-  height: 388px;
+  height: 428px;
   background: rgba(177, 177, 177, 0.1);
   padding: 34px 56px;
   transform: translateX(-56px);

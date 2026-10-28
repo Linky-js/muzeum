@@ -12,10 +12,7 @@
         "alteration": true,
         "preview": "/products/subcat/subcat-1-1.png",
         "allowedSlots": [5],
-        "images": {
-          "5": "/products/kreker1.png",
-          "5_1": "/products/kreker2.png"
-        }
+        "images": { "5": "/products/kreker1.png", "51": "/products/kreker2.png" }
       },
       {
         "id": "grains_refined",
@@ -80,10 +77,7 @@
         "alteration": true,
         "preview": "/products/subcat/subcat-1-6.png",
         "allowedSlots": [11],
-        "images": {
-          "11": "/products/hleb1.png",
-          "11_1": "/products/hleb2.png"
-        }
+        "images": { "11": "/products/hleb1.png", "111": "/products/hleb2.png" }
       },
       {
         "id": "bread_whole",
@@ -92,10 +86,7 @@
         "alteration": true,
         "preview": "/products/subcat/subcat-1-7.png",
         "allowedSlots": [11],
-        "images": {
-          "11": "/products/hleb_zerno_1.png",
-          "11_1": "/products/hleb_zerno_2.png"
-        }
+        "images": { "11": "/products/hleb_zerno_1.png", "111": "/products/hleb_zerno_2.png" }
       }
     ]
   },
@@ -183,7 +174,6 @@
           "4": "/products/kurica4.png"
         }
       },
-
       {
         "id": "#FF0004_meat",
         "name": "Красное мясо",
@@ -241,10 +231,7 @@
         "alteration": true,
         "preview": "/products/subcat/subcat-4-3.png",
         "allowedSlots": [8],
-        "images": {
-          "8": "/products/sir1.png",
-          "8_1": "/products/sir2.png"
-        }
+        "images": { "8": "/products/sir1.png", "81": "/products/sir2.png" }
       },
       {
         "id": "yaichnicas",
@@ -339,9 +326,7 @@
         "alteration": true,
         "preview": "/products/subcat/subcat-6-2.png",
         "allowedSlots": [6],
-        "images": {
-          "6": "/products/orehi1.png"
-        }
+        "images": { "6": "/products/orehi1.png" }
       },
       {
         "id": "seeds",
@@ -350,9 +335,7 @@
         "alteration": true,
         "preview": "/products/subcat/subcat-6-3.png",
         "allowedSlots": [6],
-        "images": {
-          "6": "/products/semki1.png"
-        }
+        "images": { "6": "/products/semki1.png" }
       },
       {
         "id": "peanut-butter",
@@ -411,166 +394,137 @@
         "alteration": true,
         "preview": "/products/subcat/subcat-7-3.png",
         "allowedSlots": [12],
-        "images": {
-          "12": "/products/desert1.png"
-        }
+        "images": { "12": "/products/desert1.png" }
+      }
+    ]
+  },
+  {
+    "id": "fruits",
+    "name": "Фрукты",
+    "currentName": "Фрукты",
+    "img": "/products/cat/fructi.png",
+    "subcategories": [
+      {
+        "id": "fresh-fruit",
+        "name": "Свежие фрукты",
+        "oldname": "Свежие (1 средний плод)",
+        "alteration": true,
+        "preview": "/products/subcat/subcat-8-1.png",
+        "allowedSlots": [15],
+        "images": { "15": "/products/frukti.png" }
       },
       {
-        "id": "fruits",
-        "name": "Фрукты",
-        "currentName": "Фрукты",
-        "img": "/products/cat/fructi.png",
-        "subcategories": [
-          {
-            "id": "fresh-fruit",
-            "name": "Свежие фрукты",
-            "oldname": "Свежие (1 средний плод)",
-            "alteration": true,
-            "preview": "/products/subcat/subcat-8-1.png",
-            "allowedSlots": [15],
-            "images": {
-              "15": "/products/frukti.png"
-            }
-          },
-          {
-            "id": "dried-fruits",
-            "name": "Сухофрукты",
-            "oldname": "Сухофрукты (1/4 стакана)",
-            "alteration": true,
-            "preview": "/products/subcat/subcat-8-2.png",
-            "allowedSlots": [6],
-            "images": {
-              "6": "/products/suho1.png"
-            }
-          },
-          {
-            "id": "berries-slices",
-            "name": "мЯгоды",
-            "oldname": "Ягоды/ломтики (1/2 стакана)",
-            "alteration": true,
-            "preview": "/products/subcat/subcat-8-3.png",
-            "allowedSlots": [7],
-            "images": {
-              "7": "/products/yagodi_1.png"
-            }
-          }
-        ]
+        "id": "dried-fruits",
+        "name": "Сухофрукты",
+        "oldname": "Сухофрукты (1/4 стакана)",
+        "alteration": true,
+        "preview": "/products/subcat/subcat-8-2.png",
+        "allowedSlots": [6],
+        "images": { "6": "/products/suho1.png" }
       },
       {
-        "id": "drinks",
-        "name": "Напитки",
-        "currentName": "Напитки",
-        "img": "/products/cat/napitki.png",
-        "subcategories": [
-          {
-            "id": "milk",
-            "name": "Молоко",
-            "oldname": "Молоко (обезжиренное)",
-            "alteration": true,
-            "oldCategory": "Обезжиренные/ низкожирные молочные",
-            "preview": "/products/subcat/subcat-9-1.png",
-            "allowedSlots": [14, 9],
-            "images": {
-              "9": "/products/moloko2_right.png",
-              "14": "/products/moloko1_left.png"
-            }
-          },
-          {
-            "id": "kefir",
-            "name": "Кефир и ряженка",
-            "oldname": "Кефир (обезжиренный)",
-            "oldCategory": "Обезжиренные/ низкожирные молочные",
-            "alteration": true,
-            "allowedSlots": [10],
-            "images": {
-              "10": "/products/kefir1.png"
-            }
-          },
-
-          {
-            "id": "yogurt",
-            "name": "Йогурт",
-            "oldname": "Йогурт (обезжиренный)",
-            "oldCategory": "Обезжиренные/ низкожирные молочные",
-            "alteration": true,
-            "allowedSlots": [10],
-            "images": {
-              "10": "/products/yogurt1.png"
-            }
-          },
-          {
-            "id": "tea",
-            "name": "Чай",
-            "oldname": "чай",
-            "alteration": true,
-            "preview": "/products/subcat/subcat-9-2.png",
-            "allowedSlots": [13],
-            "images": {
-              "13": "/products/chay.png"
-            }
-          },
-          {
-            "id": "black-coffee",
-            "name": "Кофе чёрный",
-            "oldname": "кофе черный",
-            "alteration": true,
-            "preview": "/products/subcat/subcat-9-3.png",
-            "allowedSlots": [13],
-            "images": {
-              "13": "/products/cofe2.png"
-            }
-          },
-          {
-            "id": "coffee-with-milk",
-            "name": "Кофе с молоком",
-            "oldname": "кофе с молоком",
-            "alteration": true,
-            "preview": "/products/subcat/subcat-9-4.png",
-            "allowedSlots": [13],
-            "images": {
-              "13": "/products/cofe1.png"
-            }
-          },
-          {
-            "id": "vegetable-juice",
-            "name": "Овощной сок",
-            "oldname": "Овощной сок (1/2 стакана)",
-            "alteration": true,
-            "oldCategory": "Овощи",
-            "preview": "/products/subcat/subcat-9-5.png",
-            "allowedSlots": [14, 9],
-            "images": {
-              "9": "/products/sok2_right.png",
-              "14": "/products/sok2_left.png"
-            }
-          },
-          {
-            "id": "fruit-juice",
-            "name": "100% сок (1/2 стакана)",
-            "oldname": "100% сок (1/2 стакана)",
-            "alteration": true,
-            "oldCategory": "Фрукты",
-            "preview": "/products/subcat/subcat-9-6.png",
-            "allowedSlots": [9, 14],
-            "images": {
-              "9": "/products/sok1_right.png",
-              "14": "/products/sok1_left.png"
-            }
-          },
-          {
-            "id": "sweetened-drinks",
-            "name": "Сладкие напитки и лимонады",
-            "oldname": "Подслащённые напитки (1 стакан)",
-            "alteration": true,
-            "oldCategory": "Сладости и добавленные сахара",
-            "preview": "/products/subcat/subcat-9-7.png",
-            "allowedSlots": [9, 14],
-            "images": {
-              "9": "/products/sok3_right.png",
-              "14": "/products/sok3_left.png"
-            }
-          }
-        ]
+        "id": "berries-slices",
+        "name": "Ягоды",
+        "oldname": "Ягоды/ломтики (1/2 стакана)",
+        "alteration": true,
+        "preview": "/products/subcat/subcat-8-3.png",
+        "allowedSlots": [7],
+        "images": { "7": "/products/yagodi_1.png" }
+      }
+    ]
+  },
+  {
+    "id": "drinks",
+    "name": "Напитки",
+    "currentName": "Напитки",
+    "img": "/products/cat/napitki.png",
+    "subcategories": [
+      {
+        "id": "milk",
+        "name": "Молоко",
+        "oldname": "Молоко (обезжиренное)",
+        "alteration": true,
+        "oldCategory": "Обезжиренные/ низкожирные молочные",
+        "preview": "/products/subcat/subcat-9-1.png",
+        "allowedSlots": [14, 9],
+        "images": { "9": "/products/moloko2_right.png", "14": "/products/moloko1_left.png" }
+      },
+      {
+        "id": "kefir",
+        "name": "Кефир и ряженка",
+        "oldname": "Кефир (обезжиренный)",
+        "oldCategory": "Обезжиренные/ низкожирные молочные",
+        "alteration": true,
+        "preview": "/products/subcat/subcat-4-1.png",
+        "allowedSlots": [10],
+        "images": { "10": "/products/kefir1.png" }
+      },
+      {
+        "id": "yogurt",
+        "name": "Йогурт",
+        "oldname": "Йогурт (обезжиренный)",
+        "oldCategory": "Обезжиренные/ низкожирные молочные",
+        "alteration": true,
+        "preview": "/products/subcat/subcat-4-2.png",
+        "allowedSlots": [10],
+        "images": { "10": "/products/yogurt1.png" }
+      },
+      {
+        "id": "tea",
+        "name": "Чай",
+        "oldname": "чай",
+        "alteration": true,
+        "preview": "/products/subcat/subcat-9-2.png",
+        "allowedSlots": [13],
+        "images": { "13": "/products/chay.png" }
+      },
+      {
+        "id": "black-coffee",
+        "name": "Кофе чёрный",
+        "oldname": "кофе черный",
+        "alteration": true,
+        "preview": "/products/subcat/subcat-9-3.png",
+        "allowedSlots": [13],
+        "images": { "13": "/products/cofe2.png" }
+      },
+      {
+        "id": "coffee-with-milk",
+        "name": "Кофе с молоком",
+        "oldname": "кофе с молоком",
+        "alteration": true,
+        "preview": "/products/subcat/subcat-9-4.png",
+        "allowedSlots": [13],
+        "images": { "13": "/products/cofe1.png" }
+      },
+      {
+        "id": "vegetable-juice",
+        "name": "Овощной сок",
+        "oldname": "Овощной сок (1/2 стакана)",
+        "alteration": true,
+        "oldCategory": "Овощи",
+        "preview": "/products/subcat/subcat-9-5.png",
+        "allowedSlots": [14, 9],
+        "images": { "9": "/products/sok2_right.png", "14": "/products/sok2_left.png" }
+      },
+      {
+        "id": "fruit-juice",
+        "name": "100% сок (1/2 стакана)",
+        "oldname": "100% сок (1/2 стакана)",
+        "alteration": true,
+        "oldCategory": "Фрукты",
+        "preview": "/products/subcat/subcat-9-6.png",
+        "allowedSlots": [9, 14],
+        "images": { "9": "/products/sok1_right.png", "14": "/products/sok1_left.png" }
+      },
+      {
+        "id": "sweetened-drinks",
+        "name": "Сладкие напитки и лимонады",
+        "oldname": "Подслащённые напитки (1 стакан)",
+        "alteration": true,
+        "oldCategory": "Сладости и добавленные сахара",
+        "preview": "/products/subcat/subcat-9-7.png",
+        "allowedSlots": [9, 14],
+        "images": { "9": "/products/sok3_right.png", "14": "/products/sok3_left.png" }
       }
     ]
   }

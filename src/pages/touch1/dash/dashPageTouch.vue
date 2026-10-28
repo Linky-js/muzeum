@@ -72,7 +72,7 @@ const changePerson = (event) => {
 
 <template>
   <GetInfoUser v-if="!sentResult" @changePerson="changePerson" />
-  <InteractivePlate @goResult="goResult" />
+  <InteractivePlate @goResult="goResult" :sentResult="sentResult"  />
   <ResultPlate v-if="resultInfo" :result-obj="resultInfo" />
   
 </template>

@@ -5,7 +5,7 @@ import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vu
 import IconInfo from "@/components/icons/IconInfo.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination, Navigation, FreeMode } from "swiper/modules";
-import products from "@/../public/datas/dash.json";
+import products from "@/../public/datas/dash2.json";
 
 import { useBroadcastBus } from "@/composables/useBroadcastBus.js";
 import { initMasterSync } from "@/composables/syncRouterSimple.js";
@@ -25,11 +25,10 @@ import "swiper/css/autoplay";
 
 const emit = defineEmits(["goResult"]);
 const store = useStore();
-
 const baseImgSrc = "/dash/stol/fon2.png";
 
 const currentDay = ref(1);
-const currentMeal = ref("breakfast");
+const currentMeal = ref("");
 const openCategory = ref(null);
 const canvasRef = ref(null);
 const plateArea = ref(null);
@@ -40,6 +39,8 @@ const activeInfoBtn = ref(null);
 const weight = ref("");
 const useNumpad = ref(false);
 const weightInputRef = ref(null);
+const StepByStep = ref(true); //TODO: true
+const currentStep = ref(1);
 
 const days = [
   { id: 1, smallName: "Понедельник" },
@@ -91,15 +92,16 @@ const visibleDays = computed(() => {
 });
 
 function selectMeal(dayId, mealId) {
+  if (StepByStep.value) { currentStep.value = 2; }
   if (!visibleDays.value.some((d) => d.id === dayId)) return;
   currentDay.value = dayId;
   currentMeal.value = mealId;
 }
 const isInPlate = (id) => {
   // Проверяем, есть ли объект с таким subcatId внутри plate
-  return Object.values(currentMealState.value.plate).some(
-    (item) => item && item.subcatId === id
-  );
+  return currentMealState.value.items.some(
+    (i) => i.subcatId === id
+  )
 };
 
 watch(
@@ -141,22 +143,47 @@ function numpadPress(char) {
   else weight.value += char;
 }
 function toggleCategory(catId) {
+  if (StepByStep.value && currentStep.value == 4) { 
+    StepByStep.value = false;
+    currentStep.value = 0;
+   }
+  if (StepByStep.value) { currentStep.value = 3; }
+  currentProducts.value = [];
   openCategory.value = openCategory.value === catId ? null : catId;
 }
-function onSelectSubcategory(subcatId, sub) {
+async function onSelectSubcategory(subcatId, sub) {
+  if (StepByStep.value && currentStep.value == 4) { 
+    StepByStep.value = false;
+    currentStep.value = 0;
+   }
+  if (StepByStep.value) {
+    currentStep.value = 4;
+  }
+  
+  let weightDefault = "";
   if (sub.alteration && sub.oldname) {
-    getProducts(sub.oldname);
+    weightDefault = await getProducts(sub.oldname);
   } else {
-    getProducts(sub.name);
+    weightDefault = await getProducts(sub.name);
   }
   selectedSubcat.value = subcatId;
-  weight.value = "";
+  weight.value = weightDefault;
+  const res = await store.dispatch("diet/addProduct", {
+    dayId: currentDay.value,
+    mealId: currentMeal.value,
+    subcatId: selectedSubcat.value,
+    weight: Number(weight.value),
+  });
+
   useNumpad.value = false;
 }
 const getProducts = async (name) => {
+  console.log('name', name);
 
   currentProducts.value = products.filter((p) => p.subcategory === name);
-  console.log('products', name);
+  console.log('currentProducts', currentProducts.value);
+
+  return currentProducts.value[0]?.porciya || 0;
 }
 async function confirmWeight() {
   if (!weight.value || Number(weight.value) <= 0) {
@@ -178,18 +205,55 @@ async function confirmWeight() {
 }
 
 /* --- Slots --- */
-function onSlotClick(slotId) {
+function onSlotClick(slotId, items = null) {
+  // Если переданы items — удаляем все продукты, связанные со слотом
+  if (Array.isArray(items) && items.length) {
+    items.forEach((item) => {
+      store.dispatch("diet/removeProduct", {
+        dayId: currentDay.value,
+        mealId: currentMeal.value,
+        slotId: item.slotId,
+        itemId: item.id,
+      });
+    });
+
+    activeInfoBtn.value = false;
+    return; // ⬅️ важно: дальше не идём
+  }
 
   if (!currentMealState.value) return;
+
   activeInfoBtn.value = false;
+
   if (currentMealState.value.plate[slotId]) {
     store.dispatch("diet/removeProduct", {
       dayId: currentDay.value,
       mealId: currentMeal.value,
       slotId,
+
     });
   }
 }
+const editWeight = async (type, product) => {
+  let productSubcategory = store.state.diet.categories
+    .flatMap((cat) => cat.subcategories)
+    .find((subcat) => subcat.id === product.subcatId);
+  console.log('productSubcategory', productSubcategory);
+  let currentWeight = products.filter((p) => p.subcategory === productSubcategory.oldname)[0]?.porciya || 0;
+  if (type === 'plus') product.weight = Number(product.weight) + Number(currentWeight);
+  if (type === 'minus') product.weight = Number(product.weight) - Number(currentWeight);
+  if (product.weight <= 0) {onSlotClick(product.slotId, product.items); return}
+  
+  console.log(product.weight);
+  store.dispatch("diet/editProduct", {
+    dayId: currentDay.value,
+    mealId: currentMeal.value,
+    itemId: product.subcatId,
+    newWeight: product.weight,
+  });
+
+}
+
 
 const slotPositions = {
   1: { top: 29.5, left: 45.1, width: "380px" },
@@ -199,7 +263,7 @@ const slotPositions = {
   5: { top: 49, left: 60.4, width: "344px" },
   6: { top: 39.3, left: 38.6, width: "222px", zIndex: 2 },
   7: { top: 12.4, left: 35.4, width: "390px", zIndex: 3 },
-  8: { top: 39.4, left: 62, width: "282px" },
+  8: { top: 39.4, left: 62, width: "282px", zIndex: 2 },
   9: { top: 30, left: 64.1, width: "13%" },
   10: { top: 28, left: 39.6, width: "379px" },
   11: { top: 49.4, left: 72.5, width: "575px", zIndex: 2 },
@@ -297,14 +361,14 @@ function getNameCategory(id) {
   return null;
 }
 
-const activeMealProducts = computed(() =>
+const activeMealProductsOLD = computed(() =>
   store.getters["diet/getActiveMealSimpleProducts"](
     currentDay.value,
     currentMeal.value
   )
 );
 // TODO: ДАЛЬШЕ ИСПОЛЬЗОВАТЬ ЭТУ ФУНКЦИЮ
-const activeMealProductsNew = computed(() => {
+const activeMealProducts = computed(() => {
   const items = currentMealState.value?.items || []
 
   const map = {}
@@ -356,7 +420,15 @@ const toggleModal = () => {
   selectedSubcat.value = null;
   isOpenModal.value = !isOpenModal.value
 }
-onMounted(() => store.commit("diet/INIT_DAY", 1));
+const finishStep = () => {
+  StepByStep.value = false; currentStep.value = 0
+
+}
+
+onMounted(() => {
+
+  store.commit("diet/INIT_DAY", 1)
+});
 onBeforeUnmount(() => {
   console.log('onBefore');
 
@@ -366,7 +438,57 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="plate-wrapper" ref="plateArea">
-    <div class="top-info" v-if="activeMealProducts.length !== 0">
+    <div class="page_head">
+      <div class="title">
+        Диета DASH
+      </div>
+      <div class="subtitle">
+        Dietary Approaches to Stop Hypertension
+      </div>
+    </div>
+    <div v-if="StepByStep" class="stepByStep">
+      <div v-if="currentStep >= 1" class="step step1" :class="{ oldStep: currentStep > 1 }">
+        <div class="step__head">
+          Шаг 1
+        </div>
+        <div class="step__text">
+          Выберите <br>
+          приём пищи
+        </div>
+      </div>
+      <div v-if="currentStep >= 2" class="step step2" :class="{ oldStep: currentStep > 2 }">
+        <div class="step__head">
+          Шаг 2
+        </div>
+        <div class="step__text">
+          Выберите категорию <br>
+          продуктов
+        </div>
+      </div>
+      <div v-if="currentStep >= 3" class="step step3" :class="{ oldStep: currentStep > 3 }">
+        <div class="step__head">
+          Шаг 3
+        </div>
+        <div class="step__text">
+          Выберите <br>
+          подкатегорию <br> продуктов
+        </div>
+      </div>
+      <div v-if="currentStep >= 4" class="step step4" :class="{ oldStep: currentStep > 4 }">
+        <div class="step-wrapper">
+          <div class="step__head">
+            Шаг 4
+          </div>
+          <div class="step__text">
+            Вы можете изменить <br> граммовку продукта <br> или удалить его.
+          </div>
+        </div>
+        <button v-if="!useNumpad" class="bottom-inputs__btn" @click="finishStep">
+          ПОНЯТНО
+        </button>
+      </div>
+    </div>
+    <div class="top-info" v-if="activeMealProducts.length !== 0" :class="{ z53: currentStep >= 4 }">
       <div class="top-info__inner">
         <div class="top-info__top">
           <p class="top-info__top-left">Продукт</p>
@@ -376,16 +498,30 @@ onBeforeUnmount(() => {
           <div class="top-info__product" v-for="product in activeMealProducts" :key="product.slotId">
             <p class="top-info__content-title">
               {{ getNameCategory(product.subcatId) }}
-            </p>
-            <p class="top-info__content-weight">
-              <span>{{ product.weight }} г</span>
-              <svg @click="onSlotClick(product.slotId)" width="40" height="40" viewBox="0 0 40 40" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="20" fill="white" fill-opacity="0.15" />
+              <svg class="top-info__icon" @click="onSlotClick(product.slotId, product.items)" width="48" height="48"
+                viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="48" height="48" rx="24" fill="#2C2C2C" fill-opacity="0.2" />
                 <path
-                  d="M16 13.6V12H24V13.6H28V15.2H26.4V27.2C26.4 27.6418 26.0418 28 25.6 28H14.4C13.9582 28 13.6 27.6418 13.6 27.2V15.2H12V13.6H16ZM15.2 15.2V26.4H24.8V15.2H15.2ZM17.6 17.6H19.2V24H17.6V17.6ZM20.8 17.6H22.4V24H20.8V17.6Z"
+                  d="M20 17.6V16H28V17.6H32V19.2H30.4V31.2C30.4 31.6418 30.0418 32 29.6 32H18.4C17.9582 32 17.6 31.6418 17.6 31.2V19.2H16V17.6H20ZM19.2 19.2V30.4H28.8V19.2H19.2ZM21.6 21.6H23.2V28H21.6V21.6ZM24.8 21.6H26.4V28H24.8V21.6Z"
                   fill="white" />
               </svg>
+            </p>
+            <p class="top-info__content-weight">
+              <svg @click="editWeight('minus', product)" width="30" height="30" viewBox="0 0 30 30" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect width="30" height="30" rx="15" fill="#2C2C2C" fill-opacity="0.2" />
+                <line x1="7" y1="15" x2="23" y2="15" stroke="white" stroke-width="2" />
+              </svg>
+
+
+              <span>{{ product.weight }} г</span>
+              <svg @click="editWeight('plus', product)" width="48" height="48" viewBox="0 0 48 48" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect width="48" height="48" rx="24" fill="#2C2C2C" fill-opacity="0.2" />
+                <line x1="16" y1="24" x2="32" y2="24" stroke="white" stroke-width="2" />
+                <line x1="24" y1="16" x2="24" y2="32" stroke="white" stroke-width="2" />
+              </svg>
+
             </p>
           </div>
         </div>
@@ -405,7 +541,7 @@ onBeforeUnmount(() => {
               currentMealState?.plate[slotId].slot,
           }" v-click-outside="closeActiveInfo">
 
-            <div @click="onSlotClick(slotId)" class="btnInfo">
+            <!-- <div @click="onSlotClick(slotId)" class="btnInfo">
               <svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <foreignObject x="-14" y="-14" width="96" height="96">
                   <div xmlns="http://www.w3.org/1999/xhtml"
@@ -425,7 +561,7 @@ onBeforeUnmount(() => {
                 </defs>
               </svg>
 
-            </div>
+            </div> -->
           </div>
           <img v-if="currentMealState?.plate[slotId]" :src="currentMealState.plate[slotId].image" class="product"
             draggable="false" />
@@ -449,7 +585,8 @@ onBeforeUnmount(() => {
                 ? '/dash/days/full.png'
                 : '/dash/days/empty.png'
                 " />
-              <h6 class="meal__title">Завтрак</h6>
+              <h6 :class="{ white: StepByStep }" class="meal__title">Завтрак</h6>
+              <div class="after"></div>
             </div>
 
             <div class="meal" @click="selectMeal(d.id, 'lunch')" :class="{
@@ -459,7 +596,8 @@ onBeforeUnmount(() => {
                 ? '/dash/days/full.png'
                 : '/dash/days/empty.png'
                 " />
-              <h6 class="meal__title">Обед</h6>
+              <h6 :class="{ white: StepByStep }" class="meal__title">Обед</h6>
+              <div class="after"></div>
             </div>
 
             <div class="meal" @click="selectMeal(d.id, 'dinner')" :class="{
@@ -469,7 +607,8 @@ onBeforeUnmount(() => {
                 ? '/dash/days/full.png'
                 : '/dash/days/empty.png'
                 " />
-              <h6 class="meal__title">Ужин</h6>
+              <h6 :class="{ white: StepByStep }" class="meal__title">Ужин</h6>
+              <div class="after"></div>
             </div>
 
             <!-- <div class="meal" @click="selectMeal(d.id, 'snack')" :class="{
@@ -487,55 +626,44 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- Subcategories -->
-    <div class="bottom-info">
-      <div class="bottom-prompt" :class="{ active: currentProducts.length > 0 }">
-        <div class="bottom-prompt__top">
-          <h4 class="bottom-prompt__title">Подсказка </h4>
-          <IconInfo :color="{ '#1b1c21': currentProducts.length > 0 }" :opacity="{ '1': currentProducts.length > 0 }"
-            class="bottom-prompt__icon" />
+    <!-- <div class="bottom-prompt" :class="{ active: currentProducts.length > 0 }">
+      <div class="bottom-prompt__top">
+        <h4 class="bottom-prompt__title">Подсказка </h4>
+        <IconInfo :color="{ '#1b1c21': currentProducts.length > 0 }" :opacity="{ '1': currentProducts.length > 0 }"
+          class="bottom-prompt__icon" />
+      </div>
+      <div class="bottom-info__products">
+        {{currentProducts.map(p => p.product).join(', ')}}
+      </div>
+
+      <p v-if="!currentProducts.length" class="bottom-prompt__text">
+        В данном окне мы покажем перечень продуктов входящих в подкатегорию
+      </p>
+    </div> -->
+    <div :class="{ z53: currentStep >= 2 }" class="bottom-info">
+      
+      <div  class="controls categories-list">
+        <div v-if="currentProducts.length > 0" class="currentProducts">
+        <div class="currentProducts__title">
+          В ЭТУ ПОДКАТЕГОРИЮ ВХОДЯТ СЛЕДУЮЩИЕ ПРОДУКТЫ: 
         </div>
-        <div class="bottom-info__products">
+        <div class="currentProducts__name">
           {{currentProducts.map(p => p.product).join(', ')}}
         </div>
-
-        <p v-if="!currentProducts.length" class="bottom-prompt__text">
-          В данном окне мы покажем перечень продуктов входящих в подкатегорию
-        </p>
       </div>
-      <div class="controls categories-list">
-        <h4 class="categories-list__title">
-          Выберите категорию и подкатегорию продуктов
-        </h4>
         <div class="categories-list__cats-wrapper">
           <div v-for="cat in categories" :key="cat.id" class="categories-list__cats">
             <div class="categories-list__cat" @click="toggleCategory(cat.id)"
-              :class="{ active: openCategory === cat.id }">
+              :class="[{ active: openCategory === cat.id }, { disabled: openCategory != null }]">
               <img class="categories-list__cat-img" :src="cat.img" :alt="cat.id" />
               <h6 class="categories-list__cat-title">
-                {{ cat.currentName }}
+                {{ cat.name }}
               </h6>
             </div>
             <div class="categories-list__subcat-wrapper" :class="{ 'hidden-gradient': cat.subcategories.length <= 6 }"
               v-if="openCategory === cat.id">
-              <swiper :loop="true" slides-per-view="auto" :space-between="17" :free-mode="{
-                enabled: true,
-                momentum: false,
-                sticky: false,
-              }" :autoplay="{
-                delay: 1500, // Минимальная задержка
-                disableOnInteraction: true, // Не останавливать при взаимодействии
-                pauseOnMouseEnter: true, // Не останавливать при наведении
-              }" :speed="1500" :pagination="{
-                el: pagination,
-                clickable: true,
-                bulletClass: 'custom-bullet',
-                bulletActiveClass: 'custom-bullet-active',
-              }" :navigation="{
-                nextEl: arrowNext,
-                prevEl: arrowPrev,
-              }" :modules="modules" @swiper="onSwiper" @slideChange="onSlideChange"
-                class="categories-list__subcat-swiper">
-                <swiper-slide v-for="sub in cat.subcategories" :key="sub.id" class="categories-list__subcat-slide"
+              <div class="categories-list__subcat-swiper">
+                <div v-for="sub in cat.subcategories" :key="sub.id" class="categories-list__subcat-slide"
                   :class="{ activeSubcat: selectedSubcat === sub.id }">
                   <div class="categories-list__subcat" @click="onSelectSubcategory(sub.id, sub)">
                     <div class="categories-list__subcat-img-wrapper" :class="{ added: isInPlate(sub.id) }">
@@ -550,27 +678,21 @@ onBeforeUnmount(() => {
                       {{ sub.name }}
                     </h6>
                   </div>
-                </swiper-slide>
-              </swiper>
-              <div v-if="cat.subcategories.length > 6" class="custom-prev custom-arrow" ref="arrowPrev">
-                <div class="tint"></div>
+                </div>
               </div>
-              <div v-if="cat.subcategories.length > 6" class="custom-next custom-arrow" ref="arrowNext">
-                <div class="tint"></div>
-              </div>
-              <div class="custom-pagination" ref="pagination" v-if="cat.subcategories.length > 6"></div>
+
             </div>
           </div>
         </div>
       </div>
       <div class="right-info">
         <button v-if="!useNumpad" class="bottom-inputs__btn" @click="toggleModal">
-          Рассчитать
+          РАСCЧИТАТЬ ДИЕТУ
         </button>
       </div>
     </div>
     <div class="bottom-inputs" :class="{
-      active:
+      active2:
         selectedSubcat && selectedSubcat !== 'all' && selectedSubcat != '',
     }">
       <input ref="weightInputRef" class="weight-input bottom-inputs__inp" v-model="weight" @focus="useNumpad = true"
@@ -658,6 +780,103 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.page_head {
+  position: fixed;
+  top: 75px;
+    left: 66.5%;
+  z-index: 51;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.page_head .title {
+  font-weight: 600;
+  font-size: 80px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #ABA298;
+}
+
+.page_head .subtitle {
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: #ABA298;
+}
+
+.stepByStep {
+  position: fixed;
+  z-index: 52;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(34, 31, 29, 0.7);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: absolute;
+  width: max-content;
+}
+
+.step .step__head {
+  font-weight: 500;
+  font-size: 96px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.step .step__text {
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  color: #fff;
+
+}
+
+.step1 {
+  top: 146px;
+  left: 452px;
+}
+
+.step2 {
+  left: 212px;
+  bottom: 518px;
+}
+
+.step3 {
+  left: 212px;
+  bottom: 288px;
+}
+
+.step4 {
+  right: 100px;
+  top: 300px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 50px;
+}
+
+.step-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.step.oldStep {
+  opacity: 0.2;
+}
+
 .customAlert {
   position: fixed;
   top: 50%;
@@ -743,10 +962,15 @@ onBeforeUnmount(() => {
   top: 60px;
   right: 60px;
   padding: 32px;
-  width: 602px;
-  background: rgba(0, 0, 0, 0.34);
+  width: 707px;
+  background: rgba(75, 66, 59, 0.3);
   border-radius: 38px;
   z-index: 5;
+}
+
+.top-info__top-left,
+.top-info__top-rigth {
+  font-weight: 700;
 }
 
 .top-info__inner {
@@ -760,22 +984,51 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   align-items: center;
   font-family: "TT Hoves";
-  font-weight: 400;
+  font-weight: 700;
   font-size: 32px;
   line-height: 110%;
   letter-spacing: -0.02em;
-  color: #ffffff;
-  opacity: 0.5;
+  color: #fff;
 }
 
 .top-info__content {
   margin-top: 16px;
   display: grid;
   gap: 40px;
+  max-height: 1600px;
+  overflow-y: auto;
+  padding-right: 20px;
+
+}
+
+.top-info__content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.top-info__content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.top-info__content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
 }
 
 .top-info__content-title {
   font-size: 32px;
+  line-height: 1.2;
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+}
+
+.top-info__icon {
+  display: inline-block;
+  margin-left: 16px;
+  flex-shrink: 0;
+  vertical-align: text-bottom;
+  /* или text-bottom */
+  cursor: pointer;
 }
 
 .top-info__content-title::first-letter {
@@ -786,21 +1039,45 @@ onBeforeUnmount(() => {
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 16px;
+  height: max-content;
+  gap: 10px;
   font-size: 32px;
+}
+
+.top-info__content-weight svg {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+}
+
+.top-info__content-weight span {
+  border-radius: 50px;
+  padding: 8px 15px;
+  width: max-content;
+  min-width: 104px;
+  height: 48px;
+  background: rgba(44, 44, 44, 0.2);
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 100%;
+  letter-spacing: -0.02em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .top-info__product {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   font-family: "TT Hoves";
   font-weight: 500;
   font-size: 32px;
   line-height: 110%;
   letter-spacing: -0.02em;
   color: #ffffff;
-  gap: 20px;
+  gap: 30px;
 }
 
 .slot {
@@ -828,10 +1105,12 @@ onBeforeUnmount(() => {
 .days-controls {
   left: 60px;
   top: 60px;
-  background: rgba(0, 0, 0, 0.34);
+  border: 4px solid rgba(255, 255, 255, 0.15);
   border-radius: 64px;
   padding: 40px;
-  z-index: 51;
+  height: max-content;
+  padding: 40px;
+  z-index: 53;
 }
 
 .days-controls.many_days {
@@ -891,7 +1170,7 @@ onBeforeUnmount(() => {
 .meals {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 82px;
 }
 
 .days-controls.many_days .meals {
@@ -904,6 +1183,23 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 17px;
   align-items: center;
+  position: relative;
+}
+
+.meal .after {
+  position: absolute;
+  right: -40px;
+  top: -40px;
+}
+
+.meal.active .after {
+  border-radius: 0 70px 70px 0;
+  width: 405px;
+  height: 339px;
+  background: rgba(255, 255, 255, 0.7);
+
+  display: block;
+  z-index: 0;
 }
 
 .days-controls.many_days .meal {
@@ -915,12 +1211,11 @@ onBeforeUnmount(() => {
   height: 210.61997985839844px;
   border-radius: 24px;
   border-width: 4.21px;
+  flex-shrink: 0;
 
   overflow: hidden;
-}
-
-.meal.active img {
-  border: 4px solid #ffffff;
+  position: relative;
+  z-index: 1;
 }
 
 .days-controls.many_days .meal img {
@@ -939,7 +1234,17 @@ onBeforeUnmount(() => {
   font-size: 32px;
   line-height: 110%;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: #3b2e28;
+  position: relative;
+  z-index: 1;
+}
+
+.meal__title.white {
+  color: white;
+}
+
+.meal.active .meal__title {
+  color: #3b2e28;
 }
 
 .days button {
@@ -956,14 +1261,31 @@ onBeforeUnmount(() => {
 
 .bottom-info {
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 60px;
-  display: grid;
-  grid-template-columns: minmax(0, 453px) minmax(0, 1796px) minmax(0, 451px);
-  gap: 8px;
+  right: 178px;
+  bottom: 182px;
+  display: flex;
+  gap: 142px;
   max-width: 2716px;
   width: 100%;
+}
+.currentProducts{
+  position: absolute;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction:   column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.currentProducts *{
+  font-weight: 500;
+font-size: 25px;
+line-height: 110%;
+letter-spacing: -0.02em;
+text-align: center;
+color: #3b2e28;
 }
 
 .bottom-prompt {
@@ -1048,12 +1370,19 @@ onBeforeUnmount(() => {
 }
 
 .categories-list {
-  position: static;
+  position: relative;
   padding: 40px;
-  background: rgba(0, 0, 0, 0.34);
   border-radius: 58px;
   display: flex;
   flex-direction: column;
+  border: 4px solid rgba(255, 255, 255, 0.15);
+  border-radius: 64px;
+
+  height: 504px;
+}
+
+.z53 {
+  z-index: 53;
 }
 
 .categories-list__title {
@@ -1069,31 +1398,36 @@ onBeforeUnmount(() => {
 .categories-list__cats-wrapper {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(9, 1fr);
   gap: 8px;
   height: 100%;
 }
+
+/* .categories-list__cat.disabled:not(.active) {
+  filter: grayscale(1);
+} */
 
 .categories-list__cat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px 8px 16px;
+  padding: 15px 15px 21px;
   gap: 8px;
   max-height: 172px;
   height: 100%;
-  width: 183px;
+  width: 202px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 24px;
 }
 
 .categories-list__cat.active {
-  background: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.7);
+  ;
 }
 
 .categories-list__cat-img {
-  width: 168px;
-  height: 108.67px;
+  width: 172px;
+  height: 112px;
   border-radius: 13.9821px;
 }
 
@@ -1104,14 +1438,16 @@ onBeforeUnmount(() => {
   line-height: 110%;
   text-align: center;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: #241b17;
 }
 
 .categories-list__subcat-swiper {
   height: 213px;
+  display: flex;
+  gap: 18px;
 }
 
-.categories-list__subcat-wrapper::before {
+/* .categories-list__subcat-wrapper::before {
   position: absolute;
   content: "";
   display: block;
@@ -1120,11 +1456,11 @@ onBeforeUnmount(() => {
   height: 100%;
   background: linear-gradient(90deg, rgba(166, 166, 166, 0) 0%, #a6a6a6 80%);
   width: 11%;
-  /* или нужная вам ширина */
-  z-index: 2;
-}
 
-.categories-list__subcat-wrapper::after {
+  z-index: 2;
+} 
+
+ .categories-list__subcat-wrapper::after {
   position: absolute;
   content: "";
   display: block;
@@ -1133,9 +1469,9 @@ onBeforeUnmount(() => {
   height: 100%;
   background: linear-gradient(90deg, #a6a6a6 20%, rgba(166, 166, 166, 0) 100%);
   width: 11%;
-  /* или нужная вам ширина */
+
   z-index: 1;
-}
+} */
 
 .categories-list__subcat-wrapper.hidden-gradient::before,
 .categories-list__subcat-wrapper.hidden-gradient::after {
@@ -1148,16 +1484,16 @@ onBeforeUnmount(() => {
   left: 0;
   right: 0;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 38px;
-  min-height: 250px;
-  height: 250px;
+  min-height: 224px;
+  height: 224px;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
 }
 
 .categories-list__subcat-slide {
-  width: fit-content;
+  width: 260px;
 }
 
 .categories-list__subcat {
@@ -1167,16 +1503,12 @@ onBeforeUnmount(() => {
 }
 
 .categories-list__subcat-slide.activeSubcat .categories-list__subcat-img-wrapper {
-  border: 4px solid #ffffff;
+  border: 10px solid #ffffff;
 }
 
 .categories-list__subcat-img-wrapper {
-  width: 275px;
-  height: 162px;
-  min-width: 275px;
-  min-height: 162px;
-  max-width: 210px;
-  max-height: 147px;
+  width: 100%;
+  height: 150px;
   border-radius: 24px;
   overflow: hidden;
   border: 4px solid transparent;
@@ -1211,15 +1543,16 @@ onBeforeUnmount(() => {
   line-height: 110%;
   text-align: center;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: #241b17;
 }
 
 .right-info {
-  height: 602px;
+  /* height: 602px; */
   display: flex;
   flex-direction: column;
   justify-content: end;
   padding-left: 40px;
+  margin-bottom: 52px;
 }
 
 .bottom-inputs {
@@ -1303,17 +1636,17 @@ onBeforeUnmount(() => {
 .bottom-inputs__btn-numpad,
 .bottom-inputs__btn {
   margin-top: auto;
-  width: 361.81px;
+  width: 490px;
   background-color: #ffffff;
   border-radius: 24px;
-  height: 72px;
   opacity: 0.2;
   font-family: "TT Hoves";
   font-weight: 500;
-  font-size: 20px;
+  font-size: 35px;
   line-height: 110%;
   letter-spacing: -0.02em;
   color: #1b1c21;
+  padding: 33px 73px;
 }
 
 .bottom-inputs__btn {

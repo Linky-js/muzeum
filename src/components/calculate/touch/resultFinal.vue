@@ -31,7 +31,8 @@ const video = "/video.mp4";
             <span class="final__item-step">02</span>
           </div>
           <h4 class="final__item-title">
-            Откажитесь от курения, в том числе электронных сигарет
+            Откажитесь от курения, в том числе электронных сигарет<br>
+            Сведите потребление алкоголя к минимуму 
           </h4>
         </div>
       </div>
@@ -103,15 +104,24 @@ const video = "/video.mp4";
             <span class="final__item-step">04</span>
           </div>
           <h4 class="final__item-title">
-            Сохраняйте позитив и избегайте негатива
+            Заботьтесь о своих мыслях, избегайте негатива. <br> Развивайте дружбу, щедрость и сострадание
           </h4>
         </div>
       </div>
     </div>
+    <RouterLink :to="'/touch1/screen-1'"
+      class="quiz__btn"
+    >
+      На главную
+    </RouterLink>
   </div>
 </template>
 
 <style scoped>
+.quiz__btn{
+  bottom: -100px;
+  transform: translateX(-50%);
+}
 .final-wrapper {
   position: relative;
   display: flex;
@@ -120,8 +130,9 @@ const video = "/video.mp4";
   background-color: #020914;
   padding: 6.25rem;
   padding-top: 0;
-  width: 100vw;
+  width: 80vw;
   margin-top: 150px;
+  height: 1200px;
 }
 
 .final__body {
@@ -129,6 +140,7 @@ const video = "/video.mp4";
   gap: 24px 25px;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  height: 100%;
 }
 
 .final__item {
@@ -231,7 +243,7 @@ const video = "/video.mp4";
 .final__item-title {
   font-family: "TT Hoves";
   font-weight: 500;
-  font-size: 40px;
+  font-size: 32px;
   line-height: 110%;
   letter-spacing: -0.02em;
 }

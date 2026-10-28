@@ -41,7 +41,7 @@ const imageSrc = computed(() => {
   <div class="modal-overlay" :class="props.show ? 'show' : ''">
     <div class="interesting-fact">
       <div class="avatar animBtn">
-        <img v-if="region?.name" class="" :src="'/touch2/regions/IntFact_' + region.regioncode + '.png'"
+        <img v-if="region?.name" class="" :src="'/touch2/regions/IntFact_' + (region.regioncode < 10 ? '0' + region.regioncode : region.regioncode) + '.png'"
           :alt="region.name" />
       </div>
       <div class="fact">
@@ -66,7 +66,7 @@ const imageSrc = computed(() => {
       </div>
     </div>
     <div class="monument animBtn">
-      <img :src="'/touch2/regions/regicon_' + region.regioncode + '.png'" alt="">
+      <img :src="'/touch2/regions/regicon_' + (region.regioncode < 10 ? '0' + region.regioncode : region.regioncode) + '.png'" alt="">
       <div class="icons">
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
           <path
@@ -157,7 +157,7 @@ h1 {
   border-radius: 50%;
   overflow: hidden;
   border: 4px solid #fff;
-
+  flex-shrink: 0;
 }
 
 .avatar img {
@@ -217,23 +217,22 @@ h1 {
 .region__block {
   display: flex;
   flex-direction: column;
-  gap: 220px;
-  padding-top: 143px;
+  gap: 130px;
+  padding-top: 93px;
   flex-shrink: 0;
 }
 
 .region__block .region__title {
 
   width: 1713px;
-  height: 260px;
-
+  height: 400px;
+  display: flex;
+  align-items: center;
   font-family: 'TT Hoves';
   font-style: normal;
   font-weight: 500;
   font-size: 130px;
   line-height: 100%;
-  display: flex;
-  align-items: flex-end;
   letter-spacing: 0.02em;
   color: #FFFFFF;
 
@@ -257,6 +256,7 @@ h1 {
   margin-top: 300px;
   display: flex;
   flex-direction: column;
+
 }
 
 .icons {
@@ -265,6 +265,8 @@ h1 {
   justify-content: space-between;
   width: 473px;
   margin-top: 620px;
+  width: max-content;
+  align-self: flex-end;
 }
 
 .icons svg {

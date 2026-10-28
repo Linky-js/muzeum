@@ -28,7 +28,7 @@ const qrCodeUrl = ref("");
 // функция для генерации рандомного QR
 const generateQr = () => {
   // случайное число для "уникальности"
-  qrCodeUrl.value = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://muz.dmgug.ru/touch-calculate/touch-calc-mobile`;
+  qrCodeUrl.value = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=http://calculator.scardio.ru/`;
 };
 let intervalId;
 onMounted(() => {

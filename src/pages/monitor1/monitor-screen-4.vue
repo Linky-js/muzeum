@@ -24,25 +24,35 @@ function switchVideo(newSrc) {
   const currentVideo = videoRefs[activeIndex.value].value
 
   if (!nextVideo || !currentVideo) return
-
   if (sources.value[activeIndex.value] === newSrc) return
-  sources.value[nextIndex] = newSrc
 
+  // снимаем события со старого видео
+  detachTimeUpdate(currentVideo)
+  detachEnded(currentVideo)
+
+  sources.value[nextIndex] = newSrc
   nextVideo.load()
   nextVideo.currentTime = 0
   nextVideo.play()
-  console.log(nextVideo.currentTime);
 
-  // показываем новое видео
+  if (newSrc === '/video/ms/km_film.webm') {
+    nextVideo.muted = false
+  } else {
+    nextVideo.muted = true
+  }
+
   nextVideo.classList.add('active')
   currentVideo.classList.remove('active')
 
-  // останавливаем старое
   setTimeout(() => {
     currentVideo.pause()
   }, 800)
 
   activeIndex.value = nextIndex
+
+  // вешаем события на новое активное видео
+  attachTimeUpdate(nextVideo)
+  attachEnded(nextVideo)
 }
 
 function handleVideoCommand(chapter) {
@@ -54,7 +64,55 @@ function handleVideoCommand(chapter) {
 
 bus.on('currentVideo', handleVideoCommand)
 
+function handleTimeUpdate() {
+  const video = videoRefs[activeIndex.value].value
+  if (!video) return
+
+  bus.send('video_state', {
+    time: video.currentTime,
+    duration: video.duration || 0
+  })
+}
+
+function handleEnded() {
+  const video = videoRefs[activeIndex.value].value
+  if (!video) return
+
+  const src = sources.value[activeIndex.value]
+
+  // игнорируем фоновое видео
+  if (src === VIDEO_BG_SRC) return
+
+  bus.send('video_ended', {
+    src,
+    time: video.currentTime,
+    duration: video.duration
+  })
+}
+function attachEnded(video) {
+  if (!video) return
+  video.addEventListener('ended', handleEnded)
+}
+
+function detachEnded(video) {
+  if (!video) return
+  video.removeEventListener('ended', handleEnded)
+}
+
+function attachTimeUpdate(video) {
+  if (!video) return
+  video.addEventListener('timeupdate', handleTimeUpdate)
+}
+
+function detachTimeUpdate(video) {
+  if (!video) return
+  video.removeEventListener('timeupdate', handleTimeUpdate)
+}
 onMounted(() => {
+  const video = videoRefs[activeIndex.value].value
+  attachTimeUpdate(video)
+  attachEnded(video)
+
   bus.on('video_control', cmd => {
     const video = videoRefs[activeIndex.value].value
     if (!video) return
@@ -63,10 +121,15 @@ onMounted(() => {
       case 'play': video.play(); break
       case 'pause': video.pause(); break
       case 'mute': video.muted = cmd.value; break
-      case 'seek': video.currentTime = cmd.time; break
+      case 'seek':
+        if (Number.isFinite(cmd.time)) {
+          video.currentTime = cmd.time
+        }
+        break
     }
   })
 })
+
 
 </script>
 

@@ -220,21 +220,25 @@ export default {
       }
     },
     REMOVE_ITEM(state, { dayId, mealId, itemId }) {
-      const meal = state.week.days[dayId].meals[mealId]
+      const meal = state.week.days[dayId]?.meals?.[mealId]
+      if (!meal) return
 
       const idx = meal.items.findIndex((i) => i.id === itemId)
       if (idx === -1) return
 
       const item = meal.items[idx]
 
-      if (item.slotId) {
-        meal.plate[item.slotId] = null
-        meal.usedSlots = meal.usedSlots.filter((s) => s !== item.slotId)
+      // ⬇️ очищаем ВСЕ слоты, которые занимал item
+      if (Array.isArray(item.slotIds)) {
+        for (const slotId of item.slotIds) {
+          meal.plate[slotId] = null
+          meal.usedSlots = meal.usedSlots.filter((s) => s !== slotId)
+        }
       }
 
+      // ⬇️ удаляем item
       meal.items.splice(idx, 1)
     },
-
     // Удалить продукт с позиции
     REMOVE_PRODUCT(state, { dayId, mealId, slotId }) {
       if (!state.week.days[dayId]) state.week.days[dayId] = initialDay()
@@ -278,39 +282,61 @@ export default {
     },
     ADD_ITEM(state, { dayId, mealId, subcatId, weight, slotId }) {
       const meal = state.week.days[dayId].meals[mealId]
+      if (!meal) return
 
-      const id = Date.now() + Math.random()
+      // 🔎 ищем item по subcatId
+      let item = meal.items.find((i) => i.subcatId === subcatId)
 
-      const item = {
-        id,
-        subcatId,
-        weight,
-        slotId,
-      }
-
-      meal.items.push(item)
-
-      // ⬇️ если слот есть — визуально кладём
-      if (slotId) {
-        let image = null
-      for (const cat of state.categories) {
-        const sub = cat.subcategories?.find((s) => s.id === subcatId)
-        if (sub) {
-          image = sub.images?.[slotId] || null
-          break
+      // если item уже есть — просто увеличиваем вес
+      if (item) {
+        item.weight = (item.weight || 0) + weight
+      } else {
+        // иначе создаём новый
+        item = {
+          id: Math.round(Date.now() + Math.random()),
+          subcatId,
+          weight,
+          slotIds: [], // ⬅️ теперь массив слотов
         }
+        meal.items.push(item)
       }
+
+      // ⬇️ пытаемся занять слот, если он передан и свободен
+      if (slotId && !meal.usedSlots.includes(slotId)) {
+        let image = null
+        for (const cat of state.categories) {
+          const sub = cat.subcategories?.find((s) => s.id === subcatId)
+          if (sub) {
+            image = sub.images?.[slotId] || null
+            break
+          }
+        }
 
         meal.plate[slotId] = {
           subcatId,
           image,
           slot: slotId,
-          weight,
-          itemId: id,
+          weight: item.weight,
+          itemId: item.id,
         }
 
         meal.usedSlots.push(slotId)
+        item.slotIds.push(slotId)
+      } else if (item.slotIds?.length) {
+        // если слот не нашли — обновляем вес во всех визуальных слотах
+        for (const s of item.slotIds) {
+          if (meal.plate[s]) {
+            meal.plate[s].weight = item.weight
+          }
+        }
       }
+    },
+    EDIT_ITEM_WEIGHT(state, { dayId, mealId, itemId, newWeight }) {
+      const meal = state.week.days[dayId].meals[mealId]
+      const item = meal.items.find((i) => i.subcatId === itemId)
+      console.log('item', dayId, mealId, itemId, newWeight)
+
+      item.weight = newWeight
     },
   },
 
@@ -330,6 +356,10 @@ export default {
       })
 
       return { ok: true, placed: !!slotId }
+    },
+
+    editProduct({ commit }, payload) {
+      commit('EDIT_ITEM_WEIGHT', payload)
     },
 
     removeProduct({ commit }, payload) {

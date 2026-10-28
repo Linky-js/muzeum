@@ -92,6 +92,7 @@ watch(
   bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 9999;
 }
 .hg-theme-default .hg-row:not(:last-child) {
   margin-bottom: 15px;

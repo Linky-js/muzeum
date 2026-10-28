@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
-import diet from './modules/dietOld.js'
-import dashResult from './modules/dashResultOld.js'
+import diet from './modules/diet.js'
+import dashResult from './modules/dashResult.js'
 
 export default createStore({
   modules: {
@@ -23,6 +23,13 @@ export default createStore({
         diabet: '',
         priem: '',
         diabetFamily: '',
+      },
+      musicFon: {
+        path: '/music/1.wav',
+        status: 'play',
+        volume: 1,
+        fadeRequest: 0, // 👈 счётчик триггеров
+        fadeTarget: null, // 0..1
       },
     }
   },
@@ -50,6 +57,30 @@ export default createStore({
         priem: '',
         diabetFamily: '',
       }
+    },
+    SET_STATUS(state, status) {
+      state.musicFon.status = status
+    },
+    SET_VOLUME(state, volume) {
+      state.musicFon.volume = volume
+    },
+    REQUEST_FADE(state, targetVolume) {
+      state.musicFon.fadeRequest++
+      state.musicFon.fadeTarget = targetVolume
+    },
+  },
+  actions: {
+    play({ commit }) {
+      commit('SET_STATUS', 'play')
+    },
+    pause({ commit }) {
+      commit('SET_STATUS', 'pause')
+    },
+    fadeOut({ commit }) {
+      commit('REQUEST_FADE', 0)
+    },
+    fadeIn({ commit }) {
+      commit('REQUEST_FADE', 1)
     },
   },
 })

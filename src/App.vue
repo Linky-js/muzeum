@@ -1,5 +1,9 @@
 <script setup>
 import { onMounted } from 'vue';
+import MusicControls from './components/ui/MusicControls.vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 const preloadAssets = (urls) => {
   urls.forEach(url => {
     fetch(url, { cache: 'force-cache' })
@@ -18,6 +22,7 @@ onMounted(() => {
 
 <template>
   <div class="wrapper">
+    <MusicControls v-if="route.meta.music" />
     <RouterView />
   </div>
 </template>

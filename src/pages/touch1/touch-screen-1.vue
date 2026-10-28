@@ -2,6 +2,7 @@
 import Breadcrums from "@/components/touchScreenComponents/Breadcrums.vue";
 import GlassBtn from "@/components/touchScreenComponents/GlassBtn.vue";
 import HeartCardio from "@/components/icons/HeartCardio.vue";
+import DataScience from "@/components/icons/DataScience.vue";
 import { ref } from "vue";
 import IconPlay from "@/components/icons/IconPlay.vue";
 import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vue";
@@ -33,13 +34,13 @@ const breadcrumbsList = ref([
   <div class="content relative">
     <div class="content__top">
       <h1 class="content__title animBtn">Метаболический центр</h1>
-      <p class="content__subtitle animBtn">ФГБУ "НМИЦ им. В. А. Алмазова"</p>
+      <p class="content__subtitle animBtn">ФГБУ "НМИЦ им. В. А. Алмазова" Минздрава России</p>
     </div>
     <div class="content__btns">
       <div class="content__btns-top">
         <GlassBtn class="animBtnBottom" link="metabolic-syndrome-touch" name="Метаболический синдром"
           :icon="HeartCardio" />
-        <GlassBtn class="animBtnBottom" link="data-science" name="Data Science" :icon="HeartCardio" />
+        <GlassBtn class="animBtnBottom" link="data-science" name="Data Science" :icon="DataScience" />
       </div>
       <div class="content__btns-bottom animBtnBottom">
         <!-- <GlassBtn link="touch-video" supname="Видео" name="Метаболический центр" type-btn="toInfo" :icon="IconPlay"

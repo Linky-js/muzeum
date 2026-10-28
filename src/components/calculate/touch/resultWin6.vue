@@ -232,6 +232,7 @@ const percent = computed(() => {
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  transform: translateX(-50%);
 }
 
 .table {

@@ -9,39 +9,37 @@ const router = useRouter()
 const bus = useBroadcastBus({ role: 'monitor', pairId: '2', debug: false })
 initMonitorSync(router, bus, '2')
 
-const video = "/touch2/touch2.jpg";
+const VIDEO_SRC = '/touch2/monitor2.webm'
 </script>
 <template>
-  <div class="wrapper-content">
-    <img class="bg" :src="video" alt="">
+  <div class="contentMonitor animVideo">
+    <div class="title">
+      МЕТЕОР: <br>
+Всероссийский регистр пациентов <br> с метаболическим синдромом
+    </div>
+    <video class="" :src="VIDEO_SRC" autoplay muted loop playsinline></video>
   </div>
 </template>
 <style scoped>
-.wrapper-content {
-  padding: 10rem 31.875rem;
-  color: rgb(245, 245, 245);
-  display: flex;
-  flex-direction: column;
-
-  position: relative;
-  width: 100%;
-  position: relative;
-  width: 100%;
-  height: 100vh;
-}
-
-.bg {
-  position: absolute;
-  top: 0;
-  left: 0;
+video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left bottom;
-  z-index: 0;
 }
 
-.relative {
-  position: relative;
+.title {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  font-size: 3.5rem;
+  transform: translate(-50%, -50%);
+  font-family: 'TT Hoves';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 130px;
+  line-height: 100%;
+  color: #FFFFFF;
+  text-align: center;
 }
 </style>

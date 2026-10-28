@@ -586,5 +586,308 @@
       }
     },
     "sphere": "Образование"
+  },
+  {
+    "id": "6b5ed28c-ead0-4791-83aa-237061d08840",
+    "timestamp": 1769757172013,
+    "age": 56,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "f5492193-5e41-4c85-99a6-749dda881b51",
+    "timestamp": 1769757452879,
+    "age": 56,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "3c5b183a-5f71-4045-8c6b-dce63edd8ae4",
+    "timestamp": 1769758242388,
+    "age": 56,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "3f3c82db-62a5-4752-9c9f-6296bd9d620a",
+    "timestamp": 1769758412451,
+    "age": 56,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "11be42c2-4339-4469-8760-66be5d250c7f",
+    "timestamp": 1769758430222,
+    "age": 56,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 2,
+      "name": "Стажер",
+      "responsibilities": "ИИ требует надзора, но со<br> временем учится",
+      "img": "./ai/Intern.png",
+      "video": "/video/heroes/stasher_loop.webm"
+    },
+    "attitude": {
+      "name": "Отрицательное",
+      "icon": {
+        "__hmrId": "ed6e0927",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNegative.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "443c5e54-e3f4-4b5d-ae18-bf1cdda1b7e4",
+    "timestamp": 1770144174254,
+    "age": 56,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "c3a587c0-1884-419b-9648-5405750108be",
+    "timestamp": 1770144894217,
+    "age": 50,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Точная диагностика"
+  },
+  {
+    "id": "9bc6a905-921a-4cbc-ac0b-293e0f457072",
+    "timestamp": 1770145123123,
+    "age": 50,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Точная диагностика"
+  },
+  {
+    "id": "4f5c431a-8dc7-454e-9c33-fbceb60b79d5",
+    "timestamp": 1770145249158,
+    "age": 30,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "ddd3eaa1-88cd-4d38-b502-3f1e2fbe450d",
+    "timestamp": 1770145772127,
+    "age": 30,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 4,
+      "name": "Шерлок Холмс",
+      "responsibilities": "ИИ находит скрытые связи и<br> объясняет непонятное",
+      "img": "./ai/Sherlock.png",
+      "video": "/video/heroes/sherlok_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Исследования"
+  },
+  {
+    "id": "86797910-3741-4a34-a48b-f449c1a4a9cf",
+    "timestamp": 1770307677306,
+    "age": "",
+    "gender": "",
+    "ai": null,
+    "attitude": "",
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "cecb04d6-04d9-40b7-a2d2-7943f9a7385f",
+    "timestamp": 1770307795728,
+    "age": 56,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "356b0f78-4b28-4a69-b2d9-41a977bf400c",
+    "timestamp": 1770313529391,
+    "age": 3,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Точная диагностика"
+  },
+  {
+    "id": "d24d18f1-3d07-46e8-8acc-c718891d84f1",
+    "timestamp": 1770313905854,
+    "age": 50,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Положительное",
+      "icon": {
+        "__hmrId": "ca9d1a58",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmilePositive.vue"
+      }
+    },
+    "sphere": "Доступная диагностика"
+  },
+  {
+    "id": "d7b2950e-9938-4b5a-aa1c-95610bff5d1e",
+    "timestamp": 1770313929133,
+    "age": 5,
+    "gender": "Мужчины",
+    "ai": {
+      "id": 3,
+      "name": "Супермен",
+      "responsibilities": "ИИ делает человеческие задачи<br> быстрее и эффективнее",
+      "img": "./ai/Superman.png",
+      "video": "/video/heroes/super_loop.webm"
+    },
+    "attitude": {
+      "name": "Нейтральное",
+      "icon": {
+        "__hmrId": "309e1b15",
+        "__file": "C:/Users/potap/Desktop/muzeum/src/components/icons/IconSmileNeutral.vue"
+      }
+    },
+    "sphere": "Исследования"
   }
 ]

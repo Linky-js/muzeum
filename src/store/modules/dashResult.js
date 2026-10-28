@@ -1,4 +1,4 @@
-import dashData from '@/../public/datas/dash.json'
+import dashData from '@/../public/datas/dash2.json'
 
 export default {
   namespaced: true,
@@ -115,14 +115,14 @@ function findDashCategoryData(categories, subcatId) {
  */
 function normalizeDashCategories(cats, TDEE) {
   const DASH_LIMITS = {
-    Овощи: Math.round((TDEE * 4.5) / 2000),
-    Фрукты: Math.round((TDEE * 4.5) / 2000),
-    Зерновые: Math.round((TDEE * 7) / 2000),
-    'Нежирное мясо, птица и рыба': Math.round((TDEE * 2) / 2000),
-    'Обезжиренные/ низкожирные молочные': Math.round((TDEE * 2.5) / 2000),
-    'Жиры и масла': Math.round((TDEE * 2.5) / 2000),
-    'Сладости и добавленные сахара': Math.round((TDEE * 0.71) / 2000),
-    'Орехи, семена и бобовые': Math.round((TDEE * 0.64) / 2000),
+    Овощи: (TDEE * 4.5) / 2000,
+    Фрукты: (TDEE * 4.5) / 2000,
+    Зерновые: (TDEE * 7) / 2000,
+    'Нежирное мясо, птица и рыба': (TDEE * 2) / 2000,
+    'Обезжиренные/ низкожирные молочные': (TDEE * 2.5) / 2000,
+    'Жиры и масла': (TDEE * 2.5) / 2000,
+    'Сладости и добавленные сахара': (TDEE * 0.71) / 2000,
+    'Орехи, семена и бобовые': (TDEE * 0.64) / 2000,
   }
 
   const out = {}

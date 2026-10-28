@@ -16,15 +16,15 @@ const props = defineProps({
   },
   width: {
     type: Number,
-    default: 387,
+    default: 557,
   },
   height: {
     type: Number,
-    default: 387,
+    default: 557,
   },
   strokeWidth: {
     type: Number,
-    default: 38,
+    default: 60,
   },
   backgroundColor: {
     type: String,
@@ -46,6 +46,15 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  fontsize: {
+    type: String,
+    default: '80px',
+  },
+  fontsizeSmall: {
+    type: String,
+    default: '40px',
+  },
+
 });
 
 // Анимированное значение
@@ -111,7 +120,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="gauge-chart">
-    <svg :width="width" :height="height" :viewBox="'0 0 387 387'">
+    <svg :width="width" :height="height" :viewBox="'0 0' + width + ' ' + height">
       <!-- Фон -->
       <circle class="gauge-background" :cx="centerX" :cy="centerY" :r="radius" fill="none" :stroke="backgroundColor"
         :stroke-width="strokeWidth" stroke-linecap="round" />
@@ -123,7 +132,7 @@ onMounted(() => {
       <!-- Тексты -->
       <g>
         <!-- Значение -->
-        <text :x="centerX" :y="textY - 20" text-anchor="middle" class="gauge-value" :fill="fillText">
+        <text :x="centerX" :y="textY - 20" text-anchor="middle" class="gauge-value" :fill="fillText" :font-size="fontsize">
           {{ Math.round(value) }}
         </text>
 
@@ -132,10 +141,10 @@ onMounted(() => {
           stroke-width="1" />
 
         <!-- Подпись -->
-        <text :x="centerX" :y="labelY + 20" text-anchor="middle" class="gauge-value" :fill="fillText">
+        <text :x="centerX" :y="labelY + 20" text-anchor="middle" class="gauge-value small" :fill="fillText" :font-size="fontsizeSmall">
           {{ Math.round(maxValue) }}
         </text>
-        <text :x="centerX" :y="labelY + 40" text-anchor="middle" class="gauge-label" :fill="fillText">
+        <text :x="centerX" :y="labelY + 50" text-anchor="middle" class="gauge-label" :fill="fillText">
           {{ label }}
         </text>
       </g>
@@ -161,18 +170,20 @@ onMounted(() => {
 .gauge-value {
   font-family: "TT Hoves";
   font-weight: 500;
-  font-size: 40px;
   line-height: 100%;
   letter-spacing: -0.03em;
-  /* fill: #ffffff; */
+  text-align: center;
+  color: #fff;
   margin-bottom: 4px;
   background: linear-gradient(180deg, red, green);
 }
 
+
+
 .gauge-label {
   font-family: "TT Hoves";
   font-weight: 400;
-  font-size: 16px;
+  font-size: 24px;
   line-height: 110%;
   letter-spacing: -0.02em;
   /* fill: #ffffff; */

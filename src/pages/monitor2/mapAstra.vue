@@ -111,10 +111,10 @@ watch(currentVideo, (newSrc) => {
         </svg>
       </div>
       <div v-if="curentSindrom === 'xsn'" class="text">
-        Масштаб исследований <br> «Приоритет Хронической Сердечной недостаточности» <br> по регионам России.
+      Масштаб исследований <br> ПРИОРИТЕТ-ХСН <br> по регионам России.
       </div>
       <div v-if="curentSindrom === 'xbp'" class="text">
-        Масштаб исследований <br> «Приоритет Хронической Почечной недостаточности» <br>
+        Масштаб исследований <br> ПРИОРИТЕТ-ХБП <br>
         по регионам России.
       </div>
 
@@ -123,7 +123,7 @@ watch(currentVideo, (newSrc) => {
       <div v-if="!targetregion" class="default">
         <div class="deafult__head">
           Масштаб исследований <br>
-          "ПРИОРИТЕТ ХСН" и "ПРИОРИТЕТ ХБП" <br>
+          ПРИОРИТЕТ-ХСН и ПРИОРИТЕТ-ХБП <br>
           по регионам России.
         </div>
         <div class="default__description">
@@ -153,7 +153,7 @@ watch(currentVideo, (newSrc) => {
         :class="{ bigVideo: isVideoBig }"></video>
 
       <div class="prioritet_info" :class="{ hiddenText: !isTextVisible }">
-        <div class="prioritet_head">Исследование "ПРИОРИТЕТ ХСН"</div>
+        <div class="prioritet_head">Исследование ПРИОРИТЕТ-ХСН</div>
         <div class="prioritet_descriptiom">
           – с целью оценить характеристики, терапию и годичные исходы...
         </div>
@@ -165,9 +165,9 @@ watch(currentVideo, (newSrc) => {
         :class="{ bigVideo: isVideoBig }"></video>
 
       <div class="prioritet_info" :class="{ hiddenText: !isTextVisible }">
-        <div class="prioritet_head">Исследование "ПРИОРИТЕТ ХБП"</div>
+        <div class="prioritet_head">Исследование ПРИОРИТЕТ-ХБП</div>
         <div class="prioritet_descriptiom">
-          – с целью оценить частоту диагностирования ХБП у пациентов...
+          – с целью оценить частоту диагностирования ХБП <br> у пациентов...
         </div>
       </div>
     </div>
@@ -318,11 +318,11 @@ watch(currentVideo, (newSrc) => {
 }
 
 .prioritet_block.xsnBlock .video_layer.bigVideo {
-  transform: translate(66%, -29%);
+  transform: translate(50%, -29%);
 }
 
 .prioritet_block.xbpBlock .video_layer.bigVideo {
-  transform: translate(61%, -133%);
+  transform: translate(50%, -133%);
 }
 
 /* у видео будет smooth resize + opacity */

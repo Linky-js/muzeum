@@ -112,10 +112,10 @@ onBeforeUnmount(() => {
   <div class="result-wrapper">
     <aside class="left">
       <div class="left_top">
-        <h4>
+         <h4>
           Статистически ожидаемая <br />
-          продолжительность жизни в <br />
-          вашей когорте — около {{ Math.round(expectedWeeks / 12) }}
+          продолжительность жизни <br /> в 
+          вашей когорте — {{ Math.round(expectedWeeks / 12) }}
           {{ pluralizeYears(Math.round(expectedWeeks / 12)) }}.
         </h4>
         <div class="aside_description">
@@ -125,8 +125,8 @@ onBeforeUnmount(() => {
               "Донецкая народная республика",
               "Не выбирать",
             ].includes(props.person.region.name)
-              ? "Оценка основана на средних по стране данных официальной статистики. Это усредненные данные, а не ваш индивидуальный прогноз."
-              : "*Оценка основана на данных официальной статистики об ожидаемой продолжительности жизни по полу и регионам. Это усредненные данные, а не ваш индивидуальный прогноз."
+              ? "Оценка основана на средних по стране данных официальной статистики. Это усредненные данные, <br> а не ваш индивидуальный прогноз."
+              : "*Оценка основана на данных официальной статистики об ожидаемой продолжительности жизни по полу и возрасту в разных регионах. Это усредненные данные, а не ваш индивидуальный прогноз."
           }}
         </div>
         <div class="result_info">
@@ -169,6 +169,7 @@ onBeforeUnmount(() => {
       <div class="tint"></div>
       <div class="nickels relative">
         <div v-for="(value, index) in nickelCount" :key="index" class="nickel">
+          <div class="years">{{ 5 * (index + 1) + " лет" }}</div>
           <div class="rows">
             <div v-for="row in 5" :key="row" class="row">
               <div
@@ -179,7 +180,7 @@ onBeforeUnmount(() => {
               ></div>
             </div>
           </div>
-          <div class="years">{{ 5 * (index + 1) + " лет" }}</div>
+          
         </div>
       </div>
     </div>
@@ -206,7 +207,7 @@ onBeforeUnmount(() => {
   height: 1156px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 100px;
   max-width: 1182px;
   width: 100%;
 }
@@ -316,6 +317,7 @@ onBeforeUnmount(() => {
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  position: static;
 }
 .calendar {
   padding: 40px;

@@ -34,13 +34,15 @@ const breadcrumbsList = ref([
   </div>
   <div class="content relative">
     <div class="content__top">
-      <h1 class="content__title animBtn">Атлас метаболического синдрома</h1>
+      <h1 class="content__title animBtn">МЕТЕОР: <br>
+Всероссийский регистр пациентов <br>
+с метаболическим синдромом</h1>
     </div>
     <div class="content__btns">
       <div class="content__btns-top ">
         <GlassBtn link="touch2-screen-regions" supname="Интерактив" name="Региональные практики" type-btn="toInfo"
           :icon="IconCursor" icon-wrapper-color="pink" class="animBtnBottom" />
-        <GlassBtn link="touch2-astrazeneca" supname="Интерактив" name="Приоритет - Эпидемиология" type-btn="toInfo"
+        <GlassBtn link="touch2-astrazeneca" supname="Интерактив" name="Приоритет - эпидемиология" type-btn="toInfo"
           :icon="IconCursor" icon-wrapper-color="pink" class="animBtnBottom" />
         <!-- <GlassBtn link="kms" supname="Интерактив" name="Карта факторов риска" type-btn="toInfo" :icon="IconCursor"
           icon-wrapper-color="pink" class="animBtnBottom" /> -->

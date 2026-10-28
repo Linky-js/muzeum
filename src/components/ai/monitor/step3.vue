@@ -56,8 +56,8 @@ onBeforeUnmount(() => {
       <div class="title animLayer">
         {{ currentHero?.ai?.name }}
       </div>
-      <div class="description animLayer">
-        {{ currentHero?.ai?.responsibilities }}
+      <div class="description animLayer" v-html="currentHero?.ai?.responsibilities">
+        
       </div>
     </div>
 

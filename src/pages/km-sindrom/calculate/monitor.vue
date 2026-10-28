@@ -18,6 +18,7 @@ const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '10')
 
 const ROUTE_PATH = "/monitor-calculate";
+const VIDEO_BG_SRC="/video/pole.webm";
 
 // функция для генерации рандомного QR
 const generateQr = () => {
@@ -69,6 +70,7 @@ const changeMobileView = (changeValue) => {
 
 <template>
   <div class="monitor" :class="{ 'not-mobile': !isShowMobile }">
+    <video class="bg" :src="VIDEO_BG_SRC" autoplay muted loop></video>
     <aside class="monitor-qr" v-if="isShowMobile">
       <div class="monitor-qr__wrapper">
         <div class="tint"></div>
@@ -78,9 +80,9 @@ const changeMobileView = (changeValue) => {
       </div>
       <div class="monitor-qr__info">
         <h2 class="monitor-qr__title">
-          Калькулятор продолжительности жизни<br /> и риска возникновения 
-          развития<br />
-          метаболического синдрома
+          Калькулятор продолжительности жизни<br /> и риска 
+          развития
+          компонентов <br /> метаболического синдрома
         </h2>
         <p class="monitor-qr__description">
           отсканируйте QR код, пройдите тест и получите расчет
@@ -110,13 +112,24 @@ const changeMobileView = (changeValue) => {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-image: url(../monitor-calc.png);
+  /* background-image: url(../monitor-calc.png); */
   height: 100vh;
   padding: 107px 100px;
   display: flex;
   align-items: center;
-  gap: 385px;
+  gap: 305px;
 }
+.bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.7);
+}
+
 
 .not-mobile {
   justify-content: center;
@@ -128,6 +141,8 @@ const changeMobileView = (changeValue) => {
   display: flex;
   align-items: center;
   gap: 60px;
+  padding-left: 80px;
+  position: relative;
 }
 
 .monitor-qr__wrapper {

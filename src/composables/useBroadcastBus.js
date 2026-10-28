@@ -338,12 +338,14 @@ export function useBroadcastBus(userOptions = {}) {
   const unbindUserActivity = () => {
     USER_EVENTS.forEach((e) => window.removeEventListener(e, onUserActivity))
   }
-
+  const onPageShow = (e) => { if (e.persisted) open() }
+  
   onMounted(() => {
     open()
     bindUserActivity()
     window.addEventListener('pagehide', close)
     window.addEventListener('beforeunload', close)
+    window.addEventListener('pageshow', onPageShow)
   })
 
   onUnmounted(() => {
@@ -351,6 +353,7 @@ export function useBroadcastBus(userOptions = {}) {
     if (idleTimer) clearTimeout(idleTimer)
     window.removeEventListener('pagehide', close)
     window.removeEventListener('beforeunload', close)
+    window.removeEventListener('pageshow', onPageShow)
     close()
   })
 

@@ -11,6 +11,7 @@ import VideoModal from "@/components/video/VideoModal.vue";
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMasterSync } from '@/composables/syncRouterSimple.js'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 const widjetShow = ref(false)
 
@@ -30,6 +31,7 @@ const DIABET = '/video/ms/diabet.webm'
 const MC = '/video/ms/km_film.webm'
 
 const router = useRouter()
+const store = useStore()
 const bus = useBroadcastBus({
   role: 'touch',
   pairId: '1',
@@ -53,6 +55,9 @@ const breadcrumbsList = ref([
   },
 ]);
 function touchSendVideo(chapter) {
+  if (chapter === 'MC') {
+    store.dispatch('fadeOut')
+  }
   currentVideo.value = getVideoByChapter(chapter)
   titleVideo.value = getTitleByChapter(chapter)
   descriptionVideo.value = getDescriptionByChapter(chapter)
@@ -74,23 +79,23 @@ function getVideoByChapter(chapter) {
 function getTitleByChapter(chapter) {
   switch (chapter) {
     case 'OZHIRENIE': return 'Ожирение'
-    case 'ARTERIA': return 'Артерия'
+    case 'ARTERIA': return 'Артериальная гипертензия'
     case 'DIABET': return 'Сахарный диабет II типа'
     case 'DISLIPIDEMIA': return 'Дислипидемия'
-    case 'SERDCE': return 'Сердце'
-    case 'POCHKA': return 'Почка'
-    case 'MC': return 'Метаболический синдром'
+    case 'SERDCE': return 'Сердечная недостаточность'
+    case 'POCHKA': return 'Хроническая болезнь почек'
+    case 'MC': return 'О синдроме'
   }
 }
 function getDescriptionByChapter(chapter) {
   switch (chapter) {
-    case 'OZHIRENIE': return 'Метаболический синдром'
-    case 'ARTERIA': return 'Метаболический синдром'
-    case 'DIABET': return 'Метаболический синдром'
-    case 'DISLIPIDEMIA': return 'Метаболический синдром'
-    case 'SERDCE': return 'Метаболический синдром'
-    case 'POCHKA': return 'Метаболический синдром'
-    case 'MC': return 'Метаболический синдром'
+    // case 'OZHIRENIE': return 'Метаболический синдром'
+    // case 'ARTERIA': return 'Метаболический синдром'
+    // case 'DIABET': return 'Метаболический синдром'
+    // case 'DISLIPIDEMIA': return 'Метаболический синдром'
+    // case 'SERDCE': return 'Метаболический синдром'
+    // case 'POCHKA': return 'Метаболический синдром'
+    // case 'MC': return 'Метаболический синдром'
   }
 }
 function getDurationByChapter(chapter) {
@@ -107,6 +112,12 @@ function getDurationByChapter(chapter) {
 function getMarkersByChapter(chapter) {
   switch (chapter) {
     case 'MC': return [50, 100]
+    case 'DIABET': return [29, 43]
+    case 'DISLIPIDEMIA': return [39, 68]
+    case 'OZHIRENIE': return [22, 37]
+    case 'ARTERIA': return [22, 42]
+    case 'SERDCE': return [63, 93]
+    case 'POCHKA': return [26, 62, 101]
   }
 }
 </script>
@@ -140,13 +151,13 @@ function getMarkersByChapter(chapter) {
           :icon="IconTablet" icon-wrapper-color="transparent" class="animBtnBottom" />
         <GlassBtn link="touch-qr" supname="Интерактив" name="Калькулятор рисков" type-btn="toInfo" :icon="IconCursor"
           icon-wrapper-color="pink" class="animBtnBottom" />
-        <GlassBtn @click="touchSendVideo('MC')" supname="Видео" name="Метаболический синдром" type-btn="toInfo"
+        <GlassBtn @click="touchSendVideo('MC')" supname="Видео" name="О синдроме" type-btn="toInfo"
           :icon="IconPlay" icon-wrapper-color="transparent" class="animBtnBottom" />
       </div>
     </div>
   </div>
   <MenuNavigation class="footer__btn" />
-  <VideoModal v-if="widjetShow" @close="widjetShow = false" :defaultSrc="VIDEO_BG_SRC" :title="titleVideo" :description="descriptionVideo"
+  <VideoModal v-if="widjetShow" @close="[widjetShow = false, store.dispatch('fadeIn')]" :defaultSrc="VIDEO_BG_SRC" :title="titleVideo" :description="descriptionVideo"
     :duration="durationVideo" :markers="markersVideo" :currentVideo="currentVideo" />
 
 </template>

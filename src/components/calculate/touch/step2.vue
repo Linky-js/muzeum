@@ -466,6 +466,8 @@ onBeforeUnmount(() => {
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  position: static;
+  transform: none;
 }
 .quiz__btn:disabled {
   background-color: rgba(255, 255, 255, 0.12);

@@ -18,7 +18,12 @@ bus.on('resultstep5', (payload) => {
 </script>
 <template>
   <div class="wrapStep5">
+    <div class="titleHead">
+      <h1 class="content__title animBtn">Спасибо за участие!</h1>
+      <p class="content__subtitle">Вот как ответили вы и другие пользователи</p>
+    </div>
     <div class="result__wrapper">
+      
       <div class="stats">
         <div class="stat">
           <div class="head">
@@ -26,7 +31,7 @@ bus.on('resultstep5', (payload) => {
           </div>
           <div class="percents">
             <div class="current__percent percent-block">
-              <div class="label">Ваш выбор</div>
+              <div class="label">С вами согласны</div>
               <div class="percent__block">
                 <div class="percent">{{ resultPayload?.val?.attitude.percent }}%</div>
                 <div class="track">
@@ -76,15 +81,16 @@ bus.on('resultstep5', (payload) => {
       </div>
       <div class="stat">
         <div class="head">
-          Какой вы тип ИИ
+          Ваше восприятие ИИ
         </div>
         <div class="heroes">
           <div class="currentHero">
-            <div class="label">Ваш выбор</div>
+            <div class="label">С вами согласны</div>
             <div class="head">{{ resultPayload?.val?.hero.percent }}%</div>
             <video :src="resultPayload?.val?.hero.video" autoplay muted loop playsinline></video>
           </div>
           <div class="othersHero">
+            <div class="label">Выбор других пользователей</div>
             <div v-for="hero in resultPayload?.val?.hero.others" class="otherHero">
               <div class="heroImg"><img :src="hero.avatar" alt="" /></div>
               <div class="percentHero">{{ hero.percent }} %</div>
@@ -96,10 +102,39 @@ bus.on('resultstep5', (payload) => {
   </div>
 </template>
 <style scoped>
+.titleHead{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+.content__title {
+  font-family: "TT Commons";
+  font-weight: 500;
+  font-size: 131px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  text-align: center;
+}
+
+.content__subtitle {
+  font-family: "TT Hoves";
+  font-weight: 400;
+
+  font-size: 38px;
+  line-height: 110%;
+  text-align: center;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #808389;
+}
 .wrapStep5 {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 150px;
   width: 100vw;
   height: 100vh;
 }
@@ -206,7 +241,7 @@ bus.on('resultstep5', (payload) => {
   gap: 43px;
   border-radius: 60px;
   width: 351px;
-  height: 388px;
+  height: 428px;
   background: rgba(177, 177, 177, 0.1);
   padding: 34px 56px;
   transform: translateX(-56px);

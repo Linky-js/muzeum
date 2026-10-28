@@ -75,42 +75,15 @@ const agreeCoockie = () => {
     </div>
     <div class="content__btns">
       <div class="content_column">
-        <div class="content_column--head animBtnBottom">
-          Фармакотерапия сегодня
-        </div>
-        <div class="content_info animBtnBottom">
-          Антигипертензивная терапия, гиполипидемическая терапия, сахароснижающая терапия, нефропротективная терапия,
-          медикаментозное лечение ожирения <br><br>
-
-          На более поздних стадиях:
-          терапия сердечной недостаточности, антикоагулянтная терапия
-        </div>
-      </div>
-      <div class="content_column">
-        <div class="content_column--head animBtnBottom">
-          Фармакотерапия будущего
-        </div>
         <div class="content__btns-top">
-          <GlassBtn @click="sendByMonitor('AZD6234')" class="animBtnBottom" name="AZD6234" />
-          <GlassBtn @click="sendByMonitor('AZD2389')" class="animBtnBottom" name="AZD2389" />
-          <GlassBtn @click="sendByMonitor('Баксдростат')" class="animBtnBottom" name="Баксдростат" />
-          <GlassBtn @click="sendByMonitor('Ларопровстат (AZD0780)')" class="animBtnBottom"
-            name="Ларопровстат (AZD0780)" />
-          <GlassBtn @click="sendByMonitor('Балцинренон / Дапаглифлозин')" class="animBtnBottom"
-            name="Балцинренон / Дапаглифлозин" />
-          <GlassBtn @click="sendByMonitor('AZD 9550+AZD 6234 AZD-9550')" class="animBtnBottom" supname="Комбинация"
-            name="AZD 9550+AZD 6234 AZD-9550" />
-          <GlassBtn @click="sendByMonitor('Зиботентан / Дапаглифлозин')" class="animBtnBottom" supname="Комбинация"
-            name="Зиботентан / Дапаглифлозин" />
-          <GlassBtn @click="sendByMonitor('Баксдростат / Дапаглифлозин')" class="animBtnBottom" supname="Комбинация"
-            name="Баксдростат / Дапаглифлозин" />
+          <GlassBtn @click="sendByMonitor('AZD6234')" class="animBtnBottom" name="ФАРМАКОТЕРАПИЯ  СЕГОДНЯ: МИШЕНИ ТЕРАПИИ" link="touch1-pharmacotherapy-today"  />
+          <GlassBtn @click="sendByMonitor('AZD2389')" class="animBtnBottom" name="ФАРМАКОТЕРАПИЯ  БУДУЩЕГО" link="touch1-pharmacotherapy-future" />
         </div>
       </div>
     </div>
   </div>
   <MenuNavigation class="footer__btn" />
-  <ModalDiscleimer class="modalOverlay" v-if="isOpenModal" @close="isOpenModal = false" :text="textModal"
-    @agreeCoockie="agreeCoockie" :modalClass="'w1078'" :backLink="'/touch1/screen-3'" />
+ 
 </template>
 <style scoped>
 .modalOverlay {
@@ -219,7 +192,7 @@ const agreeCoockie = () => {
   gap: 306px;
   width: 100%;
   position: relative;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .animBtnBottom {
@@ -242,14 +215,14 @@ const agreeCoockie = () => {
 }
 
 .content__btns-top {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  justify-content: center;
   gap: 2rem 1.5rem;
 }
 
 .content__btns-bottom {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  justify-content: center;
   gap: 2rem;
 }
 

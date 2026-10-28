@@ -55,7 +55,7 @@ const typesAi = ref([
     id: 5,
     name: "Хрустальный шар",
     responsibilities:
-      "ИИ мыслит иначе, чем человек,<br> и дает неожиданные прогнозы",
+      "ИИ мыслит иначе, чем человек,<br> и дает недоступные прогнозы",
     img: "./ai/Crystal.png",
     video: '/video/heroes/mag_loop.webm'
   },

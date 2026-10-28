@@ -5,7 +5,7 @@ import MenuNavigation from "@/components/touchScreenComponents/MenuNavigation.vu
 import IconInfo from "@/components/icons/IconInfo.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination, Navigation, FreeMode } from "swiper/modules";
-import products from "@/../public/datas/dash.json";
+import products from "@/../public/datas/dash2.json";
 
 import { useBroadcastBus } from '@/composables/useBroadcastBus.js'
 import { initMonitorSync } from '@/composables/syncRouterSimple.js'
@@ -24,7 +24,7 @@ import "swiper/css/autoplay";
 const emit = defineEmits(["goResult"]);
 const store = useStore();
 
-const baseImgSrc = "/dash/stol/fon3.png";
+const baseImgSrc = "/dash/stol/fon4.png";
 const bg1 = "/dash/stol/bg1.png"
 
 const props = defineProps({
@@ -280,26 +280,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 <template>
   <div class="plate-wrapper" ref="plateArea">
     <img :src="bg1" class="bg1">
-    <div v-if="!resultStage" class="monitor__info">
-      <div class="dash__head">
-        <h1>Диета DASH</h1>
-        <h4>Dietary Approaches to Stop Hypertension</h4>
-      </div>
-      <div class="dash_description">
-        <div class="text-dash bold">
-          Система питания, разработанная для снижения артериального давления и поддержания здоровья сердечно-сосудистой
-          системы.
-        </div>
-        <div class="text-dash">
-          Диета основана на сбалансированном употреблении овощей, фруктов, цельнозерновых продуктов, нежирного белка и
-          молочных продуктов с пониженным содержанием жира.
-        </div>
-        <div class="text-dash">
-          В рационе ограничивается соль, сахар и насыщенные жиры. Такой подход помогает не только нормализовать
-          давление, но и улучшить обмен веществ, снизить уровень холестерина и поддерживать здоровый вес.
-        </div>
-      </div>
-    </div>
+    
     <div class="top-info" v-if="activeMealProducts.length !== 0 && !resultStage">
       <div class="top-info__inner">
         <div class="top-info__top">
@@ -371,7 +352,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
 .top-info {
   position: fixed;
   top: 417px;
-  right: 200px;
+  right: 590px;
   padding: 32px;
   width: 857px;
   background: rgba(0, 0, 0, 0.34);
@@ -402,6 +383,15 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
   margin-top: 16px;
   display: grid;
   gap: 40px;
+  overflow-y: auto;
+  max-height: 1100px;
+}
+.top-info__content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.top-info__content::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .top-info__content-title::first-letter {
@@ -1195,61 +1185,7 @@ onMounted(() => store.commit("diet/INIT_DAY", 1));
       rgba(115, 115, 115, 0.1) 99.95%);
 }
 
-.text-dash {
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 40px;
-  line-height: 120%;
-  letter-spacing: -0.03em;
-  color: #34373D;
-  max-width: 996px;
-}
 
-.text-dash.bold {
-  font-weight: 600;
-  font-size: 48px;
-}
-
-.monitor__info {
-  position: fixed;
-  top: 440px;
-  left: 200px;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  gap: 64px;
-}
-
-.dash__head {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-
-}
-
-.dash__head h1 {
-  font-family: var(--font-family);
-  font-weight: 600;
-  font-size: 170px;
-  line-height: 100%;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  color: #34373D;
-}
-
-.dash__head h4 {
-  font-family: "TT Hoves", sans-serif;
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 130%;
-  letter-spacing: -0.03em;
-  color: #34373d;
-}
-.dash_description{
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
 .bg1{
   position: absolute;
   z-index: 2;

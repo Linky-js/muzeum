@@ -47,7 +47,7 @@ const props = defineProps({
       <component
         class="glass-btn__page-icon"
         v-if="icon && typeBtn === 'toPage' && !iconWrapperColor"
-        :is="icon"
+        :is="icon" :name="name"
       />
       <span
         v-if="iconWrapperColor"
@@ -112,8 +112,12 @@ const props = defineProps({
   height: 11.375rem;
   border-radius: 3rem;
 }
-.glass-btn.toInfo:hover .tint::after,
-.glass-btn.toPage:hover .tint::after {
+.glass-btn.toInfo:active .tint::after,
+.glass-btn.toPage:active .tint::after {
+  opacity: 1;
+}
+.glass-btn.toInfo.activeGlass .tint::after,
+.glass-btn.toPage.activeGlass .tint::after {
   opacity: 1;
 }
 .glass-btn.toInfo {
@@ -181,6 +185,7 @@ const props = defineProps({
   color: #ffffff;
   opacity: 0.3;
   margin-bottom: 0.375rem;
+  
 }
 .glass-btn__name {
   font-family: "TT Hoves";
@@ -189,6 +194,7 @@ const props = defineProps({
   line-height: 110%;
   letter-spacing: -0.02em;
   color: #ffffff;
+  text-align: center;
 }
 
 .glass-btn__page-icon {

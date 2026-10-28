@@ -10,6 +10,7 @@ const routes = [
   {
     name: 'touch1-home',
     path: '/touch1',
+    meta: { music: true },
     component: () => import('@/pages/touch1/touch1.vue'),
     redirect: { name: 'touch1-screen-1' },
     children: [
@@ -38,16 +39,28 @@ const routes = [
         path: 'pharmacotherapy',
         component: () => import('@/pages/touch1/pharmacotherapy.vue'),
       },
+      {
+        name: 'touch1-pharmacotherapy-today',
+        path: 'pharmacotherapy-today',
+        component: () => import('@/pages/touch1/pharmacotherapy-today.vue'),
+      },
+      {
+        name: 'touch1-pharmacotherapy-future',
+        path: 'pharmacotherapy-future',
+        component: () => import('@/pages/touch1/pharmacotherapy-future.vue'),
+      },
     ],
   },
   {
     name: 'dashPageTouch',
     path: '/touch-1-dash',
+    meta: { music: true },
     component: () => import('@/pages/touch1/dash/dashPageTouch.vue'),
   },
   {
     name: 'touch-ai',
     path: '/touch-ai',
+    meta: { music: true },
     component: () => import('@/pages/touch1/touchAI/touch-ai.vue'),
   },
   {
@@ -90,6 +103,16 @@ const routes = [
     component: () => import('@/pages/monitor1/pharmacotherapy.vue'),
   },
   {
+    name: 'monitor1-pharmacotherapy-future',
+    path: '/monitor-1-pharmacotherapy-future',
+    component: () => import('@/pages/monitor1/pharmacotherapy-future.vue'),
+  },
+  {
+    name: 'monitor1-pharmacotherapy-today',
+    path: '/monitor-1-pharmacotherapy-today',
+    component: () => import('@/pages/monitor1/pharmacotherapy-today.vue'),
+  },
+  {
     name: 'dashPageMonitor',
     path: '/monitor-1-dash',
     component: () => import('@/pages/monitor1/dash/dashPageMonitor.vue'),
@@ -97,6 +120,7 @@ const routes = [
   {
     name: 'touch2-home',
     path: '/touch2',
+    meta: { music: true },
     component: () => import('@/pages/touch2/touch2.vue'),
     redirect: { name: 'touch2-screen-1' },
     children: [
@@ -109,11 +133,14 @@ const routes = [
   },
   {
     name: 'touch2-screen-regions',
+
     path: '/touch-screen-regions',
     component: () => import('@/pages/touch2/touchmaptwo.vue'),
+    meta: { music: true },
   },
   {
     name: 'touch2-astrazeneca',
+    meta: { music: true },
     path: '/touch-screen-astrazeneca',
     component: () => import('@/pages/touch2/touchMapAstra.vue'),
   },
@@ -180,6 +207,7 @@ const routes = [
   {
     name: 'touch-calculate',
     path: '/touch-calculate',
+    meta: { music: true },
     component: () => import('@/pages/km-sindrom/calculate/touch.vue'),
     children: [
       {

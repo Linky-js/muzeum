@@ -7,91 +7,134 @@ import InteractivePlate from '@/components/dash/monitor/InteractivePlate.vue'
 import RoundDiagram from '@/components/ui/RoundDiagram.vue'
 
 const router = useRouter()
-const intro = ref(true)
 
 const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
-const showIntroVideo = ref(true)
-const showLoopVideo = ref(false)
+const intro = ref(true)
+const fadingOut = ref(false)
+const introVideoRef = ref(null)
+const VIDEO_DURATION = 19
+const EXIT_SHORT = 9
+const EXIT_LONG = 18
 
 const result = ref(null)
-const introVideoRef = ref(null)
-const loopVideoRef = ref(null)
 
 const VIDEO_SRC = '/video/monitors/metabol_center.webm'
-const VIDEO_SRC_2 = '/video/monitors/ai.webm'
+const VIDEO_SRC_2 = '/video/monitors/dash2.webm'
 
 const reccomendations = ref([
   {
     title: "Отлично! Потребление соответствует норме DASH.",
-    color: "#00FF11",
+    color: "#40a147",
   },
   {
     title: "Вы молодец, но можете лучше.",
-    color: "#FFAE00",
+    color: "#ffe100",
   },
   {
     title:
       "Показатель значительно отклонился - обратите на него внимание.",
-    color: "#FF0004",
+    color: "#d95356",
   },
 ]);
 bus.on('sentResult', () => {
-  intro.value = false
+ const video = introVideoRef.value
+  if (!video) {
+    intro.value = false
+    return
+  }
+
+  const current = video.currentTime
+
+  // если пользователь дошёл до 10 сек — ждём до конца
+  if (current >= EXIT_SHORT) {
+    const delay = Math.max(EXIT_LONG - current, 0)
+    finishIntro(delay)
+  } else {
+    // иначе ждём до 10 секунды
+    const delay = EXIT_SHORT - current
+    finishIntro(delay)
+  }
 })
 bus.on('resultObj', (data) => {
   result.value = data
-  console.log('result', result.value);
-
 })
+
 const sortCategories = computed(() => {
   if (!result.value) return []
   return Object.entries(result.value.categories).sort(([, a], [, b]) => b.percent - a.percent)
 })
+const finishIntro = (delay) => {
+  setTimeout(() => {
+    fadingOut.value = true
+
+    // даём время на fade-out
+    setTimeout(() => {
+      intro.value = false
+    }, 1000) // длительность CSS transition
+  }, delay * 1000)
+}
+
 
 onMounted(() => {
-  introVideoRef.value.onended = () => {
-    showIntroVideo.value = false
-    showLoopVideo.value = true
-  }
+
 })
 const formatColor = (percent) => {
   if (percent >= 70 && percent <= 110) {
-    return "#00FF11";
+    return "#40a147";
   }
   if (percent <= 40) {
-    return "#FF0004";
+    return "#d95356";
   }
 
   if (percent >= 40 && percent <= 70) {
-    return "#FFAE00";
+    return "#ffe100";
   }
 
-  return "#FF0004";
+  return "#d95356";
 };
 </script>
 
 <template>
   <div>
     <transition name="wrap-fade">
-      <div v-if="intro" class="video-wrap">
-
-        <!-- Intro video -->
-        <transition name="fade">
-          <video v-if="showIntroVideo" ref="introVideoRef" class="animVideo intro" :src="VIDEO_SRC" autoplay muted
-            playsinline></video>
-        </transition>
-
-        <!-- Loop video -->
-        <transition name="fade">
-          <video v-if="showLoopVideo" ref="loopVideoRef" class="cikl intro" :src="VIDEO_SRC_2" autoplay loop muted
-            playsinline></video>
-        </transition>
-
+      <div
+        v-if="intro"
+        class="video-wrap"
+        :class="{ fading: fadingOut }"
+      >
+        <video
+          ref="introVideoRef"
+          class="animVideo intro"
+          :src="VIDEO_SRC_2"
+          autoplay
+          muted
+          loop
+          playsinline
+        ></video>
       </div>
     </transition>
-
+    <div v-if="!result" class="monitor__info">
+      <div class="dash__head">
+        <h1>Диета DASH</h1>
+        <h4>Dietary Approaches to Stop Hypertension</h4>
+      </div>
+      <div class="dash_description">
+        <div class="text-dash bold">
+          Система питания, разработанная для снижения артериального давления и поддержания здоровья сердечно-сосудистой
+          системы.
+        </div>
+        <div class="text-dash">
+          Диета основана на сбалансированном употреблении овощей, фруктов, цельнозерновых продуктов, нежирного белка и
+          молочных продуктов с пониженным содержанием жира.
+        </div>
+        <div class="text-dash">
+          В рационе ограничивается соль, сахар и насыщенные жиры. Такой подход помогает не только нормализовать
+          давление, но и улучшить обмен веществ, снизить уровень холестерина и поддерживать здоровый вес.
+        </div>
+      </div>
+    </div>
     <InteractivePlate :result="result ? true : false" />
     <transition name="wrap-fade">
       <div v-if="result" class="leftResult">
@@ -103,11 +146,11 @@ const formatColor = (percent) => {
             </div>
             <div class="modal__item-bottom">
               <div class="modal__item-line">
-                <span class="line" :style="{ width: `${item.percent}%` }"></span>
+                <span class="line" :style="{ width: `${item.percent}%`, backgroundColor: formatColor(item.percent) }"></span>
               </div>
-              <div class="modal__item-dot">
+              <!-- <div class="modal__item-dot">
                 <span class="modal__item-color" :style="{ backgroundColor: formatColor(item.percent) }"></span>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -137,7 +180,7 @@ const formatColor = (percent) => {
             </div>
             <RoundDiagram :value="result.totalCalories" label="Целевой диапазон" :maxValue="result.TDEE"
               :fill-text="'#1b1c21'"
-              :fill-color="result.totalCalories * 100 / result.TDEE < 70 ? '#FFAE00' : result.totalCalories * 100 / result.TDEE > 70 && result.totalCalories * 100 / result.TDEE < 100 ? '#00FF11' : '#FF0004'" />
+              :fill-color="result.totalCalories * 100 / result.TDEE < 70 ? '#ffe100' : result.totalCalories * 100 / result.TDEE > 70 && result.totalCalories * 100 / result.TDEE < 100 ? '#40a147' : '#d95356'" :width="410" :height="410" :strokeWidth="43" :fontsize="'60px'" :fontsizeSmall="'32px'" />
           </div>
           <div class="diagram">
 
@@ -151,7 +194,7 @@ const formatColor = (percent) => {
             </div>
             <RoundDiagram :value="result.totalSodium" :label="'Целевой диапазон'" :maxValue="2300"
               :fill-text="'#1b1c21'"
-              :fill-color="result.totalSodium * 100 / 2300 < 70 ? '#00FF11' : result.totalSodium * 100 / 2300 > 70 && result.totalSodium * 100 / 2300 < 100 ? '#FFAE00' : '#FF0004'" />
+              :fill-color="result.totalSodium * 100 / 2300 < 70 ? '#40a147' : result.totalSodium * 100 / 2300 > 70 && result.totalSodium * 100 / 2300 < 100 ? '#ffe100' : '#d95356'" :width="410" :height="410" :strokeWidth="43" :fontsize="'60px'" :fontsizeSmall="'32px'" />
           </div>
         </div>
         <div class="modal__recom-items">
@@ -163,7 +206,7 @@ const formatColor = (percent) => {
       </div>
     </transition>
     <transition name="wrap-fade">
-      <div class="badge">
+      <div v-if="result" class="badge">
         Сфотографируйте экран, чтобы сохранить результаты
       </div>
     </transition>
@@ -171,11 +214,23 @@ const formatColor = (percent) => {
 </template>
 
 <style scoped>
+.video-wrap {
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+.video-wrap.fading {
+  opacity: 0;
+}
+
 .rightResult {
   position: fixed;
-  bottom: 60px;
-  right: 510px;
-  width: 715px;
+  bottom: 192px;
+  right: 548px;
+  width: 803px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
 .badge {
@@ -202,16 +257,71 @@ const formatColor = (percent) => {
   justify-content: center;
 }
 
+.monitor__info {
+  position: fixed;
+  top: 440px;
+  left: 375px;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.text-dash {
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 120%;
+  letter-spacing: -0.03em;
+  color: #34373D;
+  max-width: 996px;
+}
+
+.text-dash.bold {
+  font-weight: 600;
+  font-size: 48px;
+}
+
+
+
+.dash__head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+}
+
+.dash__head h1 {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 170px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #34373D;
+}
+
+.dash__head h4 {
+  font-family: "TT Hoves", sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  color: #34373d;
+}
+
+.dash_description {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .diagrams {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 32px;
-  backdrop-filter: blur(44px);
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 50px;
-  padding: 32px;
 }
 
 .diagram {
@@ -266,6 +376,7 @@ const formatColor = (percent) => {
   position: absolute;
   top: 0;
   left: 0;
+  opacity: 0.3;
 }
 
 /* Плавное исчезновение всей обёртки */
@@ -283,7 +394,7 @@ const formatColor = (percent) => {
 /* Плавное переключение видео */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 1.2s ease;
+  transition: all 1.2s ease;
 }
 
 .fade-enter-from,
@@ -297,10 +408,7 @@ const formatColor = (percent) => {
 .leftResult {
   position: fixed;
   left: 510px;
-  bottom: 60px;
-  padding: 64px 48px;
-  backdrop-filter: blur(44px);
-  background: rgba(255, 255, 255, 0.15);
+  bottom: 192px;
   border-radius: 64px;
   width: 862px;
   z-index: 5;
@@ -338,14 +446,14 @@ const formatColor = (percent) => {
 
 .modal__item-bottom {
   display: grid;
-  grid-template-columns: minmax(0, 833px) minmax(0, 64px);
+  grid-template-columns: minmax(0, 905px);
   gap: 8px;
 }
 
 .modal__item-line {
   width: 100%;
   height: 49px;
-  background: rgba(27, 28, 33, 0.16);
+  background: rgba(59, 46, 40, 0.2);
   border-radius: 46.3102px;
   overflow: hidden;
   position: relative;
@@ -379,19 +487,14 @@ const formatColor = (percent) => {
 .modal__recom-items {
   display: grid;
   gap: 8px;
-  backdrop-filter: blur(44px);
-  background: rgba(255, 255, 255, 0.15);
-  padding: 32px;
-  border-radius: 48px;
 }
 
 .modal__recom-item {
   display: flex;
   align-items: center;
-  padding: 24px;
+  
   gap: 24px;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 24px;
+ 
 }
 
 .modal__recom-color {

@@ -8,10 +8,10 @@ const VIDEO_BG_SRC = '/video/ai/bg_ii.webm'
         </video>
         <div class="headAi">
             <div class="title">
-                Какой вы тип <br>Искусственного Интеллекта?
+                Как вы воспринимаете <br>Искусственный Интеллект?
             </div>
             <div class="description">
-                Узнайте, как вы воспринимаете искусственный интеллект
+                ... и как его воспринимают другие
             </div>
         </div>
     </div>

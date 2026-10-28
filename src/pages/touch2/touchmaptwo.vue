@@ -16,7 +16,7 @@ const breadcrumbsList = ref([
   },
   {
     id: 1,
-    title: "Сотрудничество Центра Алмазова с регионами",
+    title: "Регионы страны и Центр Алмазова",
     link: "/touch-screen-3",
   },
 ]);
@@ -30,6 +30,7 @@ const bus = useBroadcastBus({
 initMasterSync(router, bus, '2')
 const regionUp = ref(false);
 const regions = ref([]);
+const currentRegion = ref(null);
 const targetRegionId = ref('');
 const targetregion = ref({
   id: '',
@@ -39,33 +40,27 @@ const links = ref([
 
   {
     id: 0,
-    name: "Курируемые регионы",
+    name: "Региональные практики",
     link: "/touch-screen-regions",
 
   },
   {
     id: 1,
-    name: "Карта AstraZeneca",
+    name: "Приоритет - эпидемиология",
     link: "/touch-screen-astrazeneca",
 
-  },
-  {
-    id: 2,
-    name: "Тепловая карта факторы риска",
-    link: "/touchmaptwo",
-
-  },
+  }
 
 ]);
 const unFocus = ref(false)
 
 const getCurrentRegion = async (region) => {
   console.log('getCurrentRegion', region)
-
+  if (currentRegion.value?.id === region.id) return
   // Сохраняем выбранный регион
   targetregion.value = { id: region.id, name: '' } // очищаем поле, но сохраняем id
   targetRegionId.value = region.id
-
+  currentRegion.value = region
   // Отправляем данные на монитор
   bus.send('navigate', { region: { ...region } }, { role: 'monitor', pairId: '2' })
 
@@ -105,9 +100,9 @@ const getRegions = async () => {
   regions.value = data.map((r, index) => ({
     id: r['Субъекты'],
     name: r['Субъекты'],
-    fact: r['Факт от Алмазова '],
+    fact: r['Факт от Алмазова'],
     keywords: r['Ключевые слова'],
-    fun: r['Занимательный факт '],
+    fun: r['Занимательный факт'],
     regioncode: r['region code'],
     index: index + 1,
   }))
@@ -129,14 +124,14 @@ onMounted(() => {
     </div>
     <div class="content relative">
       <div class="content__top">
-        <h1 class="content__title animBtn">Сотрудничество Центра Алмазова с регионами</h1>
+        <h1 class="content__title animBtn">Регионы страны и <br> Центр Алмазова</h1>
       </div>
     </div>
     <MapScene class="map" :targetregion="targetRegionId" :dontscale="true" :un-focus="unFocus" />
     <div class="regions__btns">
       <div class="question">
         <div class="input_wrap">
-          <div @click="clearRegion" class="btnSearch">
+          <!-- <div @click="clearRegion" class="btnSearch">
             <svg v-if="targetregion.name === '' || !targetregion.name" xmlns="http://www.w3.org/2000/svg" width="64"
               height="64" viewBox="0 0 64 64" fill="none" opacity="0.2">
               <path
@@ -150,7 +145,7 @@ onMounted(() => {
             </svg>
           </div>
           <input @focus="regionUp = true" type="text" class="input_quiz" v-model="targetregion.name"
-            placeholder="Поиск по округу, региону, городу" />
+            placeholder="Поиск по округу, региону, городу" /> -->
           <div class="custom_list-wrapper">
             <div class="custom_list">
               <div v-for="value in regionsHints" :key="value.id" @click="getCurrentRegion(value)" class="region"

@@ -9,11 +9,11 @@ const props = defineProps({
 const currentName = ref("")
 const currentResponsibilities = ref("")
 const heroes = ref([
-  {
-    id: 1,
-    name: "Хрустальный шар",
-    responsibilities: "ИИ мыслит иначе, чем человек, и дает неожиданные прогнозы",
-    video: '/video/heroes/mag_loop.webm'
+{
+    id: 5,
+    name: "Золушка",
+    responsibilities: "ИИ берет на себя рутинную работу и освобождает ваше время",
+    video: '/video/heroes/zolushka_loop.webm'
   },
   {
     id: 2,
@@ -34,11 +34,15 @@ const heroes = ref([
     video: '/video/heroes/sherlok_loop.webm'
   },
   {
-    id: 5,
-    name: "Золушка",
-    responsibilities: "ИИ берет на себя рутинную работу и освобождает ваше время",
-    video: '/video/heroes/zolushka_loop.webm'
-  }
+    id: 1,
+    name: "Хрустальный шар",
+    responsibilities: "ИИ мыслит иначе, чем человек, и дает неожиданные прогнозы",
+    video: '/video/heroes/mag_loop.webm'
+  },
+  
+  
+  
+  
 ])
 onMounted(() => {
   let animItems = document.querySelectorAll('.animLayer')

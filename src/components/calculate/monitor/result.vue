@@ -114,8 +114,8 @@ onBeforeUnmount(() => {
       <div class="left_top">
         <h4>
           Статистически ожидаемая <br />
-          продолжительность жизни в <br />
-          вашей когорте — около {{ Math.round(expectedWeeks / 12) }}
+          продолжительность жизни <br /> в 
+          вашей когорте — {{ Math.round(expectedWeeks / 12) }}
           {{ pluralizeYears(Math.round(expectedWeeks / 12)) }}.
         </h4>
         <div class="aside_description">
@@ -125,8 +125,8 @@ onBeforeUnmount(() => {
               "Донецкая народная республика",
               "Не выбирать",
             ].includes(props.person.region.name)
-              ? "Оценка основана на средних по стране данных официальной статистики. Это усредненные данные, а не ваш индивидуальный прогноз."
-              : "*Оценка основана на данных официальной статистики об ожидаемой продолжительности жизни по полу и регионам. Это усредненные данные, а не ваш индивидуальный прогноз."
+              ? "Оценка основана на средних по стране данных официальной статистики. Это усредненные данные, <br> а не ваш индивидуальный прогноз."
+              : "*Оценка основана на данных официальной статистики об ожидаемой продолжительности жизни по полу и возрасту в разных регионах. Это усредненные данные, а не ваш индивидуальный прогноз."
           }}
         </div>
         <div class="result_info">
@@ -158,9 +158,9 @@ onBeforeUnmount(() => {
         </div>
       </div>
       <div class="left_bottom">
-        <p class="left_bottom-text">
+        <!-- <p class="left_bottom-text">
           *Это оценка по популяционным данным, а не прогноз для вас персонально.
-        </p>
+        </p> -->
       </div>
     </aside>
 
@@ -168,6 +168,7 @@ onBeforeUnmount(() => {
       <div class="tint"></div>
       <div class="nickels relative">
         <div v-for="(value, index) in nickelCount" :key="index" class="nickel">
+          <div class="years">{{ 5 * (index + 1) + " лет" }}</div>
           <div class="rows">
             <div v-for="row in 5" :key="row" class="row">
               <div
@@ -178,7 +179,7 @@ onBeforeUnmount(() => {
               ></div>
             </div>
           </div>
-          <div class="years">{{ 5 * (index + 1) + " лет" }}</div>
+          
         </div>
       </div>
     </div>
@@ -228,6 +229,7 @@ onBeforeUnmount(() => {
   line-height: 130%;
   letter-spacing: -0.02em;
   color: #ffffff;
+  max-width: 1227px;
 }
 
 .result_info {

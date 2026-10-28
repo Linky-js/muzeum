@@ -13,6 +13,38 @@ app.use(express.json())
 // Путь к базе
 const DB_FILE = path.join(__dirname, 'db', 'users.json')
 
+function readAndCleanDB() {
+  let db = []
+
+  try {
+    db = JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'))
+  } catch (e) {
+    console.error('DB read error:', e)
+    return []
+  }
+
+  if (!Array.isArray(db)) return []
+
+  // фильтруем битые записи
+  const cleaned = db.filter(item => {
+    if (!item || typeof item !== 'object') return false
+
+    // минимальные требования к записи
+    if (!item.timestamp) return false
+
+    return true
+  })
+
+  // если что-то удалили — перезаписываем базу
+  if (cleaned.length !== db.length) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(cleaned, null, 2))
+    console.warn(`DB cleaned: removed ${db.length - cleaned.length} broken records`)
+  }
+
+  return cleaned
+}
+
+
 // CORS middleware — добавляем обработку OPTIONS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -94,20 +126,23 @@ app.get('/api/statistics/sphere', (req, res) => {
   res.json(percentages)
 })
 app.get('/api/statistics/hero', (req, res) => {
-  const db = JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'))
+  const db = readAndCleanDB()
 
   if (db.length === 0) {
     return res.json({})
   }
 
   const counts = {}
-  db.forEach((item) => {
-    const hero = item.ai.name || 'Неизвестно'
+
+  db.forEach(item => {
+    const hero = item?.ai?.name
+    if (!hero) return
+
     counts[hero] = (counts[hero] || 0) + 1
   })
 
-  // Считаем проценты
-  const total = db.length
+  const total = Object.values(counts).reduce((a, b) => a + b, 0)
+
   const percentages = {}
   for (const key in counts) {
     percentages[key] = Math.round((counts[key] / total) * 100)
@@ -115,5 +150,6 @@ app.get('/api/statistics/hero', (req, res) => {
 
   res.json(percentages)
 })
+
 
 app.listen(3001, () => console.log('DB server running on :3001'))

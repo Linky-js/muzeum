@@ -122,7 +122,7 @@ const props = defineProps({
   text-align: left;
   opacity: 0.8;
   max-width: 20.25rem;
-
+  white-space: nowrap;
   
 }
 .breadcrumbs__item-text.dots {

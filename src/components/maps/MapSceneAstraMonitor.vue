@@ -207,7 +207,7 @@ function focusRegion(regionObject) {
         viewBoxParams = `${centerX - bbox.width / 2 - 2500} ${centerY - bbox.height / 2 - 1750} ${bbox.width + 7200} ${bbox.height + 2500}`;
         break;
       case 'Калининградская область':
-        viewBoxParams = `${centerX - bbox.width / 2 - 375} ${centerY - bbox.height / 2 - 450} ${bbox.width + 1050} ${bbox.height + 900}`;
+        viewBoxParams = `${centerX - bbox.width / 2 - 1050} ${centerY - bbox.height / 2 - 400} ${bbox.width + 3000} ${bbox.height + 900}`;
         break;
       case 'Волгоградская область':
         viewBoxParams = `${centerX - bbox.width / 2 - 1050} ${centerY - bbox.height / 2 - 400} ${bbox.width + 3000} ${bbox.height + 800}`;
@@ -216,7 +216,7 @@ function focusRegion(regionObject) {
         viewBoxParams = `${centerX - bbox.width / 2 - 1050} ${centerY - bbox.height / 2 - 500} ${bbox.width + 3000} ${bbox.height + 800}`;
         break;
       case 'Республика Северная Осетия-Алания':
-        viewBoxParams = `${centerX - bbox.width / 2 - 250} ${centerY - bbox.height / 2 - 450} ${bbox.width + 1050} ${bbox.height + 900}`;
+        viewBoxParams = `${centerX - bbox.width / 2 - 1050} ${centerY - bbox.height / 2 - 700} ${bbox.width + 3000} ${bbox.height + 1400}`;
         break;
       case 'Нижегородская область':
         viewBoxParams = `${centerX - bbox.width / 2 - 1050} ${centerY - bbox.height / 2 - 400} ${bbox.width + 3000} ${bbox.height + 800}`;
@@ -290,7 +290,7 @@ function focusRegion(regionObject) {
         viewBoxParams = `${centerX - bbox.width / 2 - 1000} ${centerY - bbox.height / 2 - 850} ${bbox.width + 2500} ${bbox.height + 1500}`;
         break;
       case 'Орел':
-        viewBoxParams = `${centerX - bbox.width / 2 - 550} ${centerY - bbox.height / 2 - 550} ${bbox.width + 1500} ${bbox.height + 1000}`;
+        viewBoxParams = `${centerX - bbox.width / 2 - 1000} ${centerY - bbox.height / 2 - 850} ${bbox.width + 2500} ${bbox.height + 1500}`;
         break;
       case 'Тула':
         viewBoxParams = `${centerX - bbox.width / 2 - 950} ${centerY - bbox.height / 2 - 750} ${bbox.width + 2500} ${bbox.height + 1500}`;
@@ -328,8 +328,23 @@ function focusRegion(regionObject) {
       case 'Хабаровск':
         viewBoxParams = `${centerX - bbox.width / 2 - 2900} ${centerY - bbox.height / 2 - 5100} ${bbox.width + 8000} ${bbox.height + 10000}`;
         break;
+      case 'Архангельск':
+        viewBoxParams = `${centerX - bbox.width / 2 - 2900} ${centerY - bbox.height / 2 - 5100} ${bbox.width + 8000} ${bbox.height + 10000}`;
+        break;
       case 'Улан-Удэ':
         viewBoxParams = `${centerX - bbox.width / 2 - 2460} ${centerY - bbox.height / 2 - 1250} ${bbox.width + 7000} ${bbox.height + 2500}`;
+        break;
+      case 'Тюмень':
+         viewBoxParams = `${centerX - bbox.width / 2 - 1800} ${centerY - bbox.height / 2 - 2300} ${bbox.width + 5000} ${bbox.height + 4500}`;
+        break;
+      case 'Киров':
+        viewBoxParams = `${centerX - bbox.width / 2 - 1800} ${centerY - bbox.height / 2 - 2300} ${bbox.width + 5000} ${bbox.height + 4500}`;
+        break;
+      case 'Оренбург':
+        viewBoxParams = `${centerX - bbox.width / 2 - 1800} ${centerY - bbox.height / 2 - 2300} ${bbox.width + 5000} ${bbox.height + 4500}`;
+        break;
+      case 'Уфа':
+        viewBoxParams = `${centerX - bbox.width / 2 - 1800} ${centerY - bbox.height / 2 - 2300} ${bbox.width + 5000} ${bbox.height + 4500}`;
         break;
       default:
         viewBoxParams = `${centerX - bbox.width / 2 - 900} ${centerY - bbox.height / 2 - 700} ${bbox.width + 2500} ${bbox.height + 1500}`;

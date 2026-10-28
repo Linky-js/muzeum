@@ -1,9 +1,11 @@
 <script setup>
-import { ref, onMounted, watch, defineEmits } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch, defineEmits, computed } from 'vue'
 import { useBroadcastBus } from '@/composables/useBroadcastBus'
 import { initMasterSync } from '@/composables/syncRouterSimple'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
+const store = useStore()
 const emit = defineEmits(['close'])
 
 const props = defineProps({
@@ -27,6 +29,28 @@ initMasterSync(useRouter(), bus, '1')
 const isMuted = ref(false)
 const isPlaying = ref(true)
 const currentTime = ref(0)
+const volume = ref(0)
+const isVolumeVisible = ref(false)
+
+
+function tooglePress() {
+  isVolumeVisible.value = !isVolumeVisible.value
+}
+
+
+watch(volume, (val) => {
+  bus.send('video_control', {
+    action: 'volume',
+    value: val
+  })
+
+  if (val === 0) {
+    isMuted.value = true
+  } else {
+    isMuted.value = false
+  }
+})
+
 
 function togglePlay() {
   isPlaying.value = !isPlaying.value
@@ -36,11 +60,11 @@ function togglePlay() {
 }
 function nextMarker() {
   console.log(props.markers);
-  
+
   const marker = props.markers.find(m => m > currentTime.value)
   if (marker) {
-    console.log('marker',marker);
-    
+    console.log('marker', marker);
+
     seekToMarker(marker)
   }
 }
@@ -73,6 +97,9 @@ function seekToMarker(time) {
 bus.on('video_state', state => {
   currentTime.value = state.time
 })
+bus.on('video_ended', () => {
+  closeWidjet()
+})
 function minSecTime(time) {
   if (!time || isNaN(time)) return '00:00'
 
@@ -85,15 +112,36 @@ function minSecTime(time) {
   return `${m}:${s}`
 }
 watch(() => props.currentVideo, () => {
+  isMuted.value = false
+  volume.value = 0
+  // isVolumeVisible.value = false
   bus.send('currentVideo', { video: props.currentVideo })
 })
 onMounted(() => {
+ 
   bus.send('currentVideo', { video: props.currentVideo })
 })
 const closeWidjet = () => {
   bus.send('currentVideo', { video: props.defaultSrc })
   emit('close')
 }
+const sliderStyle = computed(() => {
+  const percent = volume.value * 100
+  return {
+    background: `
+      linear-gradient(
+        to right,
+        #ffffff 0%,
+        #ffffff ${percent}%,
+        rgba(255,255,255,0.1) ${percent}%,
+        rgba(255,255,255,0.1) 100%
+      )
+    `
+  }
+})
+onBeforeUnmount(() => {
+  store.dispatch('fadeIn')
+})
 </script>
 
 <template>
@@ -125,15 +173,18 @@ const closeWidjet = () => {
 
     <!-- кнопки -->
     <div class="audio__btns">
-      <div class="btnAudio mute" @click="toggleMute">
+      <div class="btnAudio mute" @click="tooglePress">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path v-if="isMuted"
-            d="M7.85055 21.3335H2.66536C1.92899 21.3335 1.33203 20.7365 1.33203 20.0001V12.0001C1.33203 11.2637 1.92899 10.6668 2.66536 10.6668H7.85055L14.9099 4.89095C15.1948 4.6578 15.6148 4.6998 15.848 4.98476C15.9455 5.10387 15.9987 5.25303 15.9987 5.40692V26.5932C15.9987 26.9615 15.7002 27.2599 15.332 27.2599C15.1782 27.2599 15.029 27.2067 14.9099 27.1092L7.85055 21.3335ZM27.2176 16.0001L31.9316 20.7141L30.046 22.5997L25.332 17.8857L20.618 22.5997L18.7324 20.7141L23.4464 16.0001L18.7324 11.2861L20.618 9.40043L25.332 14.1145L30.046 9.40043L31.9316 11.2861L27.2176 16.0001Z"
-            fill="white" />
-          <path v-else
+          
+          <path 
             d="M15.3701 21.4272H10.1849C9.44852 21.4272 8.85156 20.8302 8.85156 20.0938V12.0938C8.85156 11.3574 9.44852 10.7605 10.1849 10.7605H15.3701L22.4294 4.9847C22.7143 4.75155 23.1343 4.79355 23.3675 5.07851C23.465 5.19762 23.5182 5.34678 23.5182 5.50067V26.6869C23.5182 27.0552 23.2197 27.3536 22.8515 27.3536C22.6977 27.3536 22.5485 27.3004 22.4294 27.2029L15.3701 21.4272Z"
             fill="white" />
         </svg>
+      </div>
+      <div class="music_volume" :class="{ active: isVolumeVisible }">
+
+        <div class="tint"></div>
+        <input class="slider" type="range" min="0" max="1" step="0.01" v-model="volume" :style="sliderStyle" />
       </div>
 
       <div class="btnAudio play" @click="togglePlay">
@@ -146,7 +197,8 @@ const closeWidjet = () => {
             fill="white" />
         </svg>
       </div>
-      <div class="btnAudio nextTick" :class="{disabled: markers.length === 0 || currentTime >= markers[markers.length - 1]}" @click="nextMarker()">
+      <div class="btnAudio nextTick"
+        :class="{ disabled: markers.length === 0 || currentTime >= markers[markers.length - 1] }" @click="nextMarker()">
         <svg width="21" height="25" viewBox="0 0 21 25" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M17.1875 11.4583L1.21453 0.809734C0.855625 0.570406 0.370625 0.667406 0.131248 1.02642C0.0456238 1.15475 0 1.30555 0 1.45978V23.5402C0 23.9717 0.349844 24.3214 0.78125 24.3214C0.935469 24.3214 1.08625 24.2758 1.21453 24.1903L17.1875 13.5417V23.4375C17.1875 24.3005 17.8871 25 18.75 25C19.6129 25 20.3125 24.3005 20.3125 23.4375V1.5625C20.3125 0.699562 19.6129 0 18.75 0C17.8871 0 17.1875 0.699562 17.1875 1.5625V11.4583Z"
@@ -158,6 +210,66 @@ const closeWidjet = () => {
   </div>
 </template>
 <style scoped>
+.music_volume {
+  position: absolute;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  border-radius: 180px;
+  width: 508px;
+  height: 110px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
+  backdrop-filter: blur(10px);
+  gap: 48px;
+  overflow: hidden;
+}
+
+.music_volume.active {
+  transform: translateX(-50%) scale(1);
+}
+
+.slider {
+  width: 305px;
+  height: 12px;
+  border-radius: 6px;
+  box-shadow: 0 4px 74px 0 rgba(73, 132, 186, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 5;
+}
+
+/* Webkit */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Firefox */
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+
 .videoWidjet {
   border-radius: 48px;
   width: 805px;
@@ -258,7 +370,8 @@ const closeWidjet = () => {
 .btnAudio:active {
   background: rgba(255, 255, 255, 0.25);
 }
-.btnAudio.disabled{
+
+.btnAudio.disabled {
   pointer-events: none;
   opacity: 0.2;
 }
@@ -284,7 +397,8 @@ const closeWidjet = () => {
   margin-top: 38px;
 }
 
-.currentTime, .remainingTime {
+.currentTime,
+.remainingTime {
   font-weight: 400;
   font-size: 15px;
   line-height: 100%;
@@ -294,7 +408,8 @@ const closeWidjet = () => {
   position: absolute;
   top: -25px;
 }
-.remainingTime{
+
+.remainingTime {
   right: 0;
 }
 </style>

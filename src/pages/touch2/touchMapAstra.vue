@@ -11,7 +11,7 @@ import { useRouter } from 'vue-router'
 // --- базовые элементы интерфейса ---
 const breadcrumbsListDefault = [
   { id: 0, title: "Главная", link: "/touch2" },
-  { id: 1, title: "AstraZeneca"  },
+  { id: 1, title: "ПРИОРИТЕТ"  },
 ]
 const breadcrumbsList = computed(() => {
   const list = [...breadcrumbsListDefault]
@@ -46,9 +46,18 @@ const breadcrumbsList = computed(() => {
 })
 
 const links = ref([
-  { id: 0, name: "Курируемые регионы", link: "/touch-screen-regions" },
-  { id: 1, name: "Карта AstraZeneca", link: "/touch-screen-astrazeneca" },
-  { id: 2, name: "Тепловая карта факторы риска", link: "/touchmaptwo" },
+   {
+    id: 0,
+    name: "Региональные практики",
+    link: "/touch-screen-regions",
+
+  },
+  {
+    id: 1,
+    name: "Приоритет - эпидемиология",
+    link: "/touch-screen-astrazeneca",
+
+  }
 ])
 
 // --- подключаем синхронизацию с монитором ---
@@ -365,10 +374,10 @@ const clearRegion = () => {
         <h1 class="content__title animBtn">
           {{ currentRegion?.type === 'okrug' ? currentRegion?.okrug : currentRegion?.type === 'oblast' ?
             currentRegion?.oblast : currentRegion?.type === 'gorod' ? currentRegion?.gorod : currentRegion?.type === 'lpu'
-              ? currentRegion?.gorod : 'AstraZeneca' }}
+              ? currentRegion?.gorod : 'Исследования ПРИОРИТЕТ' }}
         </h1>
         <p :class="{ show: !currentRegion }" class="content__subtitle animBtn">
-          Масштаб исследований "ПРИОРИТЕТ ХСН" и "ПРИОРИТЕТ-ХБП" <br> по регионам России.
+          ПРи поддержке компании AstraZeneca
         </p>
       </div>
     </div>
@@ -376,7 +385,7 @@ const clearRegion = () => {
     <div class="regions__btns">
       <div class="question">
         <p class="dopText">
-          Выбери диагноз и регион, <br>чтобы узнать данные исследований AstraZeneca
+          Выберите исследование и регион
         </p>
         <div class="regions__switch">
           <button @click="loadData('xsn')" :class="{ active: dataType === 'xsn' }">
@@ -401,7 +410,7 @@ const clearRegion = () => {
           </button>
         </div>
         <div class="input_wrap">
-          <div @click="clearRegion" class="btnSearch">
+          <!-- <div @click="clearRegion" class="btnSearch">
             <svg v-if="targetregion.name === '' || !targetregion.name" xmlns="http://www.w3.org/2000/svg" width="64"
               height="64" viewBox="0 0 64 64" fill="none" opacity="0.2">
               <path
@@ -415,7 +424,7 @@ const clearRegion = () => {
             </svg>
           </div>
           <input @focus="regionUp = true" type="text" class="input_quiz" v-model="searchQuery"
-            placeholder="Поиск по округу, региону, городу" />
+            placeholder="Поиск по округу, региону, городу" /> -->
           <div :class="{ hidden: dataType === '' }" class="custom_list-wrapper">
             <div class="stopBanner">
               <svg width="133" height="133" viewBox="0 0 133 133" fill="none" xmlns="http://www.w3.org/2000/svg">

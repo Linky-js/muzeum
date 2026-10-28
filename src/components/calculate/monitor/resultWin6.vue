@@ -105,7 +105,7 @@ const percent = computed(() => {
     <div class="diabet__head">
       вероятность в течение 10 лет - {{ percent }}%
     </div>
-    <div class="diabet__info">
+    <!-- <div class="diabet__info">
       <table class="table">
         <thead class="table__head reltive">
           <tr class="relative">
@@ -178,7 +178,7 @@ const percent = computed(() => {
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -204,7 +204,7 @@ const percent = computed(() => {
   text-transform: uppercase;
   color: #ffffff;
   opacity: 0.5;
-  margin-bottom: 133px;
+  margin-top: 133px;
 }
 
 .diabet__info {

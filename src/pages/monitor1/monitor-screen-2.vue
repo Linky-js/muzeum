@@ -8,7 +8,13 @@ const bus = useBroadcastBus({ role: 'monitor', pairId: '1', debug: false })
 initMonitorSync(router, bus, '1')
 
 const VIDEO_BG_SRC = '/video/monitors/Data_Science.webm'
-
+onMounted(() => {
+  bus.on('navigate', (data => {
+    if (data.path) {
+      window.location.href = data.path
+    }
+  }))
+})
 
 </script>
 

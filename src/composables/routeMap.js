@@ -16,6 +16,8 @@ export default {
     'touch-qr': { name: 'monitor-calculate' },
     'touch-calc': { name: 'monitor-calculate' },
     'dashPageTouch': { name: 'dashPageMonitor' },
+    'touch1-pharmacotherapy-future': { name: 'monitor1-pharmacotherapy-future' },
+    'touch1-pharmacotherapy-today': { name: 'monitor1-pharmacotherapy-today' },
     'touch1-pharmacotherapy': { name: 'monitor1-pharmacotherapy' },
     
 }

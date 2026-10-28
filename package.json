@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build-fps": "vite build --mode fps",
     "preview": "vite preview",
     "electron": "electron .",
     "electron:build": "npm run build && electron .",

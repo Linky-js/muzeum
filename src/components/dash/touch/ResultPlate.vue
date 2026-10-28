@@ -13,16 +13,16 @@ const categories = ref(null);
 const reccomendations = ref([
   {
     title: "Отлично! Потребление соответствует норме DASH.",
-    color: "#00FF11",
+    color: "#5FD567",
   },
   {
     title: "Вы молодец, но можете лучше.",
-    color: "#FFAE00",
+    color: "#FFBF36",
   },
   {
     title:
       "Показатель значительно отклонился - обратите на него внимание.",
-    color: "#FF0004",
+    color: "#D95356",
   },
 ]);
 const sortCategories = computed(() => {
@@ -36,17 +36,17 @@ const sortCategories = computed(() => {
 
 const formatColor = (percent) => {
   if (percent >= 70 && percent <= 110) {
-    return "#00FF11";
+    return "#5FD567";
   }
   if (percent <= 40) {
-    return "#FF0004";
+    return "#D95356";
   }
 
   if (percent >= 40 && percent <= 70) {
-    return "#FFAE00";
+    return "#FFBF36";
   }
 
-  return "#FF0004";
+  return "#D95356";
 };
 
 console.log("props.resultObj", props.resultObj);
@@ -65,25 +65,6 @@ onMounted(() => {
 <template>
   <div class="modal-backdrop">
     <div class="modal">
-
-      <div class="modal__right">
-        <div class="modal__items" v-if="sortCategories">
-          <div class="modal__item" v-for="([name, item], key) in sortCategories" :key="key">
-            <div class="modal__item-top">
-              <h5 class="modal__item-title">{{ name }}</h5>
-              <p class="modal__item-percent">{{ item.percent }}%</p>
-            </div>
-            <div class="modal__item-bottom">
-              <div class="modal__item-line">
-                <span class="line" :style="{ width: `${item.percent}%` }"></span>
-              </div>
-              <div class="modal__item-dot">
-                <span class="modal__item-color" :style="{ backgroundColor: formatColor(item.percent) }"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="modal__left">
         <div class="modal__top">
           <h1 class="modal__title">Анализ резуальтатов</h1>
@@ -104,7 +85,8 @@ onMounted(() => {
                 </div>
                 <div class="diagram-item__right">
                   <RoundDiagram :value="resultObj.totalCalories" label="Целевой диапазон" :maxValue="resultObj.TDEE"
-                    :fill-color="resultObj.totalCalories * 100 / resultObj.TDEE < 70 ? '#FFAE00' : resultObj.totalCalories * 100 / resultObj.TDEE > 70 && resultObj.totalCalories * 100 / resultObj.TDEE < 100 ? '#00FF11' : '#FF0004'" />
+                    :fill-color="resultObj.totalCalories * 100 / resultObj.TDEE < 70 ? '#FFBF36' : resultObj.totalCalories * 100 / resultObj.TDEE > 70 && resultObj.totalCalories * 100 / resultObj.TDEE < 100 ? '#5FD567' : '#D95356'"
+                    :width="557" :height="557" />
                 </div>
                 <p class="diagram-item__text">
                   Чем меньше отклонение - тем лучше
@@ -118,9 +100,8 @@ onMounted(() => {
                   <p class="diagram-item__subtitle">Значение</p>
                 </div>
                 <div class="diagram-item__right">
-                  <RoundDiagram :value="resultObj.totalSodium"
-                    :label="'Целевой диапазон'" :maxValue="2300"
-                    :fill-color="resultObj.totalSodium * 100 / 2300 < 70 ? '#00FF11' : resultObj.totalSodium * 100 / 2300 > 70 && resultObj.totalSodium * 100 / 2300 < 100 ? '#FFAE00' : '#FF0004'" />
+                  <RoundDiagram :value="resultObj.totalSodium" :label="'Целевой диапазон'" :maxValue="2300"
+                    :fill-color="resultObj.totalSodium * 100 / 2300 < 70 ? '#5FD567' : resultObj.totalSodium * 100 / 2300 > 70 && resultObj.totalSodium * 100 / 2300 < 100 ? '#FFBF36' : '#D95356'" :width="557" :height="557" />
                 </div>
                 <p class="diagram-item__text">
                   Чем меньше отклонение - тем лучше
@@ -133,7 +114,7 @@ onMounted(() => {
               <h4 class="modal__recom-title">
                 Рекомендации для улучшения показателей
               </h4>
-              <IconInfo opacity="1" />
+              
             </div>
             <div class="modal__recom-items">
               <div class="modal__recom-item" v-for="item in reccomendations" :key="item.title">
@@ -144,42 +125,82 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <div class="modal__right">
+        <div class="modal__items" v-if="sortCategories">
+          <div class="modal__item" v-for="([name, item], key) in sortCategories" :key="key">
+            <div class="modal__item-top">
+              <h5 class="modal__item-title">{{ name }}</h5>
+              <p class="modal__item-percent">{{ item.percent }}%</p>
+            </div>
+            <div class="modal__item-bottom">
+              <div class="modal__item-line">
+                <span class="line" :style="{ width: `${item.percent}%`, backgroundColor: formatColor(item.percent) }"></span>
+              </div>
+              <!-- <div class="modal__item-dot">
+                <span class="modal__item-color" :style="{ backgroundColor: formatColor(item.percent) }"></span>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <RouterLink to="/touch1/screen-3" class="quiz__btn">
+      На главную
+    </RouterLink>
     </div>
   </div>
 </template>
 
 <style scoped>
+.quiz__btn {
+  bottom: 75px;
+  z-index: 52;
+  transform: translateX(-50%);
+}
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  z-index: 50;
-  background: rgba(78, 78, 78, 0.4);
-  backdrop-filter: blur(37px);
+  z-index: 52;
+  backdrop-filter: blur(154px);
+  background: rgba(74, 74, 74, 0.3);
 }
 
 .modal {
-  display: grid;
-  grid-template-columns: minmax(0, 1001px) minmax(0, 1782px);
-  gap: 40px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 88px;
   width: 2823px;
+  margin-top: 200px;
+  height: max-content;
+}
+
+.modal::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(34, 31, 29, 0.6);
+  z-index: 1;
 }
 
 .modal__left {
-  padding: 48px;
-  height: 1552px;
-  background-color: rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 4px 184px rgba(0, 0, 0, 0.25);
-  border-radius: 64px;
+  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  z-index: 2;
 }
 
 .modal__top {
   text-align: center;
+  margin-bottom: 62px;
 }
 
 .modal__title {
@@ -204,8 +225,7 @@ onMounted(() => {
 }
 
 .modal__diagrams {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
   gap: 32px;
   margin-bottom: 32px;
 }
@@ -214,10 +234,12 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 32px;
-  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid #fff;
   border-radius: 40px;
-  height: 695px;
+  padding: 32px;
+  width: 765px;
+  height: 828px;
+  flex-shrink: 0;
 }
 
 .diagram-item__left {
@@ -266,10 +288,8 @@ onMounted(() => {
 .modal__recom {
   display: flex;
   flex-direction: column;
-  padding: 32px;
+  
   gap: 32px;
-  background: rgba(255, 255, 255, 0.24);
-  border-radius: 40px;
 }
 
 .modal__recom-top {
@@ -320,10 +340,10 @@ onMounted(() => {
 
 .modal__right {
   padding: 64px 48px;
-  background-color: rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 4px 184px rgba(0, 0, 0, 0.25);
-  border-radius: 64px;
+
   height: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .modal__items {
@@ -359,7 +379,7 @@ onMounted(() => {
 
 .modal__item-bottom {
   display: grid;
-  grid-template-columns: minmax(0, 833px) minmax(0, 64px);
+  grid-template-columns: minmax(0, 905px);
   gap: 8px;
 }
 

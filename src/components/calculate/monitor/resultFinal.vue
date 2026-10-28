@@ -11,6 +11,7 @@ import IconFinal8 from "../../icons/IconFinal8.vue";
 </script>
 <template>
   <div class="final-wrapper">
+    <h1 class="content__title animBtn" >Ключевые рекомендации</h1>
     <div class="final__body">
       <div class="final__item row-8">
         <img class="_img" src="@/assets/img/calculate-final-1.png" alt="" />
@@ -30,7 +31,8 @@ import IconFinal8 from "../../icons/IconFinal8.vue";
             <span class="final__item-step">02</span>
           </div>
           <h4 class="final__item-title">
-            Откажитесь от курения, в том числе электронных сигарет
+            Откажитесь от курения, в том числе электронных сигарет<br>
+            Сведите потребление алкоголя к минимуму 
           </h4>
         </div>
       </div>
@@ -82,7 +84,7 @@ import IconFinal8 from "../../icons/IconFinal8.vue";
           </h4>
         </div>
       </div>
-      <div class="final__item glass row-3">
+      <div class="final__item glass row-2">
         <div class="tint"></div>
         <div class="final__item-inner">
           <div class="final__item-top">
@@ -95,7 +97,7 @@ import IconFinal8 from "../../icons/IconFinal8.vue";
         </div>
       </div>
      
-      <div class="final__item glass white-card row-2">
+      <div class="final__item glass white-card row-3">
         <div class="tint"></div>
         <div class="final__item-inner">
           <div class="final__item-top">
@@ -103,7 +105,7 @@ import IconFinal8 from "../../icons/IconFinal8.vue";
             <span class="final__item-step">04</span>
           </div>
           <h4 class="final__item-title">
-            Сохраняйте позитив и избегайте негатива
+            Заботьтесь о своих мыслях, избегайте негатива. <br> Развивайте дружбу, щедрость и сострадание
           </h4>
         </div>
       </div>
@@ -112,10 +114,20 @@ import IconFinal8 from "../../icons/IconFinal8.vue";
 </template>
 
 <style scoped>
+.content__title {
+  font-family: "TT Commons";
+  font-weight: 500;
+  font-size: 8.75rem;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  text-align: center;
+  opacity: 0;
+  margin-bottom: 100px;
+}
 .final-wrapper {
   margin: 0 auto;
-  width: 3601px;
-  height: 1351px;
+  width: 3801px;
 }
 
 .final__body {

@@ -394,6 +394,8 @@ const props = defineProps({
   letter-spacing: -0.02em;
   background-color: #ffffff;
   color: #00040b;
+  left: auto;
+  /* transform: translateX(-50%); */
 }
 .quiz__btn:disabled {
   background-color: rgba(255, 255, 255, 0.12);
